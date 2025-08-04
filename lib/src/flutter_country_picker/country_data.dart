@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'localizations/country_localizations.dart';
 
 /// Represents a country with its ISO code, flag emoji, and phone code
 class Country {
@@ -36,6 +38,11 @@ class Country {
 
   @override
   int get hashCode => code.hashCode ^ flag.hashCode ^ phoneCode.hashCode;
+
+  /// Get the localized display name for this country
+  String getDisplayName(BuildContext context) {
+    return CountryLocalizations.of(context).getCountryName(code);
+  }
 }
 
 /// Utility class for managing country data and operations

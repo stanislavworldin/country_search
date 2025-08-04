@@ -55,6 +55,9 @@ CountryPicker(
     debugPrint('Selected: ${country.flag} ${country.code} (${country.phoneCode})');
   },
 )
+
+// To display country name:
+Text(country.getDisplayName(context))
 ```
 
 ### Multi-language Support
@@ -130,12 +133,20 @@ Represents a country with its properties.
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `name` | `String` | Localized country name in the current app language |
 | `code` | `String` | ISO 3166-1 alpha-2 country code (e.g., "US", "DE", "RU") |
 | `flag` | `String` | Unicode flag emoji representing the country (e.g., "🇺🇸", "🇩🇪") |
 | `phoneCode` | `String` | International dialing code with "+" prefix (e.g., "+1", "+49") |
 
+**Note:** To get country name, use `country.getDisplayName(context)`
+
 ## Examples
+
+### Getting Country Names
+
+```dart
+// Get localized country name:
+Text(country.getDisplayName(context))
+```
 
 ### Custom Theme
 
