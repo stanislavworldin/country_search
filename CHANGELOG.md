@@ -1,5 +1,51 @@
 # Changelog
 
+## [2.7.2] - 2025-01-29
+
+### Fixed
+- **Adaptive Height Support**: Fixed issue where `itemHeight` parameter was ignored in rendering
+- **Layout Improvements**: Added proper height control and adaptive layout options
+- **Text Overflow Handling**: Added `TextOverflow.ellipsis` for better text display
+- **Content Centering**: Improved content alignment with `MainAxisAlignment.center`
+
+### Added
+- **Adaptive Height Parameter**: New `adaptiveHeight` parameter for content-based sizing
+- **Builder API Enhancement**: Added `.adaptiveHeight()` method to Builder API
+- **Flexible Layout**: Option to use fixed height or adaptive height based on content
+- **Better UX**: Improved user experience with proper content sizing
+
+### Technical Improvements
+- **Architecture Fix**: `itemHeight` parameter now properly used in rendering
+- **Layout Optimization**: Better handling of different content sizes
+- **Code Quality**: Improved layout structure and content alignment
+- **Documentation**: Updated README with adaptive height examples
+
+### Usage Examples
+```dart
+// Fixed height (default)
+CountryPicker(itemHeight: 72.0)
+
+// Adaptive height (new feature)
+CountryPicker(adaptiveHeight: true)
+
+// Builder API
+CountryPicker.builder()
+    .adaptiveHeight(true)
+    .build()
+```
+
+## [2.7.1] - 2025-01-29
+
+### Fixed
+- **Rendering Issues**: Fixed overflow errors in example app layout
+- **Dependency Conflicts**: Resolved version conflicts between main package and example
+- **Code Formatting**: Applied proper Dart formatting standards
+
+### Technical Improvements
+- **Error Resolution**: Fixed Expanded widget usage in SingleChildScrollView
+- **Layout Stability**: Replaced Spacer with SizedBox for better layout control
+- **Code Quality**: All static analysis issues resolved
+
 ## [2.7.0] - 2025-01-29
 
 ### Added
