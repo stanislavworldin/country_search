@@ -762,6 +762,8 @@ class _CountryPickerState extends State<CountryPicker> {
           borderRadius: BorderRadius.circular(borderRadius),
           child: Container(
             padding: _buttonPadding,
+            constraints: const BoxConstraints(
+                minHeight: 48), // Минимальная высота для избежания overflow
             decoration: BoxDecoration(
               border: Border.all(color: searchFieldBorderColor, width: 0.5),
               borderRadius: BorderRadius.circular(borderRadius),
@@ -778,6 +780,8 @@ class _CountryPickerState extends State<CountryPicker> {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize:
+                          MainAxisSize.min, // Исправляем проблему с Column
                       children: [
                         Text(
                           CountryLocalizations.getCountryNameSafe(
@@ -787,6 +791,8 @@ class _CountryPickerState extends State<CountryPicker> {
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ),
+                          overflow:
+                              TextOverflow.ellipsis, // Обработка переполнения
                         ),
                         _spacer2,
                         Text(
@@ -795,12 +801,18 @@ class _CountryPickerState extends State<CountryPicker> {
                             color: hintTextColor,
                             fontSize: 11,
                           ),
+                          overflow:
+                              TextOverflow.ellipsis, // Обработка переполнения
                         ),
-                        if (widget.showPhoneCodes)
+                        if (widget.showPhoneCodes) ...[
+                          _spacer2,
                           Text(
                             widget.selectedCountry!.phoneCode,
                             style: _defaultSelectedPhoneCodeTextStyle,
+                            overflow:
+                                TextOverflow.ellipsis, // Обработка переполнения
                           ),
+                        ],
                       ],
                     ),
                   ),
