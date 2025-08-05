@@ -45,10 +45,10 @@ packages:
     dependency: "direct main"
     description:
       name: country_search
-      sha256: "9d2c7d01d57488e136c41f9815f4bc76b4eea892e58e9228984a5b1eda44c5e6"
+      sha256: ef59814a8a4fde49ca1b1f1e36b52f0c12953762538cc53c3a6b0bc553421ae2
       url: "https://pub.dev"
     source: hosted
-    version: "2.7.2"
+    version: "2.7.3"
   fake_async:
     dependency: transitive
     description:
