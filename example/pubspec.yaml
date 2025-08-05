@@ -1,6 +1,7 @@
 name: flutter_country_picker_example
 description: Example app for flutter_country_picker package
 version: 1.0.0
+publish_to: none
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -11,9 +12,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  country_search:
-    path: ../
-    # Note: This is an example app, so path dependency is acceptable
+  country_search: ^2.7.0
 
 dev_dependencies:
   flutter_test:

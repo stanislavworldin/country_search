@@ -566,7 +566,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         style: const TextStyle(fontSize: 32),
                       ),
                       const SizedBox(width: 16),
-                      Expanded(
+                      Flexible(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -600,7 +600,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ],
-              const Spacer(),
+              const SizedBox(height: 24),
 
               // Features section
               Container(
