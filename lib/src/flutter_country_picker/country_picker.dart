@@ -654,7 +654,10 @@ class _CountryPickerState extends State<CountryPicker> {
                         return RepaintBoundary(
                           child: Container(
                             margin: _itemMargin,
-                            height: widget.adaptiveHeight ? null : (itemHeight ?? 56.0), // Адаптивная или фиксированная высота
+                            height: widget.adaptiveHeight
+                                ? null
+                                : (itemHeight ??
+                                    56.0), // Адаптивная или фиксированная высота
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? accentColor.withValues(alpha: 0.1)
@@ -685,7 +688,8 @@ class _CountryPickerState extends State<CountryPicker> {
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.center, // Центрируем контент
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .center, // Центрируем контент
                                           children: [
                                             Text(
                                               countryName,
@@ -697,7 +701,8 @@ class _CountryPickerState extends State<CountryPicker> {
                                                     ? FontWeight.w600
                                                     : FontWeight.normal,
                                               ),
-                                              overflow: TextOverflow.ellipsis, // Обработка переполнения
+                                              overflow: TextOverflow
+                                                  .ellipsis, // Обработка переполнения
                                             ),
                                             if (showCountryCodes) ...[
                                               _spacer2,
@@ -712,7 +717,8 @@ class _CountryPickerState extends State<CountryPicker> {
                                                       : hintTextColor,
                                                   fontSize: 12,
                                                 ),
-                                                overflow: TextOverflow.ellipsis, // Обработка переполнения
+                                                overflow: TextOverflow
+                                                    .ellipsis, // Обработка переполнения
                                               ),
                                             ],
                                           ],
