@@ -97,7 +97,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  country_search: ^2.6.6
+  country_search: ^2.7.0
 ```
 
 ## 🧩 Usage Examples
