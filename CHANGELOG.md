@@ -1,5 +1,39 @@
 # Changelog
 
+## [2.7.3] - 2025-01-29
+
+### Fixed
+- **Column Layout Issues**: Fixed `Column` without `mainAxisSize: MainAxisSize.min` causing overflow
+- **Main Widget Overflow**: Fixed overflow in main widget with 35px height being too small for 3 text elements
+- **Layout Architecture**: Resolved architectural layout problems in the library
+- **Text Overflow Handling**: Improved text overflow handling with proper `TextOverflow.ellipsis`
+
+### Added
+- **Minimum Height Constraint**: Added `BoxConstraints(minHeight: 48)` to prevent overflow
+- **Better Content Alignment**: Improved content centering with `MainAxisAlignment.center`
+- **Enhanced Text Handling**: Added overflow handling for all text elements
+
+### Technical Improvements
+- **Layout Stability**: Fixed Column layout issues that caused overflow errors
+- **Content Sizing**: Proper minimum height constraints for better content display
+- **Code Quality**: All comments translated to English for international compatibility
+- **Documentation**: Updated with layout improvements and fixes
+
+### Usage Examples
+```dart
+// Fixed layout issues - now properly handles content
+CountryPicker(
+  itemHeight: 72.0,
+  adaptiveHeight: true,
+)
+
+// Builder API with improved layout
+CountryPicker.builder()
+    .adaptiveHeight(true)
+    .itemHeight(72.0)
+    .build()
+```
+
 ## [2.7.2] - 2025-01-29
 
 ### Fixed
