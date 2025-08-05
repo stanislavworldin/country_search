@@ -657,7 +657,7 @@ class _CountryPickerState extends State<CountryPicker> {
                             height: widget.adaptiveHeight
                                 ? null
                                 : (itemHeight ??
-                                    56.0), // Адаптивная или фиксированная высота
+                                    56.0), // Adaptive or fixed height
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? accentColor.withValues(alpha: 0.1)
@@ -689,7 +689,7 @@ class _CountryPickerState extends State<CountryPicker> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           mainAxisAlignment: MainAxisAlignment
-                                              .center, // Центрируем контент
+                                              .center, // Center content
                                           children: [
                                             Text(
                                               countryName,
@@ -702,7 +702,7 @@ class _CountryPickerState extends State<CountryPicker> {
                                                     : FontWeight.normal,
                                               ),
                                               overflow: TextOverflow
-                                                  .ellipsis, // Обработка переполнения
+                                                  .ellipsis, // Handle text overflow
                                             ),
                                             if (showCountryCodes) ...[
                                               _spacer2,
@@ -718,7 +718,7 @@ class _CountryPickerState extends State<CountryPicker> {
                                                   fontSize: 12,
                                                 ),
                                                 overflow: TextOverflow
-                                                    .ellipsis, // Обработка переполнения
+                                                    .ellipsis, // Handle text overflow
                                               ),
                                             ],
                                           ],
@@ -763,7 +763,7 @@ class _CountryPickerState extends State<CountryPicker> {
           child: Container(
             padding: _buttonPadding,
             constraints: const BoxConstraints(
-                minHeight: 48), // Минимальная высота для избежания overflow
+                minHeight: 48), // Minimum height to prevent overflow
             decoration: BoxDecoration(
               border: Border.all(color: searchFieldBorderColor, width: 0.5),
               borderRadius: BorderRadius.circular(borderRadius),
@@ -780,8 +780,7 @@ class _CountryPickerState extends State<CountryPicker> {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize:
-                          MainAxisSize.min, // Исправляем проблему с Column
+                      mainAxisSize: MainAxisSize.min, // Fix Column layout issue
                       children: [
                         Text(
                           CountryLocalizations.getCountryNameSafe(
@@ -792,7 +791,7 @@ class _CountryPickerState extends State<CountryPicker> {
                             fontWeight: FontWeight.w500,
                           ),
                           overflow:
-                              TextOverflow.ellipsis, // Обработка переполнения
+                              TextOverflow.ellipsis, // Handle text overflow
                         ),
                         _spacer2,
                         Text(
@@ -802,7 +801,7 @@ class _CountryPickerState extends State<CountryPicker> {
                             fontSize: 11,
                           ),
                           overflow:
-                              TextOverflow.ellipsis, // Обработка переполнения
+                              TextOverflow.ellipsis, // Handle text overflow
                         ),
                         if (widget.showPhoneCodes) ...[
                           _spacer2,
@@ -810,7 +809,7 @@ class _CountryPickerState extends State<CountryPicker> {
                             widget.selectedCountry!.phoneCode,
                             style: _defaultSelectedPhoneCodeTextStyle,
                             overflow:
-                                TextOverflow.ellipsis, // Обработка переполнения
+                                TextOverflow.ellipsis, // Handle text overflow
                           ),
                         ],
                       ],
