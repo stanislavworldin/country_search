@@ -209,6 +209,73 @@ Find countries even with typos:
 
 ## 📚 API Reference
 
+### Builder API (Recommended)
+
+The Builder API provides a fluent interface for easy customization:
+
+```dart
+// Basic usage with Builder API
+CountryPicker.builder()
+    .selectedCountry(selectedCountry)
+    .onCountrySelected((country) => setState(() => selectedCountry = country))
+    .build();
+
+// With pre-built themes
+CountryPicker.builder()
+    .selectedCountry(selectedCountry)
+    .onCountrySelected((country) => setState(() => selectedCountry = country))
+    .darkTheme()  // or .lightTheme(), .purpleTheme(), .minimalTheme()
+    .build();
+
+// Custom configuration
+CountryPicker.builder()
+    .selectedCountry(selectedCountry)
+    .onCountrySelected((country) => setState(() => selectedCountry = country))
+    .lightTheme()
+    .itemHeight(72.0)
+    .flagSize(28.0)
+    .textStyle(const TextStyle(fontSize: 16, fontWeight: FontWeight.w600))
+    .showCountryCodes(false)
+    .build();
+```
+
+#### Pre-built Themes
+
+| Theme | Description |
+|-------|-------------|
+| `.darkTheme()` | Dark theme with green accent |
+| `.lightTheme()` | Light theme with blue accent |
+| `.purpleTheme()` | Purple theme with purple accent |
+| `.minimalTheme()` | Compact design with minimal styling |
+
+#### Builder Methods
+
+| Method | Description |
+|--------|-------------|
+| `.selectedCountry(Country?)` | Set selected country |
+| `.onCountrySelected(Function)` | Set selection callback |
+| `.labelText(String?)` | Set custom label |
+| `.hintText(String?)` | Set custom hint |
+| `.showPhoneCodes(bool)` | Show/hide phone codes |
+| `.backgroundColor(Color?)` | Set background color |
+| `.headerColor(Color?)` | Set header color |
+| `.textColor(Color?)` | Set text color |
+| `.accentColor(Color?)` | Set accent color |
+| `.searchFieldColor(Color?)` | Set search field color |
+| `.searchFieldBorderColor(Color?)` | Set search field border |
+| `.cursorColor(Color?)` | Set cursor color |
+| `.hintTextColor(Color?)` | Set hint text color |
+| `.hoverColor(Color?)` | Set hover color |
+| `.borderRadius(double?)` | Set border radius |
+| `.textStyle(TextStyle?)` | Set text style |
+| `.itemHeight(double?)` | Set item height |
+| `.itemPadding(EdgeInsets?)` | Set item padding |
+| `.flagSize(double?)` | Set flag size |
+| `.showFlags(bool)` | Show/hide flags |
+| `.showCountryCodes(bool)` | Show/hide country codes |
+
+### Traditional API
+
 ### CountryPicker Properties
 
 | Property | Type | Default | Description |

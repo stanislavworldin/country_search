@@ -415,6 +415,131 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             const SizedBox(height: 32),
 
+            // Builder API Examples
+            const Text(
+              'Builder API Examples:',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Builder API - Dark Theme
+            const Text(
+              'Builder API - Dark Theme:',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            CountryPicker.builder()
+                .selectedCountry(selectedCountry)
+                .onCountrySelected((Country country) {
+                  setState(() {
+                    selectedCountry = country;
+                  });
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                          'Selected: ${country.flag} ${country.code} (${country.phoneCode})'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                })
+                .darkTheme()
+                .build(),
+            const SizedBox(height: 16),
+
+            // Builder API - Light Theme
+            const Text(
+              'Builder API - Light Theme:',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            CountryPicker.builder()
+                .selectedCountry(selectedCountry)
+                .onCountrySelected((Country country) {
+                  setState(() {
+                    selectedCountry = country;
+                  });
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                          'Selected: ${country.flag} ${country.code} (${country.phoneCode})'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                })
+                .lightTheme()
+                .build(),
+            const SizedBox(height: 16),
+
+            // Builder API - Purple Theme
+            const Text(
+              'Builder API - Purple Theme:',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            CountryPicker.builder()
+                .selectedCountry(selectedCountry)
+                .onCountrySelected((Country country) {
+                  setState(() {
+                    selectedCountry = country;
+                  });
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                          'Selected: ${country.flag} ${country.code} (${country.phoneCode})'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                })
+                .purpleTheme()
+                .itemHeight(72.0)
+                .flagSize(28.0)
+                .textStyle(const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ))
+                .build(),
+            const SizedBox(height: 16),
+
+            // Builder API - Minimal Theme
+            const Text(
+              'Builder API - Minimal Theme:',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            CountryPicker.builder()
+                .selectedCountry(selectedCountry)
+                .onCountrySelected((Country country) {
+                  setState(() {
+                    selectedCountry = country;
+                  });
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                          'Selected: ${country.flag} ${country.code} (${country.phoneCode})'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                })
+                .minimalTheme()
+                .showCountryCodes(false)
+                .build(),
+            const SizedBox(height: 32),
+
             // Selected country display
             if (selectedCountry != null) ...[
               const Text(
@@ -498,6 +623,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text('• Phone codes included'),
                   Text('• Multi-language support (19 languages)'),
                   Text('• Smart search functionality'),
+                  Text('• Builder API for easy customization'),
+                  Text('• Pre-built themes (Dark, Light, Purple, Minimal)'),
                   Text('• Beautiful dark theme'),
                   Text('• Light theme support'),
                   Text('• Advanced customization options'),

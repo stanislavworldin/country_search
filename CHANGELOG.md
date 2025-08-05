@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.7.0] - 2025-01-29
+
+### Added
+- **Builder API**: Fluent interface for easy CountryPicker customization
+- **Pre-built Themes**: `darkTheme()`, `lightTheme()`, `purpleTheme()`, `minimalTheme()`
+- **Comprehensive Builder Methods**: All customization options available through Builder API
+- **Enhanced Documentation**: Complete Builder API documentation with examples
+- **Example App Updates**: Added Builder API demonstrations in example app
+
+### Changed
+- **Recommended Approach**: Builder API now recommended over traditional constructor
+- **Improved Developer Experience**: More intuitive and readable API
+- **Better Code Organization**: Fluent interface for cleaner code
+
+### Technical Improvements
+- **Fluent Interface**: Method chaining for better readability
+- **Theme Presets**: Ready-to-use theme configurations
+- **Error Handling**: Proper validation in Builder API
+- **Code Quality**: Maintained high code quality standards
+
 ## [2.6.6] - 2025-01-29
 
 ### Added

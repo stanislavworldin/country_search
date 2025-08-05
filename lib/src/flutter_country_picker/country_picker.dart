@@ -3,6 +3,244 @@ import 'package:flutter/material.dart';
 import 'country_data.dart';
 import 'localizations/country_localizations.dart';
 
+/// Builder API for creating CountryPicker with a fluent interface
+class CountryPickerBuilder {
+  Country? _selectedCountry;
+  Function(Country)? _onCountrySelected;
+  String? _labelText;
+  String? _hintText;
+  bool _showPhoneCodes = true;
+
+  // UI Customization
+  Color? _backgroundColor;
+  Color? _headerColor;
+  Color? _textColor;
+  Color? _accentColor;
+  Color? _searchFieldColor;
+  Color? _searchFieldBorderColor;
+  Color? _cursorColor;
+  Color? _hintTextColor;
+  Color? _hoverColor;
+  double? _borderRadius;
+
+  // Advanced Customization
+  TextStyle? _textStyle;
+  double? _itemHeight;
+  EdgeInsets? _itemPadding;
+  double? _flagSize;
+  bool _showFlags = true;
+  bool _showCountryCodes = true;
+
+  /// Set the selected country
+  CountryPickerBuilder selectedCountry(Country? country) {
+    _selectedCountry = country;
+    return this;
+  }
+
+  /// Set the callback for country selection
+  CountryPickerBuilder onCountrySelected(Function(Country) callback) {
+    _onCountrySelected = callback;
+    return this;
+  }
+
+  /// Set the label text
+  CountryPickerBuilder labelText(String? text) {
+    _labelText = text;
+    return this;
+  }
+
+  /// Set the hint text
+  CountryPickerBuilder hintText(String? text) {
+    _hintText = text;
+    return this;
+  }
+
+  /// Set whether to show phone codes
+  CountryPickerBuilder showPhoneCodes(bool show) {
+    _showPhoneCodes = show;
+    return this;
+  }
+
+  /// Set the background color
+  CountryPickerBuilder backgroundColor(Color? color) {
+    _backgroundColor = color;
+    return this;
+  }
+
+  /// Set the header color
+  CountryPickerBuilder headerColor(Color? color) {
+    _headerColor = color;
+    return this;
+  }
+
+  /// Set the text color
+  CountryPickerBuilder textColor(Color? color) {
+    _textColor = color;
+    return this;
+  }
+
+  /// Set the accent color
+  CountryPickerBuilder accentColor(Color? color) {
+    _accentColor = color;
+    return this;
+  }
+
+  /// Set the search field color
+  CountryPickerBuilder searchFieldColor(Color? color) {
+    _searchFieldColor = color;
+    return this;
+  }
+
+  /// Set the search field border color
+  CountryPickerBuilder searchFieldBorderColor(Color? color) {
+    _searchFieldBorderColor = color;
+    return this;
+  }
+
+  /// Set the cursor color
+  CountryPickerBuilder cursorColor(Color? color) {
+    _cursorColor = color;
+    return this;
+  }
+
+  /// Set the hint text color
+  CountryPickerBuilder hintTextColor(Color? color) {
+    _hintTextColor = color;
+    return this;
+  }
+
+  /// Set the hover color
+  CountryPickerBuilder hoverColor(Color? color) {
+    _hoverColor = color;
+    return this;
+  }
+
+  /// Set the border radius
+  CountryPickerBuilder borderRadius(double? radius) {
+    _borderRadius = radius;
+    return this;
+  }
+
+  /// Set the text style
+  CountryPickerBuilder textStyle(TextStyle? style) {
+    _textStyle = style;
+    return this;
+  }
+
+  /// Set the item height
+  CountryPickerBuilder itemHeight(double? height) {
+    _itemHeight = height;
+    return this;
+  }
+
+  /// Set the item padding
+  CountryPickerBuilder itemPadding(EdgeInsets? padding) {
+    _itemPadding = padding;
+    return this;
+  }
+
+  /// Set the flag size
+  CountryPickerBuilder flagSize(double? size) {
+    _flagSize = size;
+    return this;
+  }
+
+  /// Set whether to show flags
+  CountryPickerBuilder showFlags(bool show) {
+    _showFlags = show;
+    return this;
+  }
+
+  /// Set whether to show country codes
+  CountryPickerBuilder showCountryCodes(bool show) {
+    _showCountryCodes = show;
+    return this;
+  }
+
+  /// Set a custom theme (dark theme by default)
+  CountryPickerBuilder darkTheme() {
+    _backgroundColor = const Color(0xFF302E2C);
+    _headerColor = const Color(0xFF3C3A38);
+    _textColor = Colors.white;
+    _accentColor = const Color(0xFF699B4B);
+    _searchFieldColor = const Color(0x0D000000);
+    _searchFieldBorderColor = Colors.white24;
+    _cursorColor = Colors.white;
+    _hintTextColor = Colors.white54;
+    _hoverColor = Colors.white10;
+    return this;
+  }
+
+  /// Set a custom theme (light theme)
+  CountryPickerBuilder lightTheme() {
+    _backgroundColor = Colors.white;
+    _headerColor = const Color(0xFFF5F5F5);
+    _textColor = Colors.black87;
+    _accentColor = Colors.blue;
+    _searchFieldColor = const Color(0xFFF0F0F0);
+    _searchFieldBorderColor = Colors.grey.shade300;
+    _cursorColor = Colors.blue;
+    _hintTextColor = Colors.grey.shade600;
+    _hoverColor = Colors.grey.shade100;
+    return this;
+  }
+
+  /// Set a purple theme
+  CountryPickerBuilder purpleTheme() {
+    _backgroundColor = const Color(0xFF2D1B69);
+    _headerColor = const Color(0xFF3C2B7A);
+    _textColor = Colors.white;
+    _accentColor = const Color(0xFF9C27B0);
+    _searchFieldColor = const Color(0x1AFFFFFF);
+    _searchFieldBorderColor = Colors.purple.shade300;
+    _cursorColor = Colors.purple.shade300;
+    _hintTextColor = Colors.purple.shade200;
+    _hoverColor = Colors.purple.shade800;
+    return this;
+  }
+
+  /// Set a minimal theme (compact design)
+  CountryPickerBuilder minimalTheme() {
+    _itemHeight = 40.0;
+    _itemPadding = const EdgeInsets.symmetric(horizontal: 8, vertical: 4);
+    _flagSize = 16.0;
+    _textStyle = const TextStyle(fontSize: 12);
+    _borderRadius = 4.0;
+    return this;
+  }
+
+  /// Build the CountryPicker widget
+  CountryPicker build() {
+    if (_onCountrySelected == null) {
+      throw ArgumentError('onCountrySelected callback is required');
+    }
+
+    return CountryPicker(
+      selectedCountry: _selectedCountry,
+      onCountrySelected: _onCountrySelected!,
+      labelText: _labelText,
+      hintText: _hintText,
+      showPhoneCodes: _showPhoneCodes,
+      backgroundColor: _backgroundColor,
+      headerColor: _headerColor,
+      textColor: _textColor,
+      accentColor: _accentColor,
+      searchFieldColor: _searchFieldColor,
+      searchFieldBorderColor: _searchFieldBorderColor,
+      cursorColor: _cursorColor,
+      hintTextColor: _hintTextColor,
+      hoverColor: _hoverColor,
+      borderRadius: _borderRadius,
+      textStyle: _textStyle,
+      itemHeight: _itemHeight,
+      itemPadding: _itemPadding,
+      flagSize: _flagSize,
+      showFlags: _showFlags,
+      showCountryCodes: _showCountryCodes,
+    );
+  }
+}
+
 class CountryPicker extends StatefulWidget {
   final Country? selectedCountry;
   final Function(Country) onCountrySelected;
@@ -58,6 +296,11 @@ class CountryPicker extends StatefulWidget {
         assert(flagSize == null || flagSize > 0, 'flagSize must be positive'),
         assert(borderRadius == null || borderRadius >= 0,
             'borderRadius must be non-negative');
+
+  /// Create a builder for fluent API
+  static CountryPickerBuilder builder() {
+    return CountryPickerBuilder();
+  }
 
   @override
   State<CountryPicker> createState() => _CountryPickerState();
