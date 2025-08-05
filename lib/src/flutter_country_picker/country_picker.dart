@@ -30,6 +30,7 @@ class CountryPickerBuilder {
   double? _flagSize;
   bool _showFlags = true;
   bool _showCountryCodes = true;
+  bool _adaptiveHeight = false;
 
   /// Set the selected country
   CountryPickerBuilder selectedCountry(Country? country) {
@@ -157,6 +158,12 @@ class CountryPickerBuilder {
     return this;
   }
 
+  /// Set whether to use adaptive height
+  CountryPickerBuilder adaptiveHeight(bool adaptive) {
+    _adaptiveHeight = adaptive;
+    return this;
+  }
+
   /// Set a custom theme (dark theme by default)
   CountryPickerBuilder darkTheme() {
     _backgroundColor = const Color(0xFF302E2C);
@@ -237,6 +244,7 @@ class CountryPickerBuilder {
       flagSize: _flagSize,
       showFlags: _showFlags,
       showCountryCodes: _showCountryCodes,
+      adaptiveHeight: _adaptiveHeight,
     );
   }
 }
@@ -267,6 +275,7 @@ class CountryPicker extends StatefulWidget {
   final double? flagSize;
   final bool showFlags;
   final bool showCountryCodes;
+  final bool adaptiveHeight;
 
   const CountryPicker({
     super.key,
@@ -291,6 +300,7 @@ class CountryPicker extends StatefulWidget {
     this.flagSize,
     this.showFlags = true,
     this.showCountryCodes = true,
+    this.adaptiveHeight = false,
   })  : assert(itemHeight == null || itemHeight > 0,
             'itemHeight must be positive'),
         assert(flagSize == null || flagSize > 0, 'flagSize must be positive'),
@@ -361,7 +371,7 @@ class _CountryPickerState extends State<CountryPicker> {
 
   // Advanced customization getters
   TextStyle get textStyle => widget.textStyle ?? const TextStyle(fontSize: 14);
-  double get itemHeight => widget.itemHeight ?? 56.0;
+  double? get itemHeight => widget.itemHeight;
   EdgeInsets get itemPadding => widget.itemPadding ?? _defaultItemPadding;
   double get flagSize => widget.flagSize ?? 20.0;
   bool get showFlags => widget.showFlags;
@@ -644,6 +654,7 @@ class _CountryPickerState extends State<CountryPicker> {
                         return RepaintBoundary(
                           child: Container(
                             margin: _itemMargin,
+                            height: widget.adaptiveHeight ? null : (itemHeight ?? 56.0), // Адаптивная или фиксированная высота
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? accentColor.withValues(alpha: 0.1)
@@ -674,6 +685,7 @@ class _CountryPickerState extends State<CountryPicker> {
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.center, // Центрируем контент
                                           children: [
                                             Text(
                                               countryName,
@@ -685,9 +697,10 @@ class _CountryPickerState extends State<CountryPicker> {
                                                     ? FontWeight.w600
                                                     : FontWeight.normal,
                                               ),
+                                              overflow: TextOverflow.ellipsis, // Обработка переполнения
                                             ),
-                                            _spacer2,
-                                            if (showCountryCodes)
+                                            if (showCountryCodes) ...[
+                                              _spacer2,
                                               Text(
                                                 widget.showPhoneCodes
                                                     ? '${country.code} (${country.phoneCode})'
@@ -699,7 +712,9 @@ class _CountryPickerState extends State<CountryPicker> {
                                                       : hintTextColor,
                                                   fontSize: 12,
                                                 ),
+                                                overflow: TextOverflow.ellipsis, // Обработка переполнения
                                               ),
+                                            ],
                                           ],
                                         ),
                                       ),

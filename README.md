@@ -106,6 +106,13 @@ CountryPicker.builder()
     .textStyle(const TextStyle(fontSize: 16, fontWeight: FontWeight.w600))
     .showCountryCodes(false)
     .build();
+
+// Adaptive height (content-based sizing)
+CountryPicker.builder()
+    .selectedCountry(selectedCountry)
+    .onCountrySelected((country) => setState(() => selectedCountry = country))
+    .adaptiveHeight(true)
+    .build();
 ```
 
 ### Display Country Name
@@ -174,6 +181,7 @@ Find countries even with typos:
 | `.flagSize(double?)` | Set flag size |
 | `.showFlags(bool)` | Show/hide flags |
 | `.showCountryCodes(bool)` | Show/hide country codes |
+| `.adaptiveHeight(bool)` | Enable/disable adaptive height |
 
 ### 🔧 Traditional API
 
@@ -202,6 +210,7 @@ Find countries even with typos:
 | `flagSize` | `double?` | `20.0` | Flag size |
 | `showFlags` | `bool` | `true` | Show flags |
 | `showCountryCodes` | `bool` | `true` | Show country codes |
+| `adaptiveHeight` | `bool` | `false` | Enable adaptive height |
 
 ### Country Object
 
