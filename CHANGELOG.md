@@ -1,23 +1,29 @@
 # Changelog
 
-## [2.6.5] - 2025-01-29
+## [2.6.6] - 2025-01-29
 
-### Fixed
-- **API Documentation**: Fixed incorrect documentation showing non-existent `name` property in Country class
-- **Convenience Method**: Added `getDisplayName(BuildContext context)` method to Country class for easier access to localized names
-- **README Updates**: Updated documentation with correct API usage examples
-- **Import Fixes**: Added missing imports for BuildContext and CountryLocalizations
+### Added
+- **Advanced Customization**: Added comprehensive customization options for better UI control
+- **Text Style Customization**: Added `textStyle` parameter for customizing country name text
+- **Item Height Control**: Added `itemHeight` parameter for controlling list item height
+- **Item Padding Control**: Added `itemPadding` parameter for customizing item spacing
+- **Flag Size Control**: Added `flagSize` parameter for adjusting flag emoji size
+- **Visibility Controls**: Added `showFlags` and `showCountryCodes` parameters
+- **Input Validation**: Added comprehensive parameter validation with helpful error messages
 
-### Documentation
-- **Corrected API Reference**: Removed non-existent `name` property from documentation
-- **Added Usage Examples**: Added examples showing both ways to get country names
-- **Improved Clarity**: Added note explaining how to get localized country names
-- **Better Examples**: Updated all code examples to use correct API
+### Enhanced
+- **Better UX**: More flexible customization options for different app designs
+- **Improved Performance**: Optimized rendering with customizable item heights
+- **Developer Experience**: Better error messages and parameter validation
+- **Documentation**: Updated with comprehensive customization examples
+- **Example App**: Added demonstration of advanced customization features
 
 ### Technical Improvements
-- **API Consistency**: Ensured documentation matches actual implementation
-- **Better Developer Experience**: Added convenience method for easier country name access
+- **Parameter Validation**: Added assert statements for positive values and non-null callbacks
+- **Code Quality**: Improved code structure with better separation of concerns
 - **Static Analysis**: All code passes static analysis without errors
+
+## [2.6.5] - 2025-01-29
 
 ## [2.6.4] - 2025-01-29
 

@@ -124,6 +124,12 @@ The main widget for country selection.
 | `hintTextColor` | `Color?` | Dark theme | Color of placeholder text in search field and secondary text |
 | `hoverColor` | `Color?` | Dark theme | Background color when hovering over country items in the list |
 | `borderRadius` | `double?` | `8.0` | Border radius applied to all rounded elements (buttons, modal, etc.) |
+| `textStyle` | `TextStyle?` | `14px` | Custom text style for country names |
+| `itemHeight` | `double?` | `56.0` | Height of each country item in the list |
+| `itemPadding` | `EdgeInsets?` | `12x8` | Padding for each country item |
+| `flagSize` | `double?` | `20.0` | Size of flag emojis |
+| `showFlags` | `bool` | `true` | Whether to display flag emojis |
+| `showCountryCodes` | `bool` | `true` | Whether to display country codes |
 
 ### Country
 
@@ -169,6 +175,13 @@ CountryPicker(
   hintTextColor: Colors.grey.shade600,
   hoverColor: Colors.grey.shade200,
   borderRadius: 12.0,
+  // Advanced customization
+  textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+  itemHeight: 64.0,
+  itemPadding: EdgeInsets.all(12),
+  flagSize: 24.0,
+  showFlags: true,
+  showCountryCodes: true,
 )
 ```
 

@@ -22,6 +22,14 @@ class CountryPicker extends StatefulWidget {
   final Color? hoverColor;
   final double? borderRadius;
 
+  // Advanced Customization
+  final TextStyle? textStyle;
+  final double? itemHeight;
+  final EdgeInsets? itemPadding;
+  final double? flagSize;
+  final bool showFlags;
+  final bool showCountryCodes;
+
   const CountryPicker({
     super.key,
     this.selectedCountry,
@@ -39,7 +47,17 @@ class CountryPicker extends StatefulWidget {
     this.hintTextColor,
     this.hoverColor,
     this.borderRadius,
-  });
+    this.textStyle,
+    this.itemHeight,
+    this.itemPadding,
+    this.flagSize,
+    this.showFlags = true,
+    this.showCountryCodes = true,
+  })  : assert(itemHeight == null || itemHeight > 0,
+            'itemHeight must be positive'),
+        assert(flagSize == null || flagSize > 0, 'flagSize must be positive'),
+        assert(borderRadius == null || borderRadius >= 0,
+            'borderRadius must be non-negative');
 
   @override
   State<CountryPicker> createState() => _CountryPickerState();
@@ -53,11 +71,10 @@ class _CountryPickerState extends State<CountryPicker> {
   int _updateCounter = 0;
 
   // Constants for performance optimization
-  static const TextStyle _flagTextStyle = TextStyle(fontSize: 20);
-  static const TextStyle _selectedPhoneCodeTextStyle =
+  static const TextStyle _defaultSelectedPhoneCodeTextStyle =
       TextStyle(fontSize: 9, fontWeight: FontWeight.w500, color: Colors.blue);
 
-  static const EdgeInsets _itemPadding =
+  static const EdgeInsets _defaultItemPadding =
       EdgeInsets.symmetric(horizontal: 12, vertical: 8);
   static const EdgeInsets _buttonPadding =
       EdgeInsets.symmetric(horizontal: 12, vertical: 10);
@@ -98,6 +115,14 @@ class _CountryPickerState extends State<CountryPicker> {
   Color get hintTextColor => widget.hintTextColor ?? _defaultHintTextColor;
   Color get hoverColor => widget.hoverColor ?? _defaultHoverColor;
   double get borderRadius => widget.borderRadius ?? _defaultBorderRadius;
+
+  // Advanced customization getters
+  TextStyle get textStyle => widget.textStyle ?? const TextStyle(fontSize: 14);
+  double get itemHeight => widget.itemHeight ?? 56.0;
+  EdgeInsets get itemPadding => widget.itemPadding ?? _defaultItemPadding;
+  double get flagSize => widget.flagSize ?? 20.0;
+  bool get showFlags => widget.showFlags;
+  bool get showCountryCodes => widget.showCountryCodes;
 
   @override
   void initState() {
@@ -393,13 +418,14 @@ class _CountryPickerState extends State<CountryPicker> {
                                   Navigator.of(context).pop();
                                 },
                                 child: Padding(
-                                  padding: _itemPadding,
+                                  padding: itemPadding,
                                   child: Row(
                                     children: [
-                                      Text(
-                                        country.flag,
-                                        style: _flagTextStyle,
-                                      ),
+                                      if (showFlags)
+                                        Text(
+                                          country.flag,
+                                          style: TextStyle(fontSize: flagSize),
+                                        ),
                                       _spacer12,
                                       Expanded(
                                         child: Column(
@@ -408,29 +434,29 @@ class _CountryPickerState extends State<CountryPicker> {
                                           children: [
                                             Text(
                                               countryName,
-                                              style: TextStyle(
+                                              style: textStyle.copyWith(
                                                 color: isSelected
                                                     ? accentColor
                                                     : textColor,
                                                 fontWeight: isSelected
                                                     ? FontWeight.w600
                                                     : FontWeight.normal,
-                                                fontSize: 14,
                                               ),
                                             ),
                                             _spacer2,
-                                            Text(
-                                              widget.showPhoneCodes
-                                                  ? '${country.code} (${country.phoneCode})'
-                                                  : country.code,
-                                              style: TextStyle(
-                                                color: isSelected
-                                                    ? accentColor.withValues(
-                                                        alpha: 0.7)
-                                                    : hintTextColor,
-                                                fontSize: 12,
+                                            if (showCountryCodes)
+                                              Text(
+                                                widget.showPhoneCodes
+                                                    ? '${country.code} (${country.phoneCode})'
+                                                    : country.code,
+                                                style: textStyle.copyWith(
+                                                  color: isSelected
+                                                      ? accentColor.withValues(
+                                                          alpha: 0.7)
+                                                      : hintTextColor,
+                                                  fontSize: 12,
+                                                ),
                                               ),
-                                            ),
                                           ],
                                         ),
                                       ),
@@ -509,7 +535,7 @@ class _CountryPickerState extends State<CountryPicker> {
                         if (widget.showPhoneCodes)
                           Text(
                             widget.selectedCountry!.phoneCode,
-                            style: _selectedPhoneCodeTextStyle,
+                            style: _defaultSelectedPhoneCodeTextStyle,
                           ),
                       ],
                     ),

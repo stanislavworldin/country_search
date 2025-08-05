@@ -341,6 +341,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 );
               },
+              // Purple theme colors
               backgroundColor: Colors.purple.shade50,
               headerColor: Colors.purple.shade100,
               textColor: Colors.purple.shade900,
@@ -349,8 +350,68 @@ class _MyHomePageState extends State<MyHomePage> {
               searchFieldBorderColor: Colors.purple.shade200,
               cursorColor: Colors.purple,
               hintTextColor: Colors.purple.shade600,
-              hoverColor: Colors.purple.shade200, // Purple theme hover color
-              borderRadius: 16.0, // Larger border radius for purple theme
+              hoverColor: Colors.purple.shade200,
+              borderRadius: 16.0,
+              // Advanced customization demo
+              textStyle: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.purple,
+              ),
+              itemHeight: 72.0, // Larger items for better touch targets
+              itemPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              flagSize: 28.0, // Bigger flags
+              showFlags: true,
+              showCountryCodes: true,
+            ),
+            const SizedBox(height: 16),
+
+            // Minimal theme picker
+            const Text(
+              'Minimal Theme:',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            CountryPicker(
+              selectedCountry: selectedCountry,
+              onCountrySelected: (Country country) {
+                setState(() {
+                  selectedCountry = country;
+                });
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                        'Selected: ${country.flag} ${country.code} (${country.phoneCode})'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              },
+              // Minimal theme
+              backgroundColor: Colors.grey.shade50,
+              headerColor: Colors.grey.shade100,
+              textColor: Colors.grey.shade800,
+              accentColor: Colors.grey.shade600,
+              searchFieldColor: Colors.white,
+              searchFieldBorderColor: Colors.grey.shade300,
+              cursorColor: Colors.grey.shade600,
+              hintTextColor: Colors.grey.shade500,
+              hoverColor: Colors.grey.shade100,
+              borderRadius: 4.0,
+              // Minimal customization
+              textStyle: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.normal,
+              ),
+              itemHeight: 44.0, // Compact items
+              itemPadding:
+                  const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+              flagSize: 16.0, // Smaller flags
+              showFlags: true,
+              showCountryCodes: false, // Hide country codes for minimal look
             ),
             const SizedBox(height: 32),
 
@@ -433,14 +494,18 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   SizedBox(height: 8),
-                  Text('• 245+ countries with flags'),
+                  Text('• 252+ countries with flags'),
                   Text('• Phone codes included'),
                   Text('• Multi-language support (19 languages)'),
                   Text('• Smart search functionality'),
                   Text('• Beautiful dark theme'),
                   Text('• Light theme support'),
-                  Text('• Custom color themes'),
-                  Text('• Customizable labels'),
+                  Text('• Advanced customization options'),
+                  Text('• Customizable text styles'),
+                  Text('• Adjustable item heights'),
+                  Text('• Flexible padding control'),
+                  Text('• Customizable flag sizes'),
+                  Text('• Show/hide elements'),
                   Text('• Responsive design'),
                 ],
               ),
