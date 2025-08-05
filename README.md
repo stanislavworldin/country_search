@@ -33,7 +33,7 @@
 
 ## 📊 Comparison with Competitors
 
-| Feature | country_search 2.7.0 | country_code_picker | country_picker |
+| Feature | country_search 2.7.1 | country_code_picker | country_picker |
 |---------|---------------------|-------------------|----------------------|
 | **Builder API** | ✅ Available | ❌ Not available | ❌ Not available |
 | **Pre-built Themes** | ✅ Available | ❌ Not available | ❌ Not available |
@@ -53,7 +53,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  country_search: ^2.7.0
+  country_search: ^2.7.1
 ```
 
 ```dart
