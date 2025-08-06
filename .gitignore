@@ -51,4 +51,8 @@ test/performance_test.dart
 test/speed_comparison_test.dart
 
 # Exceptions to above rules.
-!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages 
+!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+# Deployment scripts
+deploy.sh
+DEPLOYMENT.md 
