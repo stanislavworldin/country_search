@@ -76719,7 +76719,7 @@ A.YD().$1("Language changed to: "+a.gcv())},
 a95(){this.aA(new A.ajM(this))
 A.YD().$1("Theme changed to: "+(this.e?"dark":"light"))},
 U(a){var s=this,r=null,q=s.e?A.oz(B.af,r,r):A.oz(B.a9,r,r),p=s.d
-return new A.wJ(new A.x6(s.gZd(),s.ga94(),p,s.e,r),"Country Picker Demo",q,p,B.VC,B.TN,r)}}
+return new A.wJ(new A.x6(s.gZd(),s.ga94(),p,s.e,r),"Country Picker Demo v2.8.1",q,p,B.VC,B.TN,r)}}
 A.ajL.prototype={
 $0(){this.a.d=this.b},
 $S:0}
@@ -76751,7 +76751,7 @@ case"uk":return"\ud83c\uddfa\ud83c\udde6 \u0423\u043a\u0440\u0430\u0457\u043d\u0
 case"vi":return"\ud83c\uddfb\ud83c\uddf3 Ti\u1ebfng Vi\u1ec7t"
 case"zh":return"\ud83c\udde8\ud83c\uddf3 \u4e2d\u6587"
 default:return s}},
-U(a){var s,r,q,p,o,n,m,l,k,j=this,i=null,h=A.c2("Country Picker Demo v2.7.4",i,i,i,i,i,i),g=j.a,f=t.E
+U(a){var s,r,q,p,o,n,m,l,k,j=this,i=null,h=A.c2("Country Picker Demo v2.8.1",i,i,i,i,i,i),g=j.a,f=t.E
 g=A.a([A.a3R(i,i,i,A.nm(g.f?B.P9:B.P7,i,i,i),i,i,g.d,i,i,i,i),new A.qA(new A.ajW(),g.c,new A.cq(B.h8,A.lv(A.a([B.Pg,B.Fu,A.c2(j.Jy(g.e.gcv()),i,i,i,i,i,i)],f),B.aL,B.aq,B.d9),i),i,t.Bf)],f)
 s=B.bk.kJ(0.2)
 r=A.eW(20)

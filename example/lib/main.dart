@@ -37,7 +37,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Country Picker Demo',
+      title: 'Country Picker Demo v$PACKAGE_VERSION',
       theme: _isDarkTheme ? ThemeData.dark() : ThemeData.light(),
       locale: _currentLocale,
       localizationsDelegates: const [
