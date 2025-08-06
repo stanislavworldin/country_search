@@ -3,7 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:country_search/country_search.dart';
 import 'package:country_search/country_search.dart' as country_search_package;
 
-const String PACKAGE_VERSION = '2.7.3';
+const String PACKAGE_VERSION = '2.7.4';
 
 void main() {
   runApp(const MyApp());
@@ -605,6 +605,43 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
               const SizedBox(height: 24),
 
+              // Example with disabled suggested countries
+              const Text(
+                'Without Suggested Countries:',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              CountryPicker(
+                selectedCountry: selectedCountry,
+                onCountrySelected: (Country country) {
+                  setState(() {
+                    selectedCountry = country;
+                  });
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                          'Selected: ${country.flag} ${country.code} (${country.phoneCode})'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                },
+                backgroundColor: Colors.orange.shade50,
+                headerColor: Colors.orange.shade100,
+                textColor: Colors.orange.shade900,
+                accentColor: Colors.orange,
+                searchFieldColor: Colors.orange.shade50,
+                searchFieldBorderColor: Colors.orange.shade200,
+                cursorColor: Colors.orange,
+                hintTextColor: Colors.orange.shade600,
+                hoverColor: Colors.orange.shade200,
+                borderRadius: 12.0,
+                showSuggestedCountries: false, // Disable suggested countries
+              ),
+              const SizedBox(height: 24),
+
               // Features section
               Container(
                 padding: const EdgeInsets.all(16),
@@ -628,6 +665,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Text('• Phone codes included'),
                     Text('• Multi-language support (19 languages)'),
                     Text('• Smart search functionality'),
+                    Text('• Suggested countries based on app locale'),
                     Text('• Builder API for easy customization'),
                     Text('• Pre-built themes (Dark, Light, Purple, Minimal)'),
                     Text('• Beautiful dark theme'),

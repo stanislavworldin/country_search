@@ -120,6 +120,9 @@ abstract class CountryLocalizations {
 
   /// Get the localized text for "Select your country"
   String get selectYourCountry;
+
+  /// Get the localized text for "All countries"
+  String get allCountries;
 }
 
 class _CountryLocalizationsDelegate

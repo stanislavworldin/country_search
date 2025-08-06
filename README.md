@@ -18,12 +18,21 @@
 - 🌐 **19 Languages** - Automatic localization with fallback
 - 🧩 **Zero Config** - Works out of the box, just 1 line of code
 - 📱 **Responsive** - Perfect on mobile, tablet & desktop
+- 🎯 **Smart Suggestions** - Shows relevant countries based on app locale
 
 ### ⚡ Smart Search
 - **Fuzzy search** - find countries even with typos
 - **Multi-field search** - by name, code, or phone
 - **Instant results** - 110μs per query
 - **Real-time filtering** - as you type
+
+### 🎯 Smart Suggestions
+- **Locale-based suggestions** - Shows countries that speak your app's language
+- **Population-based sorting** - Larger countries appear first in suggestions
+- **French app** → Shows French-speaking countries first (France, Canada, Belgium, etc.)
+- **Spanish app** → Shows Spanish-speaking countries first (Spain, Mexico, Argentina, etc.)
+- **German app** → Shows German-speaking countries first (Germany, Austria, Switzerland, etc.)
+- **Fallback to English** - For unsupported languages, shows English-speaking countries
 
 ### 🌓 Theme Support
 - **Dark theme** - Beautiful default dark design
@@ -33,13 +42,14 @@
 
 ## 📊 Comparison with Competitors
 
-| Feature | country_search 2.7.1 | country_code_picker | country_picker |
+| Feature | country_search 2.8.0 | country_code_picker | country_picker |
 |---------|---------------------|-------------------|----------------------|
 | **Builder API** | ✅ Available | ❌ Not available | ❌ Not available |
 | **Pre-built Themes** | ✅ Available | ❌ Not available | ❌ Not available |
 | **Fuzzy Search** | ✅ Available | ❌ Not available | ❌ Not available |
 | **252 Countries** | ✅ Available | ❌ Not available | ❌ Not available |
 | **Customizable UI** | ✅ Advanced | ⚠️ Limited | ⚠️ Limited |
+| **Smart Suggestions** | ✅ Available | ❌ Not available | ❌ Not available |
 | **Performance** | ⚡ 110μs search | 🐌 Slower | 🐌 Slower |
 | **Package Size** | 📦 ~113KB | 📦 Larger | 📦 Larger |
 
@@ -53,7 +63,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  country_search: ^2.7.1
+  country_search: ^2.8.0
 ```
 
 ```dart
@@ -69,7 +79,7 @@ CountryPicker(
 )
 ```
 
-**That's it!** Your country picker is ready to use. 🎉
+**That's it!** Your country picker is ready to use with smart suggestions based on your app's locale. 🎉
 
 
 
@@ -100,6 +110,7 @@ CountryPicker.builder()
 CountryPicker.builder()
     .selectedCountry(selectedCountry)
     .onCountrySelected((country) => setState(() => selectedCountry = country))
+    .showSuggestedCountries(true) // Enable smart suggestions (default)
     .lightTheme()
     .itemHeight(72.0)
     .flagSize(28.0)
@@ -182,6 +193,7 @@ Find countries even with typos:
 | `.showFlags(bool)` | Show/hide flags |
 | `.showCountryCodes(bool)` | Show/hide country codes |
 | `.adaptiveHeight(bool)` | Enable/disable adaptive height |
+| `.showSuggestedCountries(bool)` | Enable/disable smart suggestions |
 
 ### 🔧 Traditional API
 
@@ -211,6 +223,7 @@ Find countries even with typos:
 | `showFlags` | `bool` | `true` | Show flags |
 | `showCountryCodes` | `bool` | `true` | Show country codes |
 | `adaptiveHeight` | `bool` | `false` | Enable adaptive height |
+| `showSuggestedCountries` | `bool` | `true` | Enable smart suggestions |
 
 ### Country Object
 

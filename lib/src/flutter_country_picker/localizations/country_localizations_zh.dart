@@ -21,6 +21,9 @@ class CountryLocalizationsZh extends CountryLocalizations {
   @override
   String get selectYourCountry => '选择您的国家';
 
+  @override
+  String get allCountries => '所有国家';
+
   static const Map<String, String> _countryNames = {
     "RU": "俄罗斯",
     "US": "美国",

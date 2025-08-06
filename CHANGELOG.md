@@ -1,5 +1,50 @@
 # Changelog
 
+## [2.8.0] - 2025-01-29
+
+### Added
+- **Locale-Based Country Recommendations**: New smart suggestions system that shows countries based on app's language
+- **Population-Based Sorting**: Suggested countries are sorted by population (largest countries first)
+- **Multi-Language Support**: Supports 18 languages with appropriate country suggestions
+- **Smart Suggestions Display Logic**: Enhanced suggestions behavior with intelligent display rules
+- **Alphabetical Sorting**: Countries in general list now sorted alphabetically for better navigation
+- **Improved Search Experience**: Search results now sorted alphabetically for consistent ordering
+- **Enhanced Debug Information**: Added comprehensive DEBUG logging for better development experience
+
+### Changed
+- **Empty Search Behavior**: When search is empty, shows suggestions + all countries (with possible duplicates)
+- **Search Results Behavior**: When searching, shows only search results without suggestions
+- **Country List Organization**: General country list now alphabetically sorted for easier browsing
+- **Search Results Sorting**: All search results now displayed in alphabetical order
+
+### Technical Improvements
+- **Dual Sorting Logic**: Separate sorting for suggestions (by population) and general list (alphabetically)
+- **Localized Sorting**: Uses localized country names for proper alphabetical sorting
+- **Performance Optimization**: Efficient sorting algorithms for both suggestions and search results
+- **Code Quality**: Improved method organization and better separation of concerns
+
+### Language Support Examples
+```dart
+// French app → Shows French-speaking countries first (France, Canada, Belgium, etc.)
+// Spanish app → Shows Spanish-speaking countries first (Spain, Mexico, Argentina, etc.)
+// German app → Shows German-speaking countries first (Germany, Austria, Switzerland, etc.)
+// Russian app → Shows Russian-speaking countries first (Russia, Ukraine, Kazakhstan, etc.)
+// Chinese app → Shows Chinese-speaking countries first (China, Taiwan, Hong Kong, etc.)
+// Fallback to English for unsupported languages
+```
+
+### Usage Examples
+```dart
+// Smart suggestions with alphabetical sorting
+CountryPicker.builder()
+    .showSuggestedCountries(true) // Default behavior
+    .build()
+
+// Search behavior:
+// - Empty search: Suggestions + all countries (alphabetically sorted)
+// - With search: Only search results (alphabetically sorted)
+```
+
 ## [2.7.3] - 2025-01-29
 
 ### Fixed

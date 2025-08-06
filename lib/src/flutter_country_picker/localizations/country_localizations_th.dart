@@ -21,6 +21,9 @@ class CountryLocalizationsTh extends CountryLocalizations {
   @override
   String get selectYourCountry => 'เลือกประเทศของคุณ';
 
+  @override
+  String get allCountries => 'ทุกประเทศ';
+
   static const Map<String, String> _countryNames = {
     "RU": "รัสเซีย",
     "US": "สหรัฐอเมริกา",
