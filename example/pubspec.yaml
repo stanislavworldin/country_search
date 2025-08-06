@@ -1,6 +1,6 @@
 name: flutter_country_picker_example
 description: Example app for flutter_country_picker package
-version: 1.0.0
+version: 2.8.1
 publish_to: none
 
 environment:
