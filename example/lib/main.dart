@@ -3,7 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:country_search/country_search.dart';
 import 'package:country_search/country_search.dart' as country_search_package;
 
-const String PACKAGE_VERSION = '2.7.4';
+const String PACKAGE_VERSION = '2.8.1';
 
 void main() {
   runApp(const MyApp());
