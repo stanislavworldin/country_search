@@ -516,6 +516,11 @@ class _CountryPickerState extends State<CountryPicker> {
     final containsMatches = <Country>[];
     final fuzzyMatches = <Country>[];
 
+    // Normalize query for phone code search
+    final normalizedQuery = query.toLowerCase().trim();
+    final queryForPhoneCode =
+        normalizedQuery.startsWith('+') ? normalizedQuery : '+$normalizedQuery';
+
     // Use base countries list for search (without suggestions organization)
     for (final country in _baseCountries) {
       final countryName =
@@ -525,37 +530,44 @@ class _CountryPickerState extends State<CountryPicker> {
 
       bool found = false;
 
-      // 1. Exact matches
-      if (countryName == query ||
-          countryCode == query ||
-          countryPhoneCode == query) {
+      // 1. Exact matches (including phone code with and without +)
+      if (countryName == normalizedQuery ||
+          countryCode == normalizedQuery ||
+          countryPhoneCode == normalizedQuery ||
+          countryPhoneCode == queryForPhoneCode ||
+          (normalizedQuery.startsWith('+') &&
+              countryPhoneCode == normalizedQuery) ||
+          (!normalizedQuery.startsWith('+') &&
+              countryPhoneCode == '+$normalizedQuery')) {
         exactMatches.add(country);
         found = true;
       }
 
       // 2. Starts with query
       if (!found &&
-          (countryName.startsWith(query) ||
-              countryCode.startsWith(query) ||
-              countryPhoneCode.startsWith(query))) {
+          (countryName.startsWith(normalizedQuery) ||
+              countryCode.startsWith(normalizedQuery) ||
+              countryPhoneCode.startsWith(normalizedQuery) ||
+              countryPhoneCode.startsWith(queryForPhoneCode))) {
         startsWithMatches.add(country);
         found = true;
       }
 
       // 3. Contains query
       if (!found &&
-          (countryName.contains(query) ||
-              countryCode.contains(query) ||
-              countryPhoneCode.contains(query))) {
+          (countryName.contains(normalizedQuery) ||
+              countryCode.contains(normalizedQuery) ||
+              countryPhoneCode.contains(normalizedQuery) ||
+              countryPhoneCode.contains(queryForPhoneCode))) {
         containsMatches.add(country);
         found = true;
       }
 
       // 4. Fuzzy search for typos and misspellings
       if (!found &&
-          (_isFuzzyMatch(query, countryName) ||
-              _isFuzzyMatch(query, countryCode) ||
-              _isFuzzyMatch(query, countryPhoneCode))) {
+          (_isFuzzyMatch(normalizedQuery, countryName) ||
+              _isFuzzyMatch(normalizedQuery, countryCode) ||
+              _isFuzzyMatch(normalizedQuery, countryPhoneCode))) {
         fuzzyMatches.add(country);
       }
     }
@@ -565,8 +577,26 @@ class _CountryPickerState extends State<CountryPicker> {
     results.addAll(containsMatches);
     results.addAll(fuzzyMatches);
 
-    // Sort search results alphabetically by country name
+    // Sort search results by priority: exact matches first, then alphabetically within each group
     results.sort((a, b) {
+      // Get priority for each country
+      int getPriority(Country country) {
+        if (exactMatches.contains(country)) return 0;
+        if (startsWithMatches.contains(country)) return 1;
+        if (containsMatches.contains(country)) return 2;
+        if (fuzzyMatches.contains(country)) return 3;
+        return 4;
+      }
+
+      final priorityA = getPriority(a);
+      final priorityB = getPriority(b);
+
+      // First sort by priority
+      if (priorityA != priorityB) {
+        return priorityA.compareTo(priorityB);
+      }
+
+      // Then sort alphabetically within the same priority group
       final nameA = countryLocalizations.getCountryName(a.code).toLowerCase();
       final nameB = countryLocalizations.getCountryName(b.code).toLowerCase();
       return nameA.compareTo(nameB);
@@ -574,11 +604,6 @@ class _CountryPickerState extends State<CountryPicker> {
 
     // For search results, show all results without suggestions organization
     _filteredCountries = results;
-    if (kDebugMode) {
-      debugPrint('DEBUG: Search "$query" - found ${results.length} countries');
-      debugPrint(
-          'DEBUG: Exact: ${exactMatches.length}, StartsWith: ${startsWithMatches.length}, Contains: ${containsMatches.length}, Fuzzy: ${fuzzyMatches.length}');
-    }
   }
 
   /// Organize countries with suggested countries at the top

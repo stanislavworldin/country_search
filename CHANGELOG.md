@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.8.1] - 2025-01-29
+
+### Fixed
+- **Phone Code Search**: Fixed search by phone codes not working properly
+- **Exact Match Priority**: Fixed exact matches not appearing first in search results
+- **Query Normalization**: Improved handling of phone codes with and without '+' prefix
+- **Search Result Sorting**: Added priority-based sorting (exact matches first, then alphabetical)
+
+### Technical Improvements
+- **Enhanced Search Logic**: Added support for searching both `+380` and `380` formats
+- **Better Query Processing**: Normalized queries to handle phone codes consistently
+- **Priority Sorting**: Exact matches now appear first, followed by starts-with, contains, and fuzzy matches
+- **Improved User Experience**: More intuitive search results with relevant countries at the top
+
+### Search Improvements
+- `+380` and `380` now both find Ukraine correctly
+- `+1` and `1` now show USA, Canada, and islands first in results
+- Exact phone code matches are prioritized over partial matches
+- Search results are sorted by relevance, then alphabetically
+
 ## [2.8.0] - 2025-01-29
 
 ### Added
