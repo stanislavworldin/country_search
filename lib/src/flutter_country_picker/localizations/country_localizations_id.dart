@@ -21,6 +21,9 @@ class CountryLocalizationsId extends CountryLocalizations {
   @override
   String get selectYourCountry => 'Pilih negara Anda';
 
+  @override
+  String get allCountries => 'Semua negara';
+
   static const Map<String, String> _countryNames = {
     "RU": "Rusia",
     "US": "Amerika Serikat",

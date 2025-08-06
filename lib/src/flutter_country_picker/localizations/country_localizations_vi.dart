@@ -21,6 +21,9 @@ class CountryLocalizationsVi extends CountryLocalizations {
   @override
   String get selectYourCountry => 'Chọn quốc gia của bạn';
 
+  @override
+  String get allCountries => 'Tất cả các quốc gia';
+
   static const Map<String, String> _countryNames = {
     "RU": "Nga",
     "US": "Hoa Kỳ",

@@ -1,5 +1,197 @@
 # Changelog
 
+## [2.8.0] - 2025-01-29
+
+### Added
+- **Locale-Based Country Recommendations**: New smart suggestions system that shows countries based on app's language
+- **Population-Based Sorting**: Suggested countries are sorted by population (largest countries first)
+- **Multi-Language Support**: Supports 18 languages with appropriate country suggestions
+- **Smart Suggestions Display Logic**: Enhanced suggestions behavior with intelligent display rules
+- **Alphabetical Sorting**: Countries in general list now sorted alphabetically for better navigation
+- **Improved Search Experience**: Search results now sorted alphabetically for consistent ordering
+- **Enhanced Debug Information**: Added comprehensive DEBUG logging for better development experience
+
+### Changed
+- **Empty Search Behavior**: When search is empty, shows suggestions + all countries (with possible duplicates)
+- **Search Results Behavior**: When searching, shows only search results without suggestions
+- **Country List Organization**: General country list now alphabetically sorted for easier browsing
+- **Search Results Sorting**: All search results now displayed in alphabetical order
+
+### Technical Improvements
+- **Dual Sorting Logic**: Separate sorting for suggestions (by population) and general list (alphabetically)
+- **Localized Sorting**: Uses localized country names for proper alphabetical sorting
+- **Performance Optimization**: Efficient sorting algorithms for both suggestions and search results
+- **Code Quality**: Improved method organization and better separation of concerns
+
+### Language Support Examples
+```dart
+// French app → Shows French-speaking countries first (France, Canada, Belgium, etc.)
+// Spanish app → Shows Spanish-speaking countries first (Spain, Mexico, Argentina, etc.)
+// German app → Shows German-speaking countries first (Germany, Austria, Switzerland, etc.)
+// Russian app → Shows Russian-speaking countries first (Russia, Ukraine, Kazakhstan, etc.)
+// Chinese app → Shows Chinese-speaking countries first (China, Taiwan, Hong Kong, etc.)
+// Fallback to English for unsupported languages
+```
+
+### Usage Examples
+```dart
+// Smart suggestions with alphabetical sorting
+CountryPicker.builder()
+    .showSuggestedCountries(true) // Default behavior
+    .build()
+
+// Search behavior:
+// - Empty search: Suggestions + all countries (alphabetically sorted)
+// - With search: Only search results (alphabetically sorted)
+```
+
+## [2.7.3] - 2025-01-29
+
+### Fixed
+- **Column Layout Issues**: Fixed `Column` without `mainAxisSize: MainAxisSize.min` causing overflow
+- **Main Widget Overflow**: Fixed overflow in main widget with 35px height being too small for 3 text elements
+- **Layout Architecture**: Resolved architectural layout problems in the library
+- **Text Overflow Handling**: Improved text overflow handling with proper `TextOverflow.ellipsis`
+
+### Added
+- **Minimum Height Constraint**: Added `BoxConstraints(minHeight: 48)` to prevent overflow
+- **Better Content Alignment**: Improved content centering with `MainAxisAlignment.center`
+- **Enhanced Text Handling**: Added overflow handling for all text elements
+
+### Technical Improvements
+- **Layout Stability**: Fixed Column layout issues that caused overflow errors
+- **Content Sizing**: Proper minimum height constraints for better content display
+- **Code Quality**: All comments translated to English for international compatibility
+- **Documentation**: Updated with layout improvements and fixes
+
+### Usage Examples
+```dart
+// Fixed layout issues - now properly handles content
+CountryPicker(
+  itemHeight: 72.0,
+  adaptiveHeight: true,
+)
+
+// Builder API with improved layout
+CountryPicker.builder()
+    .adaptiveHeight(true)
+    .itemHeight(72.0)
+    .build()
+```
+
+## [2.7.2] - 2025-01-29
+
+### Fixed
+- **Adaptive Height Support**: Fixed issue where `itemHeight` parameter was ignored in rendering
+- **Layout Improvements**: Added proper height control and adaptive layout options
+- **Text Overflow Handling**: Added `TextOverflow.ellipsis` for better text display
+- **Content Centering**: Improved content alignment with `MainAxisAlignment.center`
+
+### Added
+- **Adaptive Height Parameter**: New `adaptiveHeight` parameter for content-based sizing
+- **Builder API Enhancement**: Added `.adaptiveHeight()` method to Builder API
+- **Flexible Layout**: Option to use fixed height or adaptive height based on content
+- **Better UX**: Improved user experience with proper content sizing
+
+### Technical Improvements
+- **Architecture Fix**: `itemHeight` parameter now properly used in rendering
+- **Layout Optimization**: Better handling of different content sizes
+- **Code Quality**: Improved layout structure and content alignment
+- **Documentation**: Updated README with adaptive height examples
+
+### Usage Examples
+```dart
+// Fixed height (default)
+CountryPicker(itemHeight: 72.0)
+
+// Adaptive height (new feature)
+CountryPicker(adaptiveHeight: true)
+
+// Builder API
+CountryPicker.builder()
+    .adaptiveHeight(true)
+    .build()
+```
+
+## [2.7.1] - 2025-01-29
+
+### Fixed
+- **Rendering Issues**: Fixed overflow errors in example app layout
+- **Dependency Conflicts**: Resolved version conflicts between main package and example
+- **Code Formatting**: Applied proper Dart formatting standards
+
+### Technical Improvements
+- **Error Resolution**: Fixed Expanded widget usage in SingleChildScrollView
+- **Layout Stability**: Replaced Spacer with SizedBox for better layout control
+- **Code Quality**: All static analysis issues resolved
+
+## [2.7.0] - 2025-01-29
+
+### Added
+- **Builder API**: Fluent interface for easy CountryPicker customization
+- **Pre-built Themes**: `darkTheme()`, `lightTheme()`, `purpleTheme()`, `minimalTheme()`
+- **Comprehensive Builder Methods**: All customization options available through Builder API
+- **Enhanced Documentation**: Complete Builder API documentation with examples
+- **Example App Updates**: Added Builder API demonstrations in example app
+
+### Changed
+- **Recommended Approach**: Builder API now recommended over traditional constructor
+- **Improved Developer Experience**: More intuitive and readable API
+- **Better Code Organization**: Fluent interface for cleaner code
+
+### Technical Improvements
+- **Fluent Interface**: Method chaining for better readability
+- **Theme Presets**: Ready-to-use theme configurations
+- **Error Handling**: Proper validation in Builder API
+- **Code Quality**: Maintained high code quality standards
+
+## [2.6.6] - 2025-01-29
+
+### Added
+- **Advanced Customization**: Added comprehensive customization options for better UI control
+- **Text Style Customization**: Added `textStyle` parameter for customizing country name text
+- **Item Height Control**: Added `itemHeight` parameter for controlling list item height
+- **Item Padding Control**: Added `itemPadding` parameter for customizing item spacing
+- **Flag Size Control**: Added `flagSize` parameter for adjusting flag emoji size
+- **Visibility Controls**: Added `showFlags` and `showCountryCodes` parameters
+- **Input Validation**: Added comprehensive parameter validation with helpful error messages
+
+### Enhanced
+- **Better UX**: More flexible customization options for different app designs
+- **Improved Performance**: Optimized rendering with customizable item heights
+- **Developer Experience**: Better error messages and parameter validation
+- **Documentation**: Updated with comprehensive customization examples
+- **Example App**: Added demonstration of advanced customization features
+
+### Technical Improvements
+- **Parameter Validation**: Added assert statements for positive values and non-null callbacks
+- **Code Quality**: Improved code structure with better separation of concerns
+- **Static Analysis**: All code passes static analysis without errors
+
+## [2.6.5] - 2025-01-29
+
+## [2.6.4] - 2025-01-29
+
+### Fixed
+- **Code Formatting**: Fixed Dart formatter issues for static analysis compliance
+- **Static Analysis**: Resolved all formatting and linting warnings
+
+### Technical Improvements
+- **Code Quality**: Ensured all code follows Dart formatting standards
+- **Analysis Compliance**: Passed all static analysis checks
+
+## [2.6.3] - 2025-01-29
+
+### Fixed
+- **Emoji Flag Display**: Fixed emoji flag rendering issues in web builds
+- **Web Compatibility**: Improved compatibility with different Flutter web versions
+- **Build Stability**: Enhanced build process for better reliability
+
+### Technical Improvements
+- **Code Optimization**: Minor code improvements for better performance
+- **Documentation Updates**: Updated documentation with latest information
+- **Build Process**: Streamlined build process for web deployment
+
 ## [2.6.2] - 2025-01-29
 
 ### Added

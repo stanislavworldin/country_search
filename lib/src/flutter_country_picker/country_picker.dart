@@ -1,7 +1,262 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'country_data.dart';
+import 'country_language_mapping.dart';
 import 'localizations/country_localizations.dart';
+
+/// Builder API for creating CountryPicker with a fluent interface
+class CountryPickerBuilder {
+  Country? _selectedCountry;
+  Function(Country)? _onCountrySelected;
+  String? _labelText;
+  String? _hintText;
+  bool _showPhoneCodes = true;
+
+  // UI Customization
+  Color? _backgroundColor;
+  Color? _headerColor;
+  Color? _textColor;
+  Color? _accentColor;
+  Color? _searchFieldColor;
+  Color? _searchFieldBorderColor;
+  Color? _cursorColor;
+  Color? _hintTextColor;
+  Color? _hoverColor;
+  double? _borderRadius;
+
+  // Advanced Customization
+  TextStyle? _textStyle;
+  double? _itemHeight;
+  EdgeInsets? _itemPadding;
+  double? _flagSize;
+  bool _showFlags = true;
+  bool _showCountryCodes = true;
+  bool _adaptiveHeight = false;
+  bool _showSuggestedCountries = true;
+
+  /// Set the selected country
+  CountryPickerBuilder selectedCountry(Country? country) {
+    _selectedCountry = country;
+    return this;
+  }
+
+  /// Set the callback for country selection
+  CountryPickerBuilder onCountrySelected(Function(Country) callback) {
+    _onCountrySelected = callback;
+    return this;
+  }
+
+  /// Set the label text
+  CountryPickerBuilder labelText(String? text) {
+    _labelText = text;
+    return this;
+  }
+
+  /// Set the hint text
+  CountryPickerBuilder hintText(String? text) {
+    _hintText = text;
+    return this;
+  }
+
+  /// Set whether to show phone codes
+  CountryPickerBuilder showPhoneCodes(bool show) {
+    _showPhoneCodes = show;
+    return this;
+  }
+
+  /// Set the background color
+  CountryPickerBuilder backgroundColor(Color? color) {
+    _backgroundColor = color;
+    return this;
+  }
+
+  /// Set the header color
+  CountryPickerBuilder headerColor(Color? color) {
+    _headerColor = color;
+    return this;
+  }
+
+  /// Set the text color
+  CountryPickerBuilder textColor(Color? color) {
+    _textColor = color;
+    return this;
+  }
+
+  /// Set the accent color
+  CountryPickerBuilder accentColor(Color? color) {
+    _accentColor = color;
+    return this;
+  }
+
+  /// Set the search field color
+  CountryPickerBuilder searchFieldColor(Color? color) {
+    _searchFieldColor = color;
+    return this;
+  }
+
+  /// Set the search field border color
+  CountryPickerBuilder searchFieldBorderColor(Color? color) {
+    _searchFieldBorderColor = color;
+    return this;
+  }
+
+  /// Set the cursor color
+  CountryPickerBuilder cursorColor(Color? color) {
+    _cursorColor = color;
+    return this;
+  }
+
+  /// Set the hint text color
+  CountryPickerBuilder hintTextColor(Color? color) {
+    _hintTextColor = color;
+    return this;
+  }
+
+  /// Set the hover color
+  CountryPickerBuilder hoverColor(Color? color) {
+    _hoverColor = color;
+    return this;
+  }
+
+  /// Set the border radius
+  CountryPickerBuilder borderRadius(double? radius) {
+    _borderRadius = radius;
+    return this;
+  }
+
+  /// Set the text style
+  CountryPickerBuilder textStyle(TextStyle? style) {
+    _textStyle = style;
+    return this;
+  }
+
+  /// Set the item height
+  CountryPickerBuilder itemHeight(double? height) {
+    _itemHeight = height;
+    return this;
+  }
+
+  /// Set the item padding
+  CountryPickerBuilder itemPadding(EdgeInsets? padding) {
+    _itemPadding = padding;
+    return this;
+  }
+
+  /// Set the flag size
+  CountryPickerBuilder flagSize(double? size) {
+    _flagSize = size;
+    return this;
+  }
+
+  /// Set whether to show flags
+  CountryPickerBuilder showFlags(bool show) {
+    _showFlags = show;
+    return this;
+  }
+
+  /// Set whether to show country codes
+  CountryPickerBuilder showCountryCodes(bool show) {
+    _showCountryCodes = show;
+    return this;
+  }
+
+  /// Set whether to use adaptive height
+  CountryPickerBuilder adaptiveHeight(bool adaptive) {
+    _adaptiveHeight = adaptive;
+    return this;
+  }
+
+  /// Set whether to show suggested countries based on locale
+  CountryPickerBuilder showSuggestedCountries(bool show) {
+    _showSuggestedCountries = show;
+    return this;
+  }
+
+  /// Set a custom theme (dark theme by default)
+  CountryPickerBuilder darkTheme() {
+    _backgroundColor = const Color(0xFF302E2C);
+    _headerColor = const Color(0xFF3C3A38);
+    _textColor = Colors.white;
+    _accentColor = const Color(0xFF699B4B);
+    _searchFieldColor = const Color(0x0D000000);
+    _searchFieldBorderColor = Colors.white24;
+    _cursorColor = Colors.white;
+    _hintTextColor = Colors.white54;
+    _hoverColor = Colors.white10;
+    return this;
+  }
+
+  /// Set a custom theme (light theme)
+  CountryPickerBuilder lightTheme() {
+    _backgroundColor = Colors.white;
+    _headerColor = const Color(0xFFF5F5F5);
+    _textColor = Colors.black87;
+    _accentColor = Colors.blue;
+    _searchFieldColor = const Color(0xFFF0F0F0);
+    _searchFieldBorderColor = Colors.grey.shade300;
+    _cursorColor = Colors.blue;
+    _hintTextColor = Colors.grey.shade600;
+    _hoverColor = Colors.grey.shade100;
+    return this;
+  }
+
+  /// Set a purple theme
+  CountryPickerBuilder purpleTheme() {
+    _backgroundColor = const Color(0xFF2D1B69);
+    _headerColor = const Color(0xFF3C2B7A);
+    _textColor = Colors.white;
+    _accentColor = const Color(0xFF9C27B0);
+    _searchFieldColor = const Color(0x1AFFFFFF);
+    _searchFieldBorderColor = Colors.purple.shade300;
+    _cursorColor = Colors.purple.shade300;
+    _hintTextColor = Colors.purple.shade200;
+    _hoverColor = Colors.purple.shade800;
+    return this;
+  }
+
+  /// Set a minimal theme (compact design)
+  CountryPickerBuilder minimalTheme() {
+    _itemHeight = 40.0;
+    _itemPadding = const EdgeInsets.symmetric(horizontal: 8, vertical: 4);
+    _flagSize = 16.0;
+    _textStyle = const TextStyle(fontSize: 12);
+    _borderRadius = 4.0;
+    return this;
+  }
+
+  /// Build the CountryPicker widget
+  CountryPicker build() {
+    if (_onCountrySelected == null) {
+      throw ArgumentError('onCountrySelected callback is required');
+    }
+
+    return CountryPicker(
+      selectedCountry: _selectedCountry,
+      onCountrySelected: _onCountrySelected!,
+      labelText: _labelText,
+      hintText: _hintText,
+      showPhoneCodes: _showPhoneCodes,
+      backgroundColor: _backgroundColor,
+      headerColor: _headerColor,
+      textColor: _textColor,
+      accentColor: _accentColor,
+      searchFieldColor: _searchFieldColor,
+      searchFieldBorderColor: _searchFieldBorderColor,
+      cursorColor: _cursorColor,
+      hintTextColor: _hintTextColor,
+      hoverColor: _hoverColor,
+      borderRadius: _borderRadius,
+      textStyle: _textStyle,
+      itemHeight: _itemHeight,
+      itemPadding: _itemPadding,
+      flagSize: _flagSize,
+      showFlags: _showFlags,
+      showCountryCodes: _showCountryCodes,
+      adaptiveHeight: _adaptiveHeight,
+      showSuggestedCountries: _showSuggestedCountries,
+    );
+  }
+}
 
 class CountryPicker extends StatefulWidget {
   final Country? selectedCountry;
@@ -22,6 +277,16 @@ class CountryPicker extends StatefulWidget {
   final Color? hoverColor;
   final double? borderRadius;
 
+  // Advanced Customization
+  final TextStyle? textStyle;
+  final double? itemHeight;
+  final EdgeInsets? itemPadding;
+  final double? flagSize;
+  final bool showFlags;
+  final bool showCountryCodes;
+  final bool adaptiveHeight;
+  final bool showSuggestedCountries;
+
   const CountryPicker({
     super.key,
     this.selectedCountry,
@@ -39,7 +304,24 @@ class CountryPicker extends StatefulWidget {
     this.hintTextColor,
     this.hoverColor,
     this.borderRadius,
-  });
+    this.textStyle,
+    this.itemHeight,
+    this.itemPadding,
+    this.flagSize,
+    this.showFlags = true,
+    this.showCountryCodes = true,
+    this.adaptiveHeight = false,
+    this.showSuggestedCountries = true,
+  })  : assert(itemHeight == null || itemHeight > 0,
+            'itemHeight must be positive'),
+        assert(flagSize == null || flagSize > 0, 'flagSize must be positive'),
+        assert(borderRadius == null || borderRadius >= 0,
+            'borderRadius must be non-negative');
+
+  /// Create a builder for fluent API
+  static CountryPickerBuilder builder() {
+    return CountryPickerBuilder();
+  }
 
   @override
   State<CountryPicker> createState() => _CountryPickerState();
@@ -49,15 +331,15 @@ class _CountryPickerState extends State<CountryPicker> {
   final TextEditingController _searchController = TextEditingController();
   List<Country> _allCountries = [];
   List<Country> _filteredCountries = [];
+  List<Country> _baseCountries = []; // Base countries without suggestions
   bool _isSearching = false;
   int _updateCounter = 0;
 
   // Constants for performance optimization
-  static const TextStyle _flagTextStyle = TextStyle(fontSize: 20);
-  static const TextStyle _selectedPhoneCodeTextStyle =
+  static const TextStyle _defaultSelectedPhoneCodeTextStyle =
       TextStyle(fontSize: 9, fontWeight: FontWeight.w500, color: Colors.blue);
 
-  static const EdgeInsets _itemPadding =
+  static const EdgeInsets _defaultItemPadding =
       EdgeInsets.symmetric(horizontal: 12, vertical: 8);
   static const EdgeInsets _buttonPadding =
       EdgeInsets.symmetric(horizontal: 12, vertical: 10);
@@ -99,12 +381,27 @@ class _CountryPickerState extends State<CountryPicker> {
   Color get hoverColor => widget.hoverColor ?? _defaultHoverColor;
   double get borderRadius => widget.borderRadius ?? _defaultBorderRadius;
 
+  // Advanced customization getters
+  TextStyle get textStyle => widget.textStyle ?? const TextStyle(fontSize: 14);
+  double? get itemHeight => widget.itemHeight;
+  EdgeInsets get itemPadding => widget.itemPadding ?? _defaultItemPadding;
+  double get flagSize => widget.flagSize ?? 20.0;
+  bool get showFlags => widget.showFlags;
+  bool get showCountryCodes => widget.showCountryCodes;
+
   @override
   void initState() {
     super.initState();
     _searchController.addListener(_onSearchChanged);
+    // Initialize with basic sorted countries (without suggestions)
+    _baseCountries = CountryData.countries;
     _allCountries = CountryData.countries;
     _filteredCountries = _allCountries;
+    if (kDebugMode) {
+      debugPrint('DEBUG: Initialized with basic countries');
+      debugPrint(
+          'DEBUG: First 5 countries in initState: ${_allCountries.take(5).map((c) => c.code).join(', ')}');
+    }
   }
 
   @override
@@ -115,19 +412,28 @@ class _CountryPickerState extends State<CountryPicker> {
 
   void _updateCountriesForLanguage() {
     try {
-      final countryLocalizations = CountryLocalizations.of(context);
-      _allCountries =
-          CountryData.getSortedCountries(countryLocalizations.getCountryName);
+      // Use basic countries list, suggestions will be sorted by population
+      _allCountries = _organizeCountriesWithSuggestions(CountryData.countries);
       _filteredCountries = _allCountries;
       if (kDebugMode) {
-        debugPrint('DEBUG: Updated countries for language');
+        debugPrint('DEBUG: Updated countries for language with suggestions');
+        debugPrint(
+            'DEBUG: First 5 countries: ${_allCountries.take(5).map((c) => c.code).join(', ')}');
       }
+      // Trigger UI update after sorting
+      setState(() {
+        _updateCounter++;
+      });
     } catch (e) {
       if (kDebugMode) {
         debugPrint('DEBUG: Failed to update countries for language: $e');
       }
-      _allCountries = CountryData.countries;
+      _allCountries = _organizeCountriesWithSuggestions(CountryData.countries);
       _filteredCountries = _allCountries;
+      // Trigger UI update after sorting
+      setState(() {
+        _updateCounter++;
+      });
     }
   }
 
@@ -193,10 +499,16 @@ class _CountryPickerState extends State<CountryPicker> {
 
   void _filterAndSortCountries(String query) {
     if (query.isEmpty) {
+      // When search is empty, show organized countries with suggestions
       _filteredCountries = _allCountries;
+      if (kDebugMode) {
+        debugPrint(
+            'DEBUG: Empty search - showing all countries with suggestions');
+      }
       return;
     }
 
+    // When searching, use base countries list (without suggestions organization)
     final countryLocalizations = CountryLocalizations.of(context);
     final results = <Country>[];
     final exactMatches = <Country>[];
@@ -204,7 +516,8 @@ class _CountryPickerState extends State<CountryPicker> {
     final containsMatches = <Country>[];
     final fuzzyMatches = <Country>[];
 
-    for (final country in _allCountries) {
+    // Use base countries list for search (without suggestions organization)
+    for (final country in _baseCountries) {
       final countryName =
           countryLocalizations.getCountryName(country.code).toLowerCase();
       final countryCode = country.code.toLowerCase();
@@ -252,12 +565,290 @@ class _CountryPickerState extends State<CountryPicker> {
     results.addAll(containsMatches);
     results.addAll(fuzzyMatches);
 
+    // Sort search results alphabetically by country name
+    results.sort((a, b) {
+      final nameA = countryLocalizations.getCountryName(a.code).toLowerCase();
+      final nameB = countryLocalizations.getCountryName(b.code).toLowerCase();
+      return nameA.compareTo(nameB);
+    });
+
+    // For search results, show all results without suggestions organization
     _filteredCountries = results;
     if (kDebugMode) {
       debugPrint('DEBUG: Search "$query" - found ${results.length} countries');
       debugPrint(
           'DEBUG: Exact: ${exactMatches.length}, StartsWith: ${startsWithMatches.length}, Contains: ${containsMatches.length}, Fuzzy: ${fuzzyMatches.length}');
     }
+  }
+
+  /// Organize countries with suggested countries at the top
+  List<Country> _organizeCountriesWithSuggestions(List<Country> countries) {
+    if (!widget.showSuggestedCountries) {
+      return countries;
+    }
+
+    final suggestedCountries = CountryLanguageMapping.getSuggestedCountries(
+        CountryLanguageMapping.getCurrentLanguageCode(context));
+
+    // Create a map for quick lookup
+    final countryMap = <String, Country>{};
+    for (final country in countries) {
+      countryMap[country.code] = country;
+    }
+
+    final suggested = <Country>[];
+    final regular = <Country>[];
+
+    // Add suggested countries in the order they come from CountryLanguageMapping
+    for (final countryCode in suggestedCountries) {
+      final country = countryMap[countryCode];
+      if (country != null) {
+        suggested.add(country);
+      }
+    }
+
+    // Add regular countries
+    for (final country in countries) {
+      if (!suggestedCountries.contains(country.code)) {
+        regular.add(country);
+      }
+    }
+
+    if (kDebugMode) {
+      debugPrint(
+          'DEBUG: Suggested countries: ${suggested.length}, Regular: ${regular.length}');
+      debugPrint(
+          'DEBUG: First 5 suggested: ${suggested.take(5).map((c) => c.code).join(', ')}');
+    }
+
+    // Return suggested countries first, then regular countries
+    return [...suggested, ...regular];
+  }
+
+  /// Get organized countries with suggested countries separated
+  Map<String, List<Country>> _getOrganizedCountries() {
+    if (!widget.showSuggestedCountries) {
+      return {'all': _filteredCountries};
+    }
+
+    // If searching (query is not empty), show only search results without suggestions
+    if (_isSearching) {
+      if (kDebugMode) {
+        debugPrint(
+            'DEBUG: Searching - showing only search results without suggestions');
+      }
+      return {'all': _filteredCountries};
+    }
+
+    // If not searching (empty query), show suggestions + all countries
+    final suggestedCountries = CountryLanguageMapping.getSuggestedCountries(
+        CountryLanguageMapping.getCurrentLanguageCode(context));
+
+    final suggested = <Country>[];
+    final regular = <Country>[];
+
+    // For empty search, we want to show suggestions + all countries (with possible duplicates)
+    // First, add suggested countries
+    for (final country in _filteredCountries) {
+      if (suggestedCountries.contains(country.code)) {
+        suggested.add(country);
+      }
+    }
+
+    // Then add all countries (including those that might be in suggestions) and sort by name
+    regular.addAll(_filteredCountries);
+
+    // Sort regular countries alphabetically by name
+    final countryLocalizations = CountryLocalizations.of(context);
+    regular.sort((a, b) {
+      final nameA = countryLocalizations.getCountryName(a.code).toLowerCase();
+      final nameB = countryLocalizations.getCountryName(b.code).toLowerCase();
+      return nameA.compareTo(nameB);
+    });
+
+    if (kDebugMode) {
+      debugPrint(
+          'DEBUG: Empty search - showing suggestions (${suggested.length}) + all countries (${regular.length})');
+    }
+
+    return {
+      'suggested': suggested,
+      'regular': regular,
+    };
+  }
+
+  /// Create a divider widget for suggested countries section
+  Widget _buildSuggestedDivider() {
+    if (!widget.showSuggestedCountries) return const SizedBox.shrink();
+
+    final countryLocalizations = CountryLocalizations.of(context);
+
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              height: 1,
+              color: hintTextColor.withValues(alpha: 0.3),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Text(
+              countryLocalizations.allCountries,
+              style: TextStyle(
+                color: hintTextColor,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              height: 1,
+              color: hintTextColor.withValues(alpha: 0.3),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Build the country list with suggested countries support
+  Widget _buildCountryList(ScrollController scrollController,
+      CountryLocalizations countryLocalizations) {
+    final organizedCountries = _getOrganizedCountries();
+
+    if (organizedCountries.containsKey('all')) {
+      // No suggested countries or searching - use simple list
+      return ListView.builder(
+        key: ValueKey(
+            'country_list_${_filteredCountries.length}_$_updateCounter'),
+        controller: scrollController,
+        itemCount: _filteredCountries.length,
+        itemBuilder: (context, index) =>
+            _buildCountryItem(_filteredCountries[index], countryLocalizations),
+      );
+    }
+
+    // Build list with suggested countries and divider
+    final suggested = organizedCountries['suggested']!;
+    final regular = organizedCountries['regular']!;
+    final hasSuggested = suggested.isNotEmpty;
+    final hasRegular = regular.isNotEmpty;
+
+    final items = <Widget>[];
+
+    // Add suggested countries
+    for (final country in suggested) {
+      items.add(_buildCountryItem(country, countryLocalizations));
+    }
+
+    // Add divider if both sections have items
+    if (hasSuggested && hasRegular) {
+      items.add(_buildSuggestedDivider());
+    }
+
+    // Add regular countries
+    for (final country in regular) {
+      items.add(_buildCountryItem(country, countryLocalizations));
+    }
+
+    if (kDebugMode) {
+      debugPrint(
+          'DEBUG: Building list with ${suggested.length} suggested + ${regular.length} regular countries');
+    }
+
+    return ListView.builder(
+      key: ValueKey('country_list_organized_${items.length}_$_updateCounter'),
+      controller: scrollController,
+      itemCount: items.length,
+      itemBuilder: (context, index) => items[index],
+    );
+  }
+
+  /// Build individual country item
+  Widget _buildCountryItem(
+      Country country, CountryLocalizations countryLocalizations) {
+    final isSelected = widget.selectedCountry?.code == country.code;
+    final countryName = countryLocalizations.getCountryName(country.code);
+
+    return RepaintBoundary(
+      child: Container(
+        margin: _itemMargin,
+        height: widget.adaptiveHeight ? null : (itemHeight ?? 56.0),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? accentColor.withValues(alpha: 0.1)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(borderRadius),
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(borderRadius),
+            hoverColor: hoverColor,
+            onTap: () {
+              widget.onCountrySelected(country);
+              Navigator.of(context).pop();
+            },
+            child: Padding(
+              padding: itemPadding,
+              child: Row(
+                children: [
+                  if (showFlags)
+                    Text(
+                      country.flag,
+                      style: TextStyle(fontSize: flagSize),
+                    ),
+                  _spacer12,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          countryName,
+                          style: textStyle.copyWith(
+                            color: isSelected ? accentColor : textColor,
+                            fontWeight: isSelected
+                                ? FontWeight.w600
+                                : FontWeight.normal,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        if (showCountryCodes) ...[
+                          _spacer2,
+                          Text(
+                            widget.showPhoneCodes
+                                ? '${country.code} (${country.phoneCode})'
+                                : country.code,
+                            style: textStyle.copyWith(
+                              color: isSelected
+                                  ? accentColor.withValues(alpha: 0.7)
+                                  : hintTextColor,
+                              fontSize: 12,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  if (isSelected)
+                    Icon(
+                      Icons.check_circle,
+                      color: accentColor,
+                      size: 20,
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   void _showCountryPicker() {
@@ -361,93 +952,8 @@ class _CountryPickerState extends State<CountryPicker> {
                     ),
                   ),
                   Expanded(
-                    child: ListView.builder(
-                      key: ValueKey(
-                          'country_list_${_filteredCountries.length}_$_updateCounter'),
-                      controller: scrollController,
-                      itemCount: _filteredCountries.length,
-                      itemBuilder: (context, index) {
-                        final country = _filteredCountries[index];
-                        final isSelected =
-                            widget.selectedCountry?.code == country.code;
-                        final countryName =
-                            countryLocalizations.getCountryName(country.code);
-
-                        return RepaintBoundary(
-                          child: Container(
-                            margin: _itemMargin,
-                            decoration: BoxDecoration(
-                              color: isSelected
-                                  ? accentColor.withOpacity(0.1)
-                                  : Colors.transparent,
-                              borderRadius: BorderRadius.circular(borderRadius),
-                            ),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                borderRadius:
-                                    BorderRadius.circular(borderRadius),
-                                hoverColor: hoverColor,
-                                onTap: () {
-                                  widget.onCountrySelected(country);
-                                  Navigator.of(context).pop();
-                                },
-                                child: Padding(
-                                  padding: _itemPadding,
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        country.flag,
-                                        style: _flagTextStyle,
-                                      ),
-                                      _spacer12,
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              countryName,
-                                              style: TextStyle(
-                                                color: isSelected
-                                                    ? accentColor
-                                                    : textColor,
-                                                fontWeight: isSelected
-                                                    ? FontWeight.w600
-                                                    : FontWeight.normal,
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                            _spacer2,
-                                            Text(
-                                              widget.showPhoneCodes
-                                                  ? '${country.code} (${country.phoneCode})'
-                                                  : country.code,
-                                              style: TextStyle(
-                                                color: isSelected
-                                                    ? accentColor.withOpacity(0.7)
-                                                    : hintTextColor,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      if (isSelected)
-                                        Icon(
-                                          Icons.check_circle,
-                                          color: accentColor,
-                                          size: 20,
-                                        ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                    child: _buildCountryList(
+                        scrollController, countryLocalizations),
                   ),
                 ],
               ),
@@ -471,6 +977,8 @@ class _CountryPickerState extends State<CountryPicker> {
           borderRadius: BorderRadius.circular(borderRadius),
           child: Container(
             padding: _buttonPadding,
+            constraints: const BoxConstraints(
+                minHeight: 48), // Minimum height to prevent overflow
             decoration: BoxDecoration(
               border: Border.all(color: searchFieldBorderColor, width: 0.5),
               borderRadius: BorderRadius.circular(borderRadius),
@@ -487,6 +995,7 @@ class _CountryPickerState extends State<CountryPicker> {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min, // Fix Column layout issue
                       children: [
                         Text(
                           CountryLocalizations.getCountryNameSafe(
@@ -496,6 +1005,8 @@ class _CountryPickerState extends State<CountryPicker> {
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ),
+                          overflow:
+                              TextOverflow.ellipsis, // Handle text overflow
                         ),
                         _spacer2,
                         Text(
@@ -504,12 +1015,18 @@ class _CountryPickerState extends State<CountryPicker> {
                             color: hintTextColor,
                             fontSize: 11,
                           ),
+                          overflow:
+                              TextOverflow.ellipsis, // Handle text overflow
                         ),
-                        if (widget.showPhoneCodes)
+                        if (widget.showPhoneCodes) ...[
+                          _spacer2,
                           Text(
                             widget.selectedCountry!.phoneCode,
-                            style: _selectedPhoneCodeTextStyle,
+                            style: _defaultSelectedPhoneCodeTextStyle,
+                            overflow:
+                                TextOverflow.ellipsis, // Handle text overflow
                           ),
+                        ],
                       ],
                     ),
                   ),
