@@ -56,3 +56,4 @@ test/speed_comparison_test.dart
 # Deployment scripts
 deploy.sh
 DEPLOYMENT.md 
+deploy_pages.sh
