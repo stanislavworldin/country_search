@@ -406,6 +406,13 @@ class _CountryPickerState extends State<CountryPicker> {
   bool get showFlags => widget.showFlags;
   bool get showCountryCodes => widget.showCountryCodes;
 
+  // Suggested country codes for current locale
+  List<String> _getSuggestedCodes() {
+    return CountryLanguageMapping.getSuggestedCountries(
+      CountryLanguageMapping.getCurrentLanguageCode(context),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -624,9 +631,7 @@ class _CountryPickerState extends State<CountryPicker> {
       return countries;
     }
 
-    final suggestedCountries = CountryLanguageMapping.getSuggestedCountries(
-      CountryLanguageMapping.getCurrentLanguageCode(context),
-    );
+    final suggestedCountries = _getSuggestedCodes();
 
     // Create a map for quick lookup
     final countryMap = <String, Country>{};
@@ -682,9 +687,7 @@ class _CountryPickerState extends State<CountryPicker> {
     }
 
     // If not searching (empty query), show suggestions + all countries
-    final suggestedCountries = CountryLanguageMapping.getSuggestedCountries(
-      CountryLanguageMapping.getCurrentLanguageCode(context),
-    );
+    final suggestedCountries = _getSuggestedCodes();
 
     final suggested = <Country>[];
     final regular = <Country>[];
@@ -715,6 +718,105 @@ class _CountryPickerState extends State<CountryPicker> {
     }
 
     return {'suggested': suggested, 'regular': regular};
+  }
+
+  /// Build the modal header with drag handle, title and search field
+  Widget _buildModalHeader(
+    StateSetter setModalState,
+    CountryLocalizations countryLocalizations,
+  ) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+      decoration: BoxDecoration(
+        color: headerColor,
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(borderRadius * 2),
+        ),
+      ),
+      child: Column(
+        children: [
+          Container(
+            width: 32,
+            height: 3,
+            decoration: BoxDecoration(
+              color: Colors.white24,
+              borderRadius: BorderRadius.circular(1.5),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            countryLocalizations.selectCountry,
+            style: TextStyle(
+              color: textColor,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Container(
+            decoration: BoxDecoration(
+              color: searchFieldColor,
+              borderRadius: BorderRadius.circular(borderRadius),
+              border: Border.all(
+                color: searchFieldBorderColor,
+                width: 0.5,
+              ),
+            ),
+            child: TextField(
+              controller: _searchController,
+              style: TextStyle(color: textColor, fontSize: 14),
+              autofocus: true,
+              textInputAction: TextInputAction.search,
+              cursorColor: cursorColor,
+              onChanged: (value) {
+                final query = value.toLowerCase().trim();
+                _filterAndSortCountries(query);
+                setModalState(() {
+                  _isSearching = query.isNotEmpty;
+                  _updateCounter++;
+                });
+              },
+              decoration: InputDecoration(
+                hintText: countryLocalizations.searchCountry,
+                hintStyle: TextStyle(
+                  color: hintTextColor,
+                  fontSize: 14,
+                ),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: hintTextColor,
+                  size: 20,
+                ),
+                suffixIcon: _isSearching
+                    ? IconButton(
+                        icon: Icon(
+                          Icons.clear,
+                          color: hintTextColor,
+                          size: 18,
+                        ),
+                        onPressed: () {
+                          _searchController.clear();
+                          setModalState(() {
+                            _isSearching = false;
+                            _updateCounter++;
+                            _filteredCountries = _allCountries;
+                          });
+                        },
+                      )
+                    : null,
+                border: InputBorder.none,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 14,
+                ),
+                isDense: false,
+                alignLabelWithHint: true,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   /// Create a divider widget for suggested countries section
@@ -912,98 +1014,7 @@ class _CountryPickerState extends State<CountryPicker> {
             builder: (context, scrollController) => RepaintBoundary(
               child: Column(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
-                    decoration: BoxDecoration(
-                      color: headerColor,
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(borderRadius * 2),
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          width: 32,
-                          height: 3,
-                          decoration: BoxDecoration(
-                            color: Colors.white24,
-                            borderRadius: BorderRadius.circular(1.5),
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          countryLocalizations.selectCountry,
-                          style: TextStyle(
-                            color: textColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: searchFieldColor,
-                            borderRadius: BorderRadius.circular(borderRadius),
-                            border: Border.all(
-                              color: searchFieldBorderColor,
-                              width: 0.5,
-                            ),
-                          ),
-                          child: TextField(
-                            controller: _searchController,
-                            style: TextStyle(color: textColor, fontSize: 14),
-                            autofocus: true,
-                            textInputAction: TextInputAction.search,
-                            cursorColor: cursorColor,
-                            onChanged: (value) {
-                              final query = value.toLowerCase().trim();
-                              _filterAndSortCountries(query);
-                              setModalState(() {
-                                _isSearching = query.isNotEmpty;
-                                _updateCounter++;
-                              });
-                            },
-                            decoration: InputDecoration(
-                              hintText: countryLocalizations.searchCountry,
-                              hintStyle: TextStyle(
-                                color: hintTextColor,
-                                fontSize: 14,
-                              ),
-                              prefixIcon: Icon(
-                                Icons.search,
-                                color: hintTextColor,
-                                size: 20,
-                              ),
-                              suffixIcon: _isSearching
-                                  ? IconButton(
-                                      icon: Icon(
-                                        Icons.clear,
-                                        color: hintTextColor,
-                                        size: 18,
-                                      ),
-                                      onPressed: () {
-                                        _searchController.clear();
-                                        setModalState(() {
-                                          _isSearching = false;
-                                          _updateCounter++;
-                                          _filteredCountries = _allCountries;
-                                        });
-                                      },
-                                    )
-                                  : null,
-                              border: InputBorder.none,
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 14,
-                              ),
-                              isDense: false,
-                              alignLabelWithHint: true,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  _buildModalHeader(setModalState, countryLocalizations),
                   Expanded(
                     child: _buildCountryList(
                       scrollController,
@@ -1085,8 +1096,10 @@ class _CountryPickerState extends State<CountryPicker> {
                             _spacer2,
                             Text(
                               widget.selectedCountry!.code,
-                              style:
-                                  TextStyle(color: hintTextColor, fontSize: 11),
+                              style: TextStyle(
+                                color: hintTextColor,
+                                fontSize: 11,
+                              ),
                               overflow:
                                   TextOverflow.ellipsis, // Handle text overflow
                             ),

@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.8.3] - 2025-08-08
+
+### Refactor (no functional changes)
+- Extracted repeated logic for suggested countries into `_getSuggestedCodes()` in `CountryPicker` state.
+- Extracted modal header (drag handle, title, search field) into `_buildModalHeader(...)` and reused in `_showCountryPicker()`.
+- Reduced duplication, improved readability; public API and behavior unchanged.
+
+### QA
+- Ran `dart format` and `flutter analyze` — all green.
+
 ## [2.8.2] - 2025-08-08
 
 ### Changed

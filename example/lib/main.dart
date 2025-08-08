@@ -169,14 +169,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 value: Locale('it'),
                 child: Text('🇮🇹 Italiano'),
               ),
-              const PopupMenuItem(
-                value: Locale('ja'),
-                child: Text('🇯🇵 日本語'),
-              ),
-              const PopupMenuItem(
-                value: Locale('ko'),
-                child: Text('🇰🇷 한국어'),
-              ),
+              const PopupMenuItem(value: Locale('ja'), child: Text('🇯🇵 日本語')),
+              const PopupMenuItem(value: Locale('ko'), child: Text('🇰🇷 한국어')),
               const PopupMenuItem(
                 value: Locale('nl'),
                 child: Text('🇳🇱 Nederlands'),
@@ -193,10 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 value: Locale('ru'),
                 child: Text('🇷🇺 Русский'),
               ),
-              const PopupMenuItem(
-                value: Locale('th'),
-                child: Text('🇹🇭 ไทย'),
-              ),
+              const PopupMenuItem(value: Locale('th'), child: Text('🇹🇭 ไทย')),
               const PopupMenuItem(
                 value: Locale('tr'),
                 child: Text('🇹🇷 Türkçe'),
@@ -209,10 +200,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 value: Locale('vi'),
                 child: Text('🇻🇳 Tiếng Việt'),
               ),
-              const PopupMenuItem(
-                value: Locale('zh'),
-                child: Text('🇨🇳 中文'),
-              ),
+              const PopupMenuItem(value: Locale('zh'), child: Text('🇨🇳 中文')),
             ],
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -236,8 +224,10 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               // Language indicator
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.blue.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(20),
@@ -264,10 +254,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // Country picker section
               const Text(
                 'Select your country:',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
               CountryPicker(
@@ -279,7 +266,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                          'Selected: ${country.flag} ${country.code} (${country.phoneCode})'),
+                        'Selected: ${country.flag} ${country.code} (${country.phoneCode})',
+                      ),
                       backgroundColor: Colors.green,
                     ),
                   );
@@ -290,10 +278,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // Light theme picker
               const Text(
                 'Light Theme Version:',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               CountryPicker(
@@ -305,7 +290,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                          'Selected: ${country.flag} ${country.code} (${country.phoneCode})'),
+                        'Selected: ${country.flag} ${country.code} (${country.phoneCode})',
+                      ),
                       backgroundColor: Colors.green,
                     ),
                   );
@@ -326,10 +312,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // Custom theme picker
               const Text(
                 'Custom Theme (Purple):',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               CountryPicker(
@@ -341,7 +324,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                          'Selected: ${country.flag} ${country.code} (${country.phoneCode})'),
+                        'Selected: ${country.flag} ${country.code} (${country.phoneCode})',
+                      ),
                       backgroundColor: Colors.green,
                     ),
                   );
@@ -364,8 +348,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.purple,
                 ),
                 itemHeight: 72.0, // Larger items for better touch targets
-                itemPadding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                itemPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 flagSize: 28.0, // Bigger flags
                 showFlags: true,
                 showCountryCodes: true,
@@ -375,10 +361,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // Minimal theme picker
               const Text(
                 'Minimal Theme:',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               CountryPicker(
@@ -390,7 +373,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                          'Selected: ${country.flag} ${country.code} (${country.phoneCode})'),
+                        'Selected: ${country.flag} ${country.code} (${country.phoneCode})',
+                      ),
                       backgroundColor: Colors.green,
                     ),
                   );
@@ -412,8 +396,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   fontWeight: FontWeight.normal,
                 ),
                 itemHeight: 44.0, // Compact items
-                itemPadding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                itemPadding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 6,
+                ),
                 flagSize: 16.0, // Smaller flags
                 showFlags: true,
                 showCountryCodes: false, // Hide country codes for minimal look
@@ -423,20 +409,14 @@ class _MyHomePageState extends State<MyHomePage> {
               // Builder API Examples
               const Text(
                 'Builder API Examples:',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
 
               // Builder API - Dark Theme
               const Text(
                 'Builder API - Dark Theme:',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               CountryPicker.builder()
@@ -448,7 +428,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                            'Selected: ${country.flag} ${country.code} (${country.phoneCode})'),
+                          'Selected: ${country.flag} ${country.code} (${country.phoneCode})',
+                        ),
                         backgroundColor: Colors.green,
                       ),
                     );
@@ -460,10 +441,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // Builder API - Light Theme
               const Text(
                 'Builder API - Light Theme:',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               CountryPicker.builder()
@@ -475,7 +453,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                            'Selected: ${country.flag} ${country.code} (${country.phoneCode})'),
+                          'Selected: ${country.flag} ${country.code} (${country.phoneCode})',
+                        ),
                         backgroundColor: Colors.green,
                       ),
                     );
@@ -487,10 +466,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // Builder API - Purple Theme
               const Text(
                 'Builder API - Purple Theme:',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               CountryPicker.builder()
@@ -502,7 +478,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                            'Selected: ${country.flag} ${country.code} (${country.phoneCode})'),
+                          'Selected: ${country.flag} ${country.code} (${country.phoneCode})',
+                        ),
                         backgroundColor: Colors.green,
                       ),
                     );
@@ -510,20 +487,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   .purpleTheme()
                   .itemHeight(72.0)
                   .flagSize(28.0)
-                  .textStyle(const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ))
+                  .textStyle(
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  )
                   .build(),
               const SizedBox(height: 16),
 
               // Builder API - Minimal Theme
               const Text(
                 'Builder API - Minimal Theme:',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               CountryPicker.builder()
@@ -535,7 +508,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                            'Selected: ${country.flag} ${country.code} (${country.phoneCode})'),
+                          'Selected: ${country.flag} ${country.code} (${country.phoneCode})',
+                        ),
                         backgroundColor: Colors.green,
                       ),
                     );
@@ -549,10 +523,7 @@ class _MyHomePageState extends State<MyHomePage> {
               if (selectedCountry != null) ...[
                 const Text(
                   'Selected Country:',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 Container(
@@ -581,8 +552,9 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                             ),
                             Text(
-                              CountryLocalizations.of(context)
-                                  .getCountryName(selectedCountry!.code),
+                              CountryLocalizations.of(
+                                context,
+                              ).getCountryName(selectedCountry!.code),
                               style: const TextStyle(
                                 fontSize: 14,
                                 color: Colors.white70,
@@ -608,10 +580,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // Example with disabled suggested countries
               const Text(
                 'Without Suggested Countries:',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               CountryPicker(
@@ -623,7 +592,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                          'Selected: ${country.flag} ${country.code} (${country.phoneCode})'),
+                        'Selected: ${country.flag} ${country.code} (${country.phoneCode})',
+                      ),
                       backgroundColor: Colors.green,
                     ),
                   );
