@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.8.4] - 2025-08-08
+
+### Added
+- Centered dialog presentation for the picker via new enum `CountryPickerModalPresentation`.
+- New `modalPresentation` parameter for both constructor and Builder API.
+- Example app updated with two demos (direct usage and builder) showcasing centered dialog.
+
+### Debug
+- Added `debugPrint` indicating which presentation style is used when opening the picker.
+
+### Docs
+- README updated with `modalPresentation` usage and API tables.
+
+### QA
+- Ran `dart format`, `flutter analyze`, and `flutter test` — all green.
+
 ## [2.8.3] - 2025-08-08
 
 ### Refactor (no functional changes)

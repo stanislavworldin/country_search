@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'localizations/country_localizations.dart';
 
@@ -318,9 +317,6 @@ class CountryData {
         (country) => country.code == code.toUpperCase(),
       );
     } catch (e) {
-      if (kDebugMode) {
-        debugPrint('DEBUG: Country not found for code: $code');
-      }
       return null;
     }
   }
@@ -332,9 +328,6 @@ class CountryData {
     try {
       return countries.firstWhere((country) => country.phoneCode == phoneCode);
     } catch (e) {
-      if (kDebugMode) {
-        debugPrint('DEBUG: Country not found for phone code: $phoneCode');
-      }
       return null;
     }
   }
@@ -353,9 +346,6 @@ class CountryData {
       return nameA.compareTo(nameB);
     });
 
-    if (kDebugMode) {
-      debugPrint('DEBUG: Sorted ${sortedCountries.length} countries');
-    }
     return sortedCountries;
   }
 
@@ -405,9 +395,6 @@ class CountryData {
     results.addAll(startsWithMatches);
     results.addAll(containsMatches);
 
-    if (kDebugMode) {
-      debugPrint('DEBUG: Search "$query" - found ${results.length} countries');
-    }
     return results;
   }
 
@@ -421,11 +408,6 @@ class CountryData {
         .where((country) => country.phoneCode.contains(phoneCode))
         .toList();
 
-    if (kDebugMode) {
-      debugPrint(
-        'DEBUG: Phone search "$phoneCode" - found ${results.length} countries',
-      );
-    }
     return results;
   }
 }

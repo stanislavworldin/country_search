@@ -1,7 +1,6 @@
 import 'package:country_search/src/flutter_country_picker/country_data.dart';
 import 'package:country_search/src/flutter_country_picker/country_language_mapping.dart';
 import 'package:country_search/src/flutter_country_picker/country_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -19,12 +18,6 @@ void main() {
         expect(frenchCountries, contains('BE')); // Belgium
         expect(frenchCountries, contains('CH')); // Switzerland
         expect(frenchCountries, isNotEmpty);
-
-        if (kDebugMode) {
-          debugPrint(
-            'DEBUG: French speaking countries: ${frenchCountries.length}',
-          );
-        }
       },
     );
 
@@ -39,12 +32,6 @@ void main() {
         expect(spanishCountries, contains('MX')); // Mexico
         expect(spanishCountries, contains('AR')); // Argentina
         expect(spanishCountries, isNotEmpty);
-
-        if (kDebugMode) {
-          debugPrint(
-            'DEBUG: Spanish speaking countries: ${spanishCountries.length}',
-          );
-        }
       },
     );
 
@@ -59,12 +46,6 @@ void main() {
         expect(germanCountries, contains('AT')); // Austria
         expect(germanCountries, contains('CH')); // Switzerland
         expect(germanCountries, isNotEmpty);
-
-        if (kDebugMode) {
-          debugPrint(
-            'DEBUG: German speaking countries: ${germanCountries.length}',
-          );
-        }
       },
     );
 
@@ -78,12 +59,6 @@ void main() {
       expect(englishCountries, contains('CA')); // Canada
       expect(englishCountries, contains('AU')); // Australia
       expect(englishCountries, isNotEmpty);
-
-      if (kDebugMode) {
-        debugPrint(
-          'DEBUG: English speaking countries: ${englishCountries.length}',
-        );
-      }
     });
 
     test('CountryLanguageMapping returns fallback for unsupported language',
@@ -94,12 +69,6 @@ void main() {
 
       expect(fallbackCountries, contains('US')); // Should fallback to English
       expect(fallbackCountries, isNotEmpty);
-
-      if (kDebugMode) {
-        debugPrint(
-          'DEBUG: Fallback countries for unsupported language: ${fallbackCountries.length}',
-        );
-      }
     });
 
     testWidgets('CountryPicker shows suggested countries when enabled', (
@@ -202,13 +171,6 @@ void main() {
               'Suggested country $suggestedCode should exist in all countries',
         );
       }
-
-      if (kDebugMode) {
-        debugPrint(
-          'DEBUG: French suggested countries: ${frenchCountries.length}',
-        );
-        debugPrint('DEBUG: Total countries: ${allCountries.length}');
-      }
     });
 
     test('All supported languages have suggested countries', () {
@@ -242,12 +204,6 @@ void main() {
           isNotEmpty,
           reason: 'Language $language should have suggested countries',
         );
-
-        if (kDebugMode) {
-          debugPrint(
-            'DEBUG: Language $language has ${suggestedCountries.length} suggested countries',
-          );
-        }
       }
     });
 
@@ -261,12 +217,6 @@ void main() {
       // Verify that countries are sorted by population (descending)
       // First 5 countries should be: US, MX, PH, CO, ES
       expect(spanishCountries.take(5).toList(), ['US', 'MX', 'PH', 'CO', 'ES']);
-
-      if (kDebugMode) {
-        debugPrint(
-          'DEBUG: Spanish countries sorted by population: ${spanishCountries.take(5).join(', ')}...',
-        );
-      }
     });
 
     test('Suggested countries are properly sorted', () {
@@ -278,12 +228,6 @@ void main() {
       // Verify that first 5 countries are sorted by population
       // First 5 countries should be: CD, FR, DZ, CA, MA
       expect(frenchCountries.take(5).toList(), ['CD', 'FR', 'DZ', 'CA', 'MA']);
-
-      if (kDebugMode) {
-        debugPrint(
-          'DEBUG: French countries sorted by population: ${frenchCountries.take(5).join(', ')}...',
-        );
-      }
     });
   });
 }

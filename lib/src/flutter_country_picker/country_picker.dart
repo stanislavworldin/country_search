@@ -4,6 +4,12 @@ import 'country_data.dart';
 import 'country_language_mapping.dart';
 import 'localizations/country_localizations.dart';
 
+/// Presentation style for country picker modal
+enum CountryPickerModalPresentation {
+  bottomSheet,
+  dialog,
+}
+
 /// Builder API for creating CountryPicker with a fluent interface
 class CountryPickerBuilder {
   Country? _selectedCountry;
@@ -33,6 +39,8 @@ class CountryPickerBuilder {
   bool _showCountryCodes = true;
   bool _adaptiveHeight = false;
   bool _showSuggestedCountries = true;
+  CountryPickerModalPresentation _modalPresentation =
+      CountryPickerModalPresentation.bottomSheet;
 
   /// Set the selected country
   CountryPickerBuilder selectedCountry(Country? country) {
@@ -172,6 +180,13 @@ class CountryPickerBuilder {
     return this;
   }
 
+  /// Set how the picker is presented (bottom sheet by default)
+  CountryPickerBuilder modalPresentation(
+      CountryPickerModalPresentation presentation) {
+    _modalPresentation = presentation;
+    return this;
+  }
+
   /// Set a custom theme (dark theme by default)
   CountryPickerBuilder darkTheme() {
     _backgroundColor = const Color(0xFF302E2C);
@@ -254,6 +269,7 @@ class CountryPickerBuilder {
       showCountryCodes: _showCountryCodes,
       adaptiveHeight: _adaptiveHeight,
       showSuggestedCountries: _showSuggestedCountries,
+      modalPresentation: _modalPresentation,
     );
   }
 }
@@ -286,6 +302,7 @@ class CountryPicker extends StatefulWidget {
   final bool showCountryCodes;
   final bool adaptiveHeight;
   final bool showSuggestedCountries;
+  final CountryPickerModalPresentation modalPresentation;
 
   const CountryPicker({
     super.key,
@@ -312,6 +329,7 @@ class CountryPicker extends StatefulWidget {
     this.showCountryCodes = true,
     this.adaptiveHeight = false,
     this.showSuggestedCountries = true,
+    this.modalPresentation = CountryPickerModalPresentation.bottomSheet,
   })  : assert(
           itemHeight == null || itemHeight > 0,
           'itemHeight must be positive',
@@ -420,12 +438,6 @@ class _CountryPickerState extends State<CountryPicker> {
     _baseCountries = CountryData.countries;
     _allCountries = CountryData.countries;
     _filteredCountries = _allCountries;
-    if (kDebugMode) {
-      debugPrint('DEBUG: Initialized with basic countries');
-      debugPrint(
-        'DEBUG: First 5 countries in initState: ${_allCountries.take(5).map((c) => c.code).join(', ')}',
-      );
-    }
   }
 
   @override
@@ -436,30 +448,52 @@ class _CountryPickerState extends State<CountryPicker> {
 
   void _updateCountriesForLanguage() {
     try {
-      // Use basic countries list, suggestions will be sorted by population
-      _allCountries = _organizeCountriesWithSuggestions(CountryData.countries);
-      _filteredCountries = _allCountries;
-      if (kDebugMode) {
-        debugPrint('DEBUG: Updated countries for language with suggestions');
-        debugPrint(
-          'DEBUG: First 5 countries: ${_allCountries.take(5).map((c) => c.code).join(', ')}',
+      // Use basic countries list; organize depending on suggestion setting
+      if (widget.showSuggestedCountries) {
+        // Suggestions enabled: organize suggestions first
+        _allCountries =
+            _organizeCountriesWithSuggestions(CountryData.countries);
+      } else {
+        // Suggestions disabled: sort alphabetically by localized name
+        final countryLocalizations = CountryLocalizations.of(context);
+        _allCountries = _sortCountriesAlphabetically(
+          CountryData.countries,
+          countryLocalizations,
         );
       }
+      _filteredCountries = _allCountries;
+
       // Trigger UI update after sorting
       setState(() {
         _updateCounter++;
       });
     } catch (e) {
-      if (kDebugMode) {
-        debugPrint('DEBUG: Failed to update countries for language: $e');
-      }
-      _allCountries = _organizeCountriesWithSuggestions(CountryData.countries);
+      _allCountries = widget.showSuggestedCountries
+          ? _organizeCountriesWithSuggestions(CountryData.countries)
+          : _sortCountriesAlphabetically(
+              CountryData.countries,
+              CountryLocalizations.of(context),
+            );
       _filteredCountries = _allCountries;
       // Trigger UI update after sorting
       setState(() {
         _updateCounter++;
       });
     }
+  }
+
+  /// Sort countries alphabetically by localized name
+  List<Country> _sortCountriesAlphabetically(
+    List<Country> countries,
+    CountryLocalizations countryLocalizations,
+  ) {
+    final sorted = [...countries];
+    sorted.sort((a, b) {
+      final nameA = countryLocalizations.getCountryName(a.code).toLowerCase();
+      final nameB = countryLocalizations.getCountryName(b.code).toLowerCase();
+      return nameA.compareTo(nameB);
+    });
+    return sorted;
   }
 
   @override
@@ -657,15 +691,6 @@ class _CountryPickerState extends State<CountryPicker> {
       }
     }
 
-    if (kDebugMode) {
-      debugPrint(
-        'DEBUG: Suggested countries: ${suggested.length}, Regular: ${regular.length}',
-      );
-      debugPrint(
-        'DEBUG: First 5 suggested: ${suggested.take(5).map((c) => c.code).join(', ')}',
-      );
-    }
-
     // Return suggested countries first, then regular countries
     return [...suggested, ...regular];
   }
@@ -673,16 +698,22 @@ class _CountryPickerState extends State<CountryPicker> {
   /// Get organized countries with suggested countries separated
   Map<String, List<Country>> _getOrganizedCountries() {
     if (!widget.showSuggestedCountries) {
+      // When suggestions are disabled:
+      // - If searching: keep search results order (already handled in _filterAndSortCountries)
+      // - If not searching: ensure alphabetical order by localized name
+      if (!_isSearching) {
+        final countryLocalizations = CountryLocalizations.of(context);
+        final sorted = _sortCountriesAlphabetically(
+          _filteredCountries,
+          countryLocalizations,
+        );
+        return {'all': sorted};
+      }
       return {'all': _filteredCountries};
     }
 
     // If searching (query is not empty), show only search results without suggestions
     if (_isSearching) {
-      if (kDebugMode) {
-        debugPrint(
-          'DEBUG: Searching - showing only search results without suggestions',
-        );
-      }
       return {'all': _filteredCountries};
     }
 
@@ -710,12 +741,6 @@ class _CountryPickerState extends State<CountryPicker> {
       final nameB = countryLocalizations.getCountryName(b.code).toLowerCase();
       return nameA.compareTo(nameB);
     });
-
-    if (kDebugMode) {
-      debugPrint(
-        'DEBUG: Empty search - showing suggestions (${suggested.length}) + all countries (${regular.length})',
-      );
-    }
 
     return {'suggested': suggested, 'regular': regular};
   }
@@ -900,12 +925,6 @@ class _CountryPickerState extends State<CountryPicker> {
       items.add(_buildCountryItem(country, countryLocalizations));
     }
 
-    if (kDebugMode) {
-      debugPrint(
-        'DEBUG: Building list with ${suggested.length} suggested + ${regular.length} regular countries',
-      );
-    }
-
     return ListView.builder(
       key: ValueKey('country_list_organized_${items.length}_$_updateCounter'),
       controller: scrollController,
@@ -995,38 +1014,94 @@ class _CountryPickerState extends State<CountryPicker> {
   void _showCountryPicker() {
     final countryLocalizations = CountryLocalizations.of(context);
 
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: backgroundColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(borderRadius * 2),
+    if (widget.modalPresentation ==
+        CountryPickerModalPresentation.bottomSheet) {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: backgroundColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(borderRadius * 2),
+          ),
         ),
-      ),
-      builder: (context) => StatefulBuilder(
-        builder: (context, setModalState) {
-          return DraggableScrollableSheet(
-            initialChildSize: 0.7,
-            minChildSize: 0.5,
-            maxChildSize: 0.9,
-            expand: false,
-            builder: (context, scrollController) => RepaintBoundary(
-              child: Column(
-                children: [
-                  _buildModalHeader(setModalState, countryLocalizations),
-                  Expanded(
-                    child: _buildCountryList(
-                      scrollController,
-                      countryLocalizations,
+        builder: (context) => StatefulBuilder(
+          builder: (context, setModalState) {
+            return DraggableScrollableSheet(
+              initialChildSize: 0.7,
+              minChildSize: 0.5,
+              maxChildSize: 0.9,
+              expand: false,
+              builder: (context, scrollController) => RepaintBoundary(
+                child: Column(
+                  children: [
+                    _buildModalHeader(setModalState, countryLocalizations),
+                    Expanded(
+                      child: _buildCountryList(
+                        scrollController,
+                        countryLocalizations,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      );
+      return;
+    }
+
+    // Centered dialog presentation
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            final mediaQuery = MediaQuery.of(context);
+            final maxHeight = mediaQuery.size.height * 0.75;
+            final maxWidth = mediaQuery.size.width * 0.9;
+            final dialogWidth = maxWidth.clamp(280.0, 560.0);
+            final scrollController = ScrollController();
+            return Dialog(
+              backgroundColor: Colors.transparent,
+              insetPadding:
+                  const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: maxHeight,
+                    maxWidth: dialogWidth,
+                  ),
+                  child: Material(
+                    color: backgroundColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(borderRadius * 2),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(borderRadius * 2),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _buildModalHeader(
+                              setModalState, countryLocalizations),
+                          Expanded(
+                            child: _buildCountryList(
+                              scrollController,
+                              countryLocalizations,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-          );
-        },
-      ),
+            );
+          },
+        );
+      },
     );
   }
 

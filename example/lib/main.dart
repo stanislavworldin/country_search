@@ -24,14 +24,12 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _currentLocale = locale;
     });
-    debugPrint('Language changed to: ${locale.languageCode}');
   }
 
   void _toggleTheme() {
     setState(() {
       _isDarkTheme = !_isDarkTheme;
     });
-    debugPrint('Theme changed to: ${_isDarkTheme ? 'dark' : 'light'}');
   }
 
   @override
@@ -275,6 +273,31 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               const SizedBox(height: 16),
 
+              // Centered dialog presentation (basic)
+              const Text(
+                'Centered Dialog Presentation:',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              CountryPicker(
+                selectedCountry: selectedCountry,
+                onCountrySelected: (Country country) {
+                  setState(() {
+                    selectedCountry = country;
+                  });
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Selected: ${country.flag} ${country.code} (${country.phoneCode})',
+                      ),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                },
+                modalPresentation: CountryPickerModalPresentation.dialog,
+              ),
+              const SizedBox(height: 16),
+
               // Light theme picker
               const Text(
                 'Light Theme Version:',
@@ -435,6 +458,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     );
                   })
                   .darkTheme()
+                  .modalPresentation(CountryPickerModalPresentation.dialog)
                   .build(),
               const SizedBox(height: 16),
 

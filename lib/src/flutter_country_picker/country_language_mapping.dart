@@ -362,9 +362,7 @@ class CountryLanguageMapping {
   /// Get the current app locale language code
   static String getCurrentLanguageCode(BuildContext context) {
     final locale = Localizations.localeOf(context);
-    if (kDebugMode) {
-      debugPrint('DEBUG: Current app locale: ${locale.languageCode}');
-    }
+    if (kDebugMode) {}
     return locale.languageCode;
   }
 

@@ -42,7 +42,7 @@
 
 ## 📊 Comparison with Competitors
 
-| Feature | country_search 2.8.2 | country_code_picker | country_picker |
+| Feature | country_search 2.8.4 | country_code_picker | country_picker |
 |---------|---------------------|-------------------|----------------------|
 | **Builder API** | ✅ Available | ❌ Not available | ❌ Not available |
 | **Pre-built Themes** | ✅ Available | ❌ Not available | ❌ Not available |
@@ -63,7 +63,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  country_search: ^2.8.2
+  country_search: ^2.8.4
 ```
 
 ```dart
@@ -123,6 +123,13 @@ CountryPicker.builder()
     .selectedCountry(selectedCountry)
     .onCountrySelected((country) => setState(() => selectedCountry = country))
     .adaptiveHeight(true)
+    .build();
+
+// Centered dialog presentation (instead of bottom sheet)
+CountryPicker.builder()
+    .selectedCountry(selectedCountry)
+    .onCountrySelected((country) => setState(() => selectedCountry = country))
+    .modalPresentation(CountryPickerModalPresentation.dialog)
     .build();
 ```
 
@@ -194,6 +201,7 @@ Find countries even with typos:
 | `.showCountryCodes(bool)` | Show/hide country codes |
 | `.adaptiveHeight(bool)` | Enable/disable adaptive height |
 | `.showSuggestedCountries(bool)` | Enable/disable smart suggestions |
+| `.modalPresentation(CountryPickerModalPresentation)` | Choose bottom sheet or centered dialog |
 
 ### 🔧 Traditional API
 
@@ -224,6 +232,24 @@ Find countries even with typos:
 | `showCountryCodes` | `bool` | `true` | Show country codes |
 | `adaptiveHeight` | `bool` | `false` | Enable adaptive height |
 | `showSuggestedCountries` | `bool` | `true` | Enable smart suggestions |
+| `modalPresentation` | `CountryPickerModalPresentation` | `bottomSheet` | Modal presentation style |
+
+### Modal Presentation
+
+You can choose how the country picker appears:
+
+```dart
+// Bottom sheet (default)
+CountryPicker(
+  onCountrySelected: (c) {},
+);
+
+// Centered dialog
+CountryPicker(
+  onCountrySelected: (c) {},
+  modalPresentation: CountryPickerModalPresentation.dialog,
+);
+```
 
 ### Country Object
 
