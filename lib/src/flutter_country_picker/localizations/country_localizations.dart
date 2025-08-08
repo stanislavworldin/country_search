@@ -39,8 +39,10 @@ abstract class CountryLocalizations {
   /// Returns fallback English localization if delegates are not configured
   static CountryLocalizations of(BuildContext context) {
     try {
-      final localizations =
-          Localizations.of<CountryLocalizations>(context, CountryLocalizations);
+      final localizations = Localizations.of<CountryLocalizations>(
+        context,
+        CountryLocalizations,
+      );
       if (localizations != null) {
         return localizations;
       }
@@ -74,9 +76,7 @@ abstract class CountryLocalizations {
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
-      <LocalizationsDelegate<dynamic>>[
-    delegate,
-  ];
+      <LocalizationsDelegate<dynamic>>[delegate];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
@@ -132,7 +132,8 @@ class _CountryLocalizationsDelegate
   @override
   Future<CountryLocalizations> load(Locale locale) {
     return SynchronousFuture<CountryLocalizations>(
-        lookupCountryLocalizations(locale));
+      lookupCountryLocalizations(locale),
+    );
   }
 
   @override
@@ -155,7 +156,7 @@ class _CountryLocalizationsDelegate
         'uk',
         'vi',
         'th',
-        'zh'
+        'zh',
       ].contains(locale.languageCode);
 
   @override

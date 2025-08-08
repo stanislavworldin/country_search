@@ -276,6 +276,6 @@ class CountryLocalizationsPl extends CountryLocalizations {
     "HM": "Wyspy Heard i McDonalda",
     "GS": "Georgia Południowa i Sandwich Południowy",
     "PN": "Pitcairn",
-    "WF": "Wallis i Futuna"
+    "WF": "Wallis i Futuna",
   };
 }

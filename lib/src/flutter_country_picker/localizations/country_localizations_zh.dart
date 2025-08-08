@@ -276,6 +276,6 @@ class CountryLocalizationsZh extends CountryLocalizations {
     "HM": "赫德岛和麦克唐纳群岛",
     "GS": "南乔治亚和南桑威奇群岛",
     "PN": "皮特凯恩",
-    "WF": "瓦利斯和富图纳"
+    "WF": "瓦利斯和富图纳",
   };
 }

@@ -312,11 +312,15 @@ class CountryPicker extends StatefulWidget {
     this.showCountryCodes = true,
     this.adaptiveHeight = false,
     this.showSuggestedCountries = true,
-  })  : assert(itemHeight == null || itemHeight > 0,
-            'itemHeight must be positive'),
+  })  : assert(
+          itemHeight == null || itemHeight > 0,
+          'itemHeight must be positive',
+        ),
         assert(flagSize == null || flagSize > 0, 'flagSize must be positive'),
-        assert(borderRadius == null || borderRadius >= 0,
-            'borderRadius must be non-negative');
+        assert(
+          borderRadius == null || borderRadius >= 0,
+          'borderRadius must be non-negative',
+        );
 
   /// Create a builder for fluent API
   static CountryPickerBuilder builder() {
@@ -336,30 +340,43 @@ class _CountryPickerState extends State<CountryPicker> {
   int _updateCounter = 0;
 
   // Constants for performance optimization
-  static const TextStyle _defaultSelectedPhoneCodeTextStyle =
-      TextStyle(fontSize: 9, fontWeight: FontWeight.w500, color: Colors.blue);
+  static const TextStyle _defaultSelectedPhoneCodeTextStyle = TextStyle(
+    fontSize: 9,
+    fontWeight: FontWeight.w500,
+    color: Colors.blue,
+  );
 
-  static const EdgeInsets _defaultItemPadding =
-      EdgeInsets.symmetric(horizontal: 12, vertical: 8);
-  static const EdgeInsets _buttonPadding =
-      EdgeInsets.symmetric(horizontal: 12, vertical: 10);
-  static const EdgeInsets _itemMargin =
-      EdgeInsets.symmetric(horizontal: 8, vertical: 1);
+  static const EdgeInsets _defaultItemPadding = EdgeInsets.symmetric(
+    horizontal: 12,
+    vertical: 8,
+  );
+  static const EdgeInsets _buttonPadding = EdgeInsets.symmetric(
+    horizontal: 12,
+    vertical: 10,
+  );
+  static const EdgeInsets _itemMargin = EdgeInsets.symmetric(
+    horizontal: 8,
+    vertical: 1,
+  );
 
   static const SizedBox _spacer12 = SizedBox(width: 12);
   static const SizedBox _spacer10 = SizedBox(width: 10);
   static const SizedBox _spacer2 = SizedBox(height: 2);
 
   // Default colors for dark theme
-  static const Color _defaultBackgroundColor =
-      Color(0xFF302E2C); // Original dark theme
-  static const Color _defaultHeaderColor =
-      Color(0xFF3C3A38); // Original dark theme
+  static const Color _defaultBackgroundColor = Color(
+    0xFF302E2C,
+  ); // Original dark theme
+  static const Color _defaultHeaderColor = Color(
+    0xFF3C3A38,
+  ); // Original dark theme
   static const Color _defaultTextColor = Colors.white;
-  static const Color _defaultAccentColor =
-      Color(0xFF699B4B); // Original green accent
-  static const Color _defaultSearchFieldColor =
-      Color(0x0D000000); // Original 5% white
+  static const Color _defaultAccentColor = Color(
+    0xFF699B4B,
+  ); // Original green accent
+  static const Color _defaultSearchFieldColor = Color(
+    0x0D000000,
+  ); // Original 5% white
   static const Color _defaultSearchFieldBorderColor = Colors.white24;
   static const Color _defaultCursorColor = Colors.white;
   static const Color _defaultHintTextColor = Colors.white54;
@@ -392,7 +409,6 @@ class _CountryPickerState extends State<CountryPicker> {
   @override
   void initState() {
     super.initState();
-    _searchController.addListener(_onSearchChanged);
     // Initialize with basic sorted countries (without suggestions)
     _baseCountries = CountryData.countries;
     _allCountries = CountryData.countries;
@@ -400,7 +416,8 @@ class _CountryPickerState extends State<CountryPicker> {
     if (kDebugMode) {
       debugPrint('DEBUG: Initialized with basic countries');
       debugPrint(
-          'DEBUG: First 5 countries in initState: ${_allCountries.take(5).map((c) => c.code).join(', ')}');
+        'DEBUG: First 5 countries in initState: ${_allCountries.take(5).map((c) => c.code).join(', ')}',
+      );
     }
   }
 
@@ -418,7 +435,8 @@ class _CountryPickerState extends State<CountryPicker> {
       if (kDebugMode) {
         debugPrint('DEBUG: Updated countries for language with suggestions');
         debugPrint(
-            'DEBUG: First 5 countries: ${_allCountries.take(5).map((c) => c.code).join(', ')}');
+          'DEBUG: First 5 countries: ${_allCountries.take(5).map((c) => c.code).join(', ')}',
+        );
       }
       // Trigger UI update after sorting
       setState(() {
@@ -443,14 +461,7 @@ class _CountryPickerState extends State<CountryPicker> {
     super.dispose();
   }
 
-  void _onSearchChanged() {
-    final query = _searchController.text.toLowerCase().trim();
-    _filterAndSortCountries(query);
-    setState(() {
-      _isSearching = query.isNotEmpty;
-      _updateCounter++;
-    });
-  }
+  // Removed controller listener; onChanged in TextField handles updates inside the modal
 
   // Calculate Levenshtein distance for fuzzy search
   int _levenshteinDistance(String s1, String s2) {
@@ -503,7 +514,8 @@ class _CountryPickerState extends State<CountryPicker> {
       _filteredCountries = _allCountries;
       if (kDebugMode) {
         debugPrint(
-            'DEBUG: Empty search - showing all countries with suggestions');
+          'DEBUG: Empty search - showing all countries with suggestions',
+        );
       }
       return;
     }
@@ -613,7 +625,8 @@ class _CountryPickerState extends State<CountryPicker> {
     }
 
     final suggestedCountries = CountryLanguageMapping.getSuggestedCountries(
-        CountryLanguageMapping.getCurrentLanguageCode(context));
+      CountryLanguageMapping.getCurrentLanguageCode(context),
+    );
 
     // Create a map for quick lookup
     final countryMap = <String, Country>{};
@@ -641,9 +654,11 @@ class _CountryPickerState extends State<CountryPicker> {
 
     if (kDebugMode) {
       debugPrint(
-          'DEBUG: Suggested countries: ${suggested.length}, Regular: ${regular.length}');
+        'DEBUG: Suggested countries: ${suggested.length}, Regular: ${regular.length}',
+      );
       debugPrint(
-          'DEBUG: First 5 suggested: ${suggested.take(5).map((c) => c.code).join(', ')}');
+        'DEBUG: First 5 suggested: ${suggested.take(5).map((c) => c.code).join(', ')}',
+      );
     }
 
     // Return suggested countries first, then regular countries
@@ -660,14 +675,16 @@ class _CountryPickerState extends State<CountryPicker> {
     if (_isSearching) {
       if (kDebugMode) {
         debugPrint(
-            'DEBUG: Searching - showing only search results without suggestions');
+          'DEBUG: Searching - showing only search results without suggestions',
+        );
       }
       return {'all': _filteredCountries};
     }
 
     // If not searching (empty query), show suggestions + all countries
     final suggestedCountries = CountryLanguageMapping.getSuggestedCountries(
-        CountryLanguageMapping.getCurrentLanguageCode(context));
+      CountryLanguageMapping.getCurrentLanguageCode(context),
+    );
 
     final suggested = <Country>[];
     final regular = <Country>[];
@@ -693,13 +710,11 @@ class _CountryPickerState extends State<CountryPicker> {
 
     if (kDebugMode) {
       debugPrint(
-          'DEBUG: Empty search - showing suggestions (${suggested.length}) + all countries (${regular.length})');
+        'DEBUG: Empty search - showing suggestions (${suggested.length}) + all countries (${regular.length})',
+      );
     }
 
-    return {
-      'suggested': suggested,
-      'regular': regular,
-    };
+    return {'suggested': suggested, 'regular': regular};
   }
 
   /// Create a divider widget for suggested countries section
@@ -741,15 +756,18 @@ class _CountryPickerState extends State<CountryPicker> {
   }
 
   /// Build the country list with suggested countries support
-  Widget _buildCountryList(ScrollController scrollController,
-      CountryLocalizations countryLocalizations) {
+  Widget _buildCountryList(
+    ScrollController scrollController,
+    CountryLocalizations countryLocalizations,
+  ) {
     final organizedCountries = _getOrganizedCountries();
 
     if (organizedCountries.containsKey('all')) {
       // No suggested countries or searching - use simple list
       return ListView.builder(
         key: ValueKey(
-            'country_list_${_filteredCountries.length}_$_updateCounter'),
+          'country_list_${_filteredCountries.length}_$_updateCounter',
+        ),
         controller: scrollController,
         itemCount: _filteredCountries.length,
         itemBuilder: (context, index) =>
@@ -782,7 +800,8 @@ class _CountryPickerState extends State<CountryPicker> {
 
     if (kDebugMode) {
       debugPrint(
-          'DEBUG: Building list with ${suggested.length} suggested + ${regular.length} regular countries');
+        'DEBUG: Building list with ${suggested.length} suggested + ${regular.length} regular countries',
+      );
     }
 
     return ListView.builder(
@@ -795,7 +814,9 @@ class _CountryPickerState extends State<CountryPicker> {
 
   /// Build individual country item
   Widget _buildCountryItem(
-      Country country, CountryLocalizations countryLocalizations) {
+    Country country,
+    CountryLocalizations countryLocalizations,
+  ) {
     final isSelected = widget.selectedCountry?.code == country.code;
     final countryName = countryLocalizations.getCountryName(country.code);
 
@@ -823,10 +844,7 @@ class _CountryPickerState extends State<CountryPicker> {
               child: Row(
                 children: [
                   if (showFlags)
-                    Text(
-                      country.flag,
-                      style: TextStyle(fontSize: flagSize),
-                    ),
+                    Text(country.flag, style: TextStyle(fontSize: flagSize)),
                   _spacer12,
                   Expanded(
                     child: Column(
@@ -862,11 +880,7 @@ class _CountryPickerState extends State<CountryPicker> {
                     ),
                   ),
                   if (isSelected)
-                    Icon(
-                      Icons.check_circle,
-                      color: accentColor,
-                      size: 20,
-                    ),
+                    Icon(Icons.check_circle, color: accentColor, size: 20),
                 ],
               ),
             ),
@@ -884,8 +898,9 @@ class _CountryPickerState extends State<CountryPicker> {
       isScrollControlled: true,
       backgroundColor: backgroundColor,
       shape: RoundedRectangleBorder(
-        borderRadius:
-            BorderRadius.vertical(top: Radius.circular(borderRadius * 2)),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(borderRadius * 2),
+        ),
       ),
       builder: (context) => StatefulBuilder(
         builder: (context, setModalState) {
@@ -902,7 +917,8 @@ class _CountryPickerState extends State<CountryPicker> {
                     decoration: BoxDecoration(
                       color: headerColor,
                       borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(borderRadius * 2)),
+                        top: Radius.circular(borderRadius * 2),
+                      ),
                     ),
                     child: Column(
                       children: [
@@ -929,7 +945,9 @@ class _CountryPickerState extends State<CountryPicker> {
                             color: searchFieldColor,
                             borderRadius: BorderRadius.circular(borderRadius),
                             border: Border.all(
-                                color: searchFieldBorderColor, width: 0.5),
+                              color: searchFieldBorderColor,
+                              width: 0.5,
+                            ),
                           ),
                           child: TextField(
                             controller: _searchController,
@@ -947,14 +965,22 @@ class _CountryPickerState extends State<CountryPicker> {
                             },
                             decoration: InputDecoration(
                               hintText: countryLocalizations.searchCountry,
-                              hintStyle:
-                                  TextStyle(color: hintTextColor, fontSize: 14),
-                              prefixIcon: Icon(Icons.search,
-                                  color: hintTextColor, size: 20),
+                              hintStyle: TextStyle(
+                                color: hintTextColor,
+                                fontSize: 14,
+                              ),
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: hintTextColor,
+                                size: 20,
+                              ),
                               suffixIcon: _isSearching
                                   ? IconButton(
-                                      icon: Icon(Icons.clear,
-                                          color: hintTextColor, size: 18),
+                                      icon: Icon(
+                                        Icons.clear,
+                                        color: hintTextColor,
+                                        size: 18,
+                                      ),
                                       onPressed: () {
                                         _searchController.clear();
                                         setModalState(() {
@@ -967,7 +993,9 @@ class _CountryPickerState extends State<CountryPicker> {
                                   : null,
                               border: InputBorder.none,
                               contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 14),
+                                horizontal: 12,
+                                vertical: 14,
+                              ),
                               isDense: false,
                               alignLabelWithHint: true,
                             ),
@@ -978,7 +1006,9 @@ class _CountryPickerState extends State<CountryPicker> {
                   ),
                   Expanded(
                     child: _buildCountryList(
-                        scrollController, countryLocalizations),
+                      scrollController,
+                      countryLocalizations,
+                    ),
                   ),
                 ],
               ),
@@ -994,85 +1024,102 @@ class _CountryPickerState extends State<CountryPicker> {
     final countryLocalizations = CountryLocalizations.of(context);
 
     return RepaintBoundary(
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          key: ValueKey('country_picker_$_updateCounter'),
-          onTap: _showCountryPicker,
-          borderRadius: BorderRadius.circular(borderRadius),
-          child: Container(
-            padding: _buttonPadding,
-            constraints: const BoxConstraints(
-                minHeight: 48), // Minimum height to prevent overflow
-            decoration: BoxDecoration(
-              border: Border.all(color: searchFieldBorderColor, width: 0.5),
-              borderRadius: BorderRadius.circular(borderRadius),
-              color: searchFieldColor,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (widget.labelText != null) ...[
+            Text(
+              widget.labelText!,
+              style: TextStyle(
+                color: hintTextColor,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-            child: Row(
-              children: [
-                if (widget.selectedCountry != null) ...[
-                  Text(
-                    widget.selectedCountry!.flag,
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  _spacer10,
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min, // Fix Column layout issue
-                      children: [
-                        Text(
-                          CountryLocalizations.getCountryNameSafe(
-                              context, widget.selectedCountry!.code),
-                          style: TextStyle(
-                            color: textColor,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          overflow:
-                              TextOverflow.ellipsis, // Handle text overflow
-                        ),
-                        _spacer2,
-                        Text(
-                          widget.selectedCountry!.code,
-                          style: TextStyle(
-                            color: hintTextColor,
-                            fontSize: 11,
-                          ),
-                          overflow:
-                              TextOverflow.ellipsis, // Handle text overflow
-                        ),
-                        if (widget.showPhoneCodes) ...[
-                          _spacer2,
-                          Text(
-                            widget.selectedCountry!.phoneCode,
-                            style: _defaultSelectedPhoneCodeTextStyle,
-                            overflow:
-                                TextOverflow.ellipsis, // Handle text overflow
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                ] else ...[
-                  Icon(Icons.flag, color: hintTextColor, size: 18),
-                  _spacer10,
-                  Expanded(
-                    child: Text(
-                      widget.hintText ?? countryLocalizations.selectYourCountry,
-                      style: TextStyle(
-                        color: hintTextColor,
-                        fontSize: 14,
+            const SizedBox(height: 6),
+          ],
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              key: ValueKey('country_picker_$_updateCounter'),
+              onTap: _showCountryPicker,
+              borderRadius: BorderRadius.circular(borderRadius),
+              child: Container(
+                padding: _buttonPadding,
+                constraints: const BoxConstraints(
+                  minHeight: 48,
+                ), // Minimum height to prevent overflow
+                decoration: BoxDecoration(
+                  border: Border.all(color: searchFieldBorderColor, width: 0.5),
+                  borderRadius: BorderRadius.circular(borderRadius),
+                  color: searchFieldColor,
+                ),
+                child: Row(
+                  children: [
+                    if (widget.selectedCountry != null) ...[
+                      Text(
+                        widget.selectedCountry!.flag,
+                        style: const TextStyle(fontSize: 18),
                       ),
-                    ),
-                  ),
-                ],
-                Icon(Icons.arrow_drop_down, color: hintTextColor, size: 20),
-              ],
+                      _spacer10,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize:
+                              MainAxisSize.min, // Fix Column layout issue
+                          children: [
+                            Text(
+                              CountryLocalizations.getCountryNameSafe(
+                                context,
+                                widget.selectedCountry!.code,
+                              ),
+                              style: TextStyle(
+                                color: textColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              overflow:
+                                  TextOverflow.ellipsis, // Handle text overflow
+                            ),
+                            _spacer2,
+                            Text(
+                              widget.selectedCountry!.code,
+                              style:
+                                  TextStyle(color: hintTextColor, fontSize: 11),
+                              overflow:
+                                  TextOverflow.ellipsis, // Handle text overflow
+                            ),
+                            if (widget.showPhoneCodes) ...[
+                              _spacer2,
+                              Text(
+                                widget.selectedCountry!.phoneCode,
+                                style: _defaultSelectedPhoneCodeTextStyle,
+                                overflow: TextOverflow
+                                    .ellipsis, // Handle text overflow
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                    ] else ...[
+                      Icon(Icons.flag, color: hintTextColor, size: 18),
+                      _spacer10,
+                      Expanded(
+                        child: Text(
+                          widget.hintText ??
+                              countryLocalizations.selectYourCountry,
+                          style: TextStyle(color: hintTextColor, fontSize: 14),
+                        ),
+                      ),
+                    ],
+                    Icon(Icons.arrow_drop_down, color: hintTextColor, size: 20),
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

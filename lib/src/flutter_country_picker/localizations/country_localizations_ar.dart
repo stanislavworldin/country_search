@@ -276,6 +276,6 @@ class CountryLocalizationsAr extends CountryLocalizations {
     "HM": "جزيرة هيرد وجزر ماكدونالد",
     "GS": "جورجيا الجنوبية وجزر ساندويتش الجنوبية",
     "PN": "جزر بيتكيرن",
-    "WF": "واليس وفوتونا"
+    "WF": "واليس وفوتونا",
   };
 }

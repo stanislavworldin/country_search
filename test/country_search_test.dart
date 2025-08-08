@@ -4,16 +4,13 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('CountrySearch Tests', () {
-    testWidgets('CountryPicker displays correctly',
-        (WidgetTester tester) async {
+    testWidgets('CountryPicker displays correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         const MaterialApp(
-          localizationsDelegates: [
-            CountryLocalizations.delegate,
-          ],
-          supportedLocales: [
-            Locale('en'),
-          ],
+          localizationsDelegates: [CountryLocalizations.delegate],
+          supportedLocales: [Locale('en')],
           home: Scaffold(
             body: CountryPicker(
               selectedCountry: null,
@@ -25,17 +22,14 @@ void main() {
       expect(find.byType(CountryPicker), findsOneWidget);
     });
 
-    testWidgets('CountryPicker shows selected country',
-        (WidgetTester tester) async {
+    testWidgets('CountryPicker shows selected country', (
+      WidgetTester tester,
+    ) async {
       const testCountry = Country(code: 'US', flag: '🇺🇸', phoneCode: '+1');
       await tester.pumpWidget(
         const MaterialApp(
-          localizationsDelegates: [
-            CountryLocalizations.delegate,
-          ],
-          supportedLocales: [
-            Locale('en'),
-          ],
+          localizationsDelegates: [CountryLocalizations.delegate],
+          supportedLocales: [Locale('en')],
           home: Scaffold(
             body: CountryPicker(
               selectedCountry: testCountry,

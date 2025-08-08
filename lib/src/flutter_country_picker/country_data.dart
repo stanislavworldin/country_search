@@ -314,8 +314,9 @@ class CountryData {
   /// Returns null if the country code is not found
   static Country? getCountryByCode(String code) {
     try {
-      return countries
-          .firstWhere((country) => country.code == code.toUpperCase());
+      return countries.firstWhere(
+        (country) => country.code == code.toUpperCase(),
+      );
     } catch (e) {
       if (kDebugMode) {
         debugPrint('DEBUG: Country not found for code: $code');
@@ -342,7 +343,8 @@ class CountryData {
   ///
   /// [getCountryName] should be a function that returns the localized name for a country code
   static List<Country> getSortedCountries(
-      String Function(String) getCountryName) {
+    String Function(String) getCountryName,
+  ) {
     final sortedCountries = List<Country>.from(countries);
 
     sortedCountries.sort((a, b) {
@@ -362,7 +364,9 @@ class CountryData {
   /// [query] is the search term
   /// [getCountryName] should be a function that returns the localized name for a country code
   static List<Country> searchCountries(
-      String query, String Function(String) getCountryName) {
+    String query,
+    String Function(String) getCountryName,
+  ) {
     if (query.isEmpty) return countries;
 
     final lowercaseQuery = query.toLowerCase().trim();
@@ -419,7 +423,8 @@ class CountryData {
 
     if (kDebugMode) {
       debugPrint(
-          'DEBUG: Phone search "$phoneCode" - found ${results.length} countries');
+        'DEBUG: Phone search "$phoneCode" - found ${results.length} countries',
+      );
     }
     return results;
   }

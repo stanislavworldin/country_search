@@ -277,6 +277,6 @@ class CountryLocalizationsDe extends CountryLocalizations {
     "HM": "Heard und McDonaldinseln",
     "GS": "Südgeorgien und die Südlichen Sandwichinseln",
     "PN": "Pitcairninseln",
-    "WF": "Wallis und Futuna"
+    "WF": "Wallis und Futuna",
   };
 }

@@ -276,6 +276,6 @@ class CountryLocalizationsFr extends CountryLocalizations {
     "HM": "Îles Heard-et-MacDonald",
     "GS": "Géorgie du Sud-et-les Îles Sandwich du Sud",
     "PN": "Pitcairn",
-    "WF": "Wallis-et-Futuna"
+    "WF": "Wallis-et-Futuna",
   };
 }

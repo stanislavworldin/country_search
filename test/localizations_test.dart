@@ -32,7 +32,9 @@ void main() {
       expect(localizations.selectCountry, equals('Sélectionner un pays'));
       expect(localizations.searchCountry, equals('Rechercher un pays...'));
       expect(
-          localizations.selectYourCountry, equals('Sélectionnez votre pays'));
+        localizations.selectYourCountry,
+        equals('Sélectionnez votre pays'),
+      );
     });
 
     test('Russian localizations work correctly', () {
@@ -127,8 +129,10 @@ void main() {
 
       expect(localizations.getCountryName('US'), equals('الولايات المتحدة'));
       expect(localizations.getCountryName('RU'), equals('روسيا'));
-      expect(localizations.getCountryName('SA'),
-          equals('المملكة العربية السعودية'));
+      expect(
+        localizations.getCountryName('SA'),
+        equals('المملكة العربية السعودية'),
+      );
       expect(localizations.selectCountry, equals('اختر البلد'));
       expect(localizations.searchCountry, equals('البحث عن بلد...'));
       expect(localizations.selectYourCountry, equals('اختر بلدك'));
@@ -137,8 +141,10 @@ void main() {
     test('Turkish localizations work correctly', () {
       final localizations = CountryLocalizationsTr();
 
-      expect(localizations.getCountryName('US'),
-          equals('Amerika Birleşik Devletleri'));
+      expect(
+        localizations.getCountryName('US'),
+        equals('Amerika Birleşik Devletleri'),
+      );
       expect(localizations.getCountryName('RU'), equals('Rusya'));
       expect(localizations.getCountryName('TR'), equals('Türkiye'));
       expect(localizations.selectCountry, equals('Ülke Seç'));
@@ -161,7 +167,9 @@ void main() {
       final localizations = CountryLocalizationsHi();
 
       expect(
-          localizations.getCountryName('US'), equals('संयुक्त राज्य अमेरिका'));
+        localizations.getCountryName('US'),
+        equals('संयुक्त राज्य अमेरिका'),
+      );
       expect(localizations.getCountryName('RU'), equals('रूस'));
       expect(localizations.getCountryName('IN'), equals('भारत'));
       expect(localizations.selectCountry, equals('देश चुनें'));
@@ -183,8 +191,10 @@ void main() {
     test('Ukrainian localizations work correctly', () {
       final localizations = CountryLocalizationsUk();
 
-      expect(localizations.getCountryName('US'),
-          equals('Сполучені Штати Америки'));
+      expect(
+        localizations.getCountryName('US'),
+        equals('Сполучені Штати Америки'),
+      );
       expect(localizations.getCountryName('RU'), equals('Росія'));
       expect(localizations.getCountryName('UA'), equals('Україна'));
       expect(localizations.selectCountry, equals('Оберіть країну'));

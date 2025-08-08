@@ -276,6 +276,6 @@ class CountryLocalizationsVi extends CountryLocalizations {
     "HM": "Đảo Heard và Quần đảo McDonald",
     "GS": "Nam Georgia và Quần đảo Nam Sandwich",
     "PN": "Pitcairn",
-    "WF": "Wallis và Futuna"
+    "WF": "Wallis và Futuna",
   };
 }

@@ -276,6 +276,6 @@ class CountryLocalizationsTr extends CountryLocalizations {
     "HM": "Heard ve McDonald Adaları",
     "GS": "Güney Georgia ve Güney Sandwich Adaları",
     "PN": "Pitcairn",
-    "WF": "Wallis ve Futuna"
+    "WF": "Wallis ve Futuna",
   };
 }

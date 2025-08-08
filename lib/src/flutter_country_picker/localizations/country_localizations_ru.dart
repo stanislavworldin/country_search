@@ -276,6 +276,6 @@ class CountryLocalizationsRu extends CountryLocalizations {
     "HM": "Острова Херд и Макдональд",
     "GS": "Южная Георгия и Южные Сандвичевы острова",
     "PN": "Питкэрн",
-    "WF": "Уоллис и Футуна"
+    "WF": "Уоллис и Футуна",
   };
 }

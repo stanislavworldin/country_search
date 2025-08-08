@@ -276,6 +276,6 @@ class CountryLocalizationsId extends CountryLocalizations {
     "HM": "Pulau Heard dan Kepulauan McDonald",
     "GS": "Georgia Selatan dan Kepulauan Sandwich Selatan",
     "PN": "Pitcairn",
-    "WF": "Wallis dan Futuna"
+    "WF": "Wallis dan Futuna",
   };
 }

@@ -276,6 +276,6 @@ class CountryLocalizationsNl extends CountryLocalizations {
     "HM": "Heard en McDonaldeilanden",
     "GS": "Zuid-Georgia en de Zuidelijke Sandwicheilanden",
     "PN": "Pitcairneilanden",
-    "WF": "Wallis en Futuna"
+    "WF": "Wallis en Futuna",
   };
 }

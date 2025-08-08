@@ -276,6 +276,6 @@ class CountryLocalizationsJa extends CountryLocalizations {
     "HM": "ハード島・マクドナルド諸島",
     "GS": "サウスジョージア・サウスサンドウィッチ諸島",
     "PN": "ピトケアン諸島",
-    "WF": "ウォリス・フツナ"
+    "WF": "ウォリス・フツナ",
   };
 }

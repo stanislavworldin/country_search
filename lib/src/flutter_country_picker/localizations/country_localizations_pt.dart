@@ -276,6 +276,6 @@ class CountryLocalizationsPt extends CountryLocalizations {
     "HM": "Ilha Heard e Ilhas McDonald",
     "GS": "Geórgia do Sul e Ilhas Sandwich do Sul",
     "PN": "Ilhas Pitcairn",
-    "WF": "Wallis e Futuna"
+    "WF": "Wallis e Futuna",
   };
 }

@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.8.2] - 2025-08-08
+
+### Changed
+- UI: `labelText` is now rendered above the country picker when provided.
+
+### Fixed/Perf
+- Removed an unused `_searchController` listener. Search updates are handled via `TextField.onChanged` inside the modal. Fewer redundant `setState` calls and more stable rebuilds.
+
+### Docs
+- README: synchronized version mentions (2.8.1) and minor copy edits.
+
+### QA
+- Ran `dart format`, `flutter analyze`, and `flutter test` — all green.
+
 ## [2.8.1] - 2025-01-29
 
 ### Fixed

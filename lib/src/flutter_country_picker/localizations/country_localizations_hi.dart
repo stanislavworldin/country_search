@@ -276,6 +276,6 @@ class CountryLocalizationsHi extends CountryLocalizations {
     "HM": "हर्ड और मैकडोनाल्ड द्वीप",
     "GS": "दक्षिण जॉर्जिया और दक्षिण सैंडविच द्वीप",
     "PN": "पिटकेर्न",
-    "WF": "वालिस और फ़ुटुना"
+    "WF": "वालिस और फ़ुटुना",
   };
 }

@@ -276,6 +276,6 @@ class CountryLocalizationsKo extends CountryLocalizations {
     "HM": "허드 맥도널드 제도",
     "GS": "사우스조지아 사우스샌드위치 제도",
     "PN": "핏케언 제도",
-    "WF": "왈리스 푸투나"
+    "WF": "왈리스 푸투나",
   };
 }
