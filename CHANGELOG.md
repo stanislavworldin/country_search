@@ -1,3 +1,18 @@
+## [2.8.5] - 2025-08-09
+
+### Added
+- Centered dialog now closes on outside tap (barrier dismiss) like bottom sheet.
+- Close button added to header (Material-style trailing `X`) in both bottom sheet and dialog.
+
+### Changed
+- Header layout unified via `_buildModalHeader` for consistent UX across presentations.
+
+### Docs
+- No README changes required (uses `MaterialLocalizations.closeButtonLabel` for i18n of Close tooltip).
+
+### QA
+- Ran `dart format`, `flutter analyze`, and `flutter test` — all green.
+
 # Changelog
 
 ## [2.8.4] - 2025-08-08

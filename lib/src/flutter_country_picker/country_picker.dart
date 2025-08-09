@@ -5,10 +5,7 @@ import 'country_language_mapping.dart';
 import 'localizations/country_localizations.dart';
 
 /// Presentation style for country picker modal
-enum CountryPickerModalPresentation {
-  bottomSheet,
-  dialog,
-}
+enum CountryPickerModalPresentation { bottomSheet, dialog }
 
 /// Builder API for creating CountryPicker with a fluent interface
 class CountryPickerBuilder {
@@ -182,7 +179,8 @@ class CountryPickerBuilder {
 
   /// Set how the picker is presented (bottom sheet by default)
   CountryPickerBuilder modalPresentation(
-      CountryPickerModalPresentation presentation) {
+    CountryPickerModalPresentation presentation,
+  ) {
     _modalPresentation = presentation;
     return this;
   }
@@ -451,8 +449,9 @@ class _CountryPickerState extends State<CountryPicker> {
       // Use basic countries list; organize depending on suggestion setting
       if (widget.showSuggestedCountries) {
         // Suggestions enabled: organize suggestions first
-        _allCountries =
-            _organizeCountriesWithSuggestions(CountryData.countries);
+        _allCountries = _organizeCountriesWithSuggestions(
+          CountryData.countries,
+        );
       } else {
         // Suggestions disabled: sort alphabetically by localized name
         final countryLocalizations = CountryLocalizations.of(context);
@@ -769,12 +768,13 @@ class _CountryPickerState extends State<CountryPicker> {
             ),
           ),
           const SizedBox(height: 12),
-          Text(
-            countryLocalizations.selectCountry,
-            style: TextStyle(
-              color: textColor,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
+          Align(
+            alignment: Alignment.centerRight,
+            child: IconButton(
+              icon: Icon(Icons.close, color: hintTextColor, size: 20),
+              splashRadius: 20,
+              onPressed: () => Navigator.of(context).pop(),
+              tooltip: MaterialLocalizations.of(context).closeButtonLabel,
             ),
           ),
           const SizedBox(height: 12),
@@ -782,10 +782,7 @@ class _CountryPickerState extends State<CountryPicker> {
             decoration: BoxDecoration(
               color: searchFieldColor,
               borderRadius: BorderRadius.circular(borderRadius),
-              border: Border.all(
-                color: searchFieldBorderColor,
-                width: 0.5,
-              ),
+              border: Border.all(color: searchFieldBorderColor, width: 0.5),
             ),
             child: TextField(
               controller: _searchController,
@@ -803,22 +800,11 @@ class _CountryPickerState extends State<CountryPicker> {
               },
               decoration: InputDecoration(
                 hintText: countryLocalizations.searchCountry,
-                hintStyle: TextStyle(
-                  color: hintTextColor,
-                  fontSize: 14,
-                ),
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: hintTextColor,
-                  size: 20,
-                ),
+                hintStyle: TextStyle(color: hintTextColor, fontSize: 14),
+                prefixIcon: Icon(Icons.search, color: hintTextColor, size: 20),
                 suffixIcon: _isSearching
                     ? IconButton(
-                        icon: Icon(
-                          Icons.clear,
-                          color: hintTextColor,
-                          size: 18,
-                        ),
+                        icon: Icon(Icons.clear, color: hintTextColor, size: 18),
                         onPressed: () {
                           _searchController.clear();
                           setModalState(() {
@@ -1066,34 +1052,33 @@ class _CountryPickerState extends State<CountryPicker> {
             final scrollController = ScrollController();
             return Dialog(
               backgroundColor: Colors.transparent,
-              insetPadding:
-                  const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxHeight: maxHeight,
-                    maxWidth: dialogWidth,
+              insetPadding: const EdgeInsets.symmetric(
+                horizontal: 24,
+                vertical: 24,
+              ),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: maxHeight,
+                  maxWidth: dialogWidth,
+                ),
+                child: Material(
+                  color: backgroundColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(borderRadius * 2),
                   ),
-                  child: Material(
-                    color: backgroundColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(borderRadius * 2),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(borderRadius * 2),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          _buildModalHeader(
-                              setModalState, countryLocalizations),
-                          Expanded(
-                            child: _buildCountryList(
-                              scrollController,
-                              countryLocalizations,
-                            ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(borderRadius * 2),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildModalHeader(setModalState, countryLocalizations),
+                        Expanded(
+                          child: _buildCountryList(
+                            scrollController,
+                            countryLocalizations,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
