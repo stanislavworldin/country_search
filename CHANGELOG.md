@@ -14,6 +14,8 @@
 
 ### Docs
 - Updated README installation snippet to `^2.8.6`.
+- Expanded technical documentation in README (compatibility, API reference, search behavior, performance notes, troubleshooting).
+- Added MIGRATION.md with upgrade notes for `2.8.6`.
 
 ### QA
 - Ran `flutter analyze`, `flutter test`, and `dart pub publish --dry-run`.
