@@ -507,11 +507,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     );
                   })
-                  .purpleTheme()
-                  .itemHeight(72.0)
-                  .flagSize(28.0)
-                  .textStyle(
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  .themeData(
+                    CountryPickerThemeData.purple.copyWith(
+                      itemHeight: 72.0,
+                      flagSize: 28.0,
+                      textStyle: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   )
                   .build(),
               const SizedBox(height: 16),

@@ -1,13 +1,16 @@
 # Migration Guide
 
-## Upgrade to 2.8.6
+## Upgrade to 2.9.0
 
-Version `2.8.6` is a maintenance and performance-focused release.
+Version `2.9.0` introduces API simplification and performance-focused improvements.
 
 ## What changed
 
 - Stronger callback typing in public API:
   - `onCountrySelected` now uses `ValueChanged<Country>`.
+- New unified styling object:
+  - `CountryPickerThemeData` for visual customization in one place.
+- Builder now supports `.themeData(...)` for theme-driven configuration.
 - Internal search and lookup optimizations.
 - Dev tooling update to `flutter_lints ^6.0.0`.
 
@@ -29,13 +32,39 @@ After:
 final ValueChanged<Country> onCountrySelected;
 ```
 
+If you previously passed many separate style fields, move them into one theme object.
+
+Before:
+
+```dart
+CountryPicker.builder()
+    .backgroundColor(Colors.white)
+    .headerColor(const Color(0xFFF5F5F5))
+    .accentColor(Colors.blue)
+    .borderRadius(12)
+    .build();
+```
+
+After:
+
+```dart
+final theme = CountryPickerThemeData.light.copyWith(
+  accentColor: Colors.blue,
+  borderRadius: 12,
+);
+
+CountryPicker.builder()
+    .themeData(theme)
+    .build();
+```
+
 ## Recommended upgrade steps
 
 1. Update dependency:
 
 ```yaml
 dependencies:
-  country_search: ^2.8.6
+  country_search: ^2.9.0
 ```
 
 2. Fetch packages:

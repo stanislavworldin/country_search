@@ -1,153 +1,108 @@
 # country_search
 
-A Flutter country picker with fast search, localization, and flexible UI customization.
-
-## Features
-
-- 250+ countries with ISO code, flag emoji, and phone code.
-- Search by localized country name, ISO code, and phone code.
-- Search result priority: exact match, prefix match, contains match, fuzzy match.
-- Locale-driven suggested countries.
-- Two presentation modes: bottom sheet and centered dialog.
-- Constructor API and fluent Builder API.
-- 19 built-in localizations.
-
-## Compatibility
-
-- Declared constraints:
-  - Dart: `>=3.0.0 <4.0.0`
-  - Flutter: `>=3.0.0`
-- Last verified on:
-  - Flutter `3.41.2`
-  - Dart `3.11.0`
-  - Date: March 3, 2026
+A Flutter country picker with fast search, localization, and flexible UI.
 
 ## Installation
 
 ```yaml
 dependencies:
-  country_search: ^2.8.6
+  country_search: ^2.9.0
 ```
 
-## Quick Start
+## Quick Setup
 
 ```dart
 import 'package:country_search/country_search.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-class ExamplePage extends StatefulWidget {
-  const ExamplePage({super.key});
-
-  @override
-  State<ExamplePage> createState() => _ExamplePageState();
-}
-
-class _ExamplePageState extends State<ExamplePage> {
-  Country? selectedCountry;
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      localizationsDelegates: const [
-        CountryLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: CountryLocalizations.supportedLocales,
-      home: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(16),
-          child: CountryPicker(
-            selectedCountry: selectedCountry,
-            onCountrySelected: (country) {
-              setState(() {
-                selectedCountry = country;
-              });
-            },
-          ),
-        ),
-      ),
-    );
-  }
-}
+MaterialApp(
+  localizationsDelegates: const [
+    CountryLocalizations.delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+  ],
+  supportedLocales: CountryLocalizations.supportedLocales,
+  home: const DemoPage(),
+)
 ```
 
-## Builder API
+## Basic (Recommended)
+
+Use the Builder API for all new code.
 
 ```dart
 CountryPicker.builder()
     .selectedCountry(selectedCountry)
-    .onCountrySelected((country) => setState(() => selectedCountry = country))
+    .onCountrySelected((country) {
+      setState(() => selectedCountry = country);
+    })
     .build();
 ```
 
-Use dialog presentation instead of bottom sheet:
+## Advanced (Recommended)
+
+Use a single `CountryPickerThemeData` object instead of many separate style params.
 
 ```dart
+final pickerTheme = CountryPickerThemeData.light.copyWith(
+  accentColor: const Color(0xFF1565C0),
+  borderRadius: 12,
+  itemHeight: 56,
+  flagSize: 20,
+);
+
 CountryPicker.builder()
     .selectedCountry(selectedCountry)
-    .onCountrySelected((country) => setState(() => selectedCountry = country))
+    .onCountrySelected((country) {
+      setState(() => selectedCountry = country);
+    })
+    .themeData(pickerTheme)
     .modalPresentation(CountryPickerModalPresentation.dialog)
+    .showSuggestedCountries(true)
     .build();
 ```
 
-## Localization
+### Built-in Theme Presets
 
-Supported language codes:
-`ar`, `de`, `en`, `es`, `fr`, `hi`, `id`, `it`, `ja`, `ko`, `nl`, `pl`, `pt`, `ru`, `th`, `tr`, `uk`, `vi`, `zh`.
+- `CountryPickerThemeData.dark`
+- `CountryPickerThemeData.light`
+- `CountryPickerThemeData.purple`
+- `CountryPickerThemeData.minimal`
 
-Get a localized country name:
+Builder helpers are also available:
+
+- `.darkTheme()`
+- `.lightTheme()`
+- `.purpleTheme()`
+- `.minimalTheme()`
+
+## Legacy API (Backward Compatible)
+
+The constructor with individual style fields is still supported for compatibility,
+but new code should prefer Builder + `themeData`.
 
 ```dart
-Text(country.getDisplayName(context))
+CountryPicker(
+  selectedCountry: selectedCountry,
+  onCountrySelected: (country) {
+    setState(() => selectedCountry = country);
+  },
+  backgroundColor: Colors.white,
+  accentColor: Colors.blue,
+)
 ```
 
 ## Search Behavior
 
 - Empty query:
-  - with `showSuggestedCountries = true`: suggested section + full alphabetical list.
-  - with `showSuggestedCountries = false`: full alphabetical list.
+  - `showSuggestedCountries = true`: suggested section + full list.
+  - `showSuggestedCountries = false`: full list.
 - Non-empty query:
-  - search runs over base countries only.
-  - result ordering is by relevance group, then alphabetically inside each group:
-    1. exact
-    2. starts with
-    3. contains
-    4. fuzzy
+  - Search by localized name, ISO code, phone code.
+  - Ranking: exact, startsWith, contains, fuzzy.
 - Phone code normalization:
-  - both `+380` and `380` formats are supported.
-
-## API Reference
-
-`CountryPicker` main parameters:
-
-| Parameter | Type | Default | Notes |
-| --- | --- | --- | --- |
-| `selectedCountry` | `Country?` | `null` | Current selection |
-| `onCountrySelected` | `ValueChanged<Country>` | required | Selection callback |
-| `labelText` | `String?` | `null` | Label above picker |
-| `hintText` | `String?` | localized | Placeholder text |
-| `showPhoneCodes` | `bool` | `true` | Show phone code in rows |
-| `showCountryCodes` | `bool` | `true` | Show ISO codes |
-| `showFlags` | `bool` | `true` | Show flag emojis |
-| `itemHeight` | `double?` | `56.0` | Ignored when `adaptiveHeight=true` |
-| `adaptiveHeight` | `bool` | `false` | Row height based on content |
-| `itemPadding` | `EdgeInsets?` | `h:12, v:8` | Row inner padding |
-| `flagSize` | `double?` | `20.0` | Flag text size |
-| `showSuggestedCountries` | `bool` | `true` | Locale-based suggested section |
-| `modalPresentation` | `CountryPickerModalPresentation` | `bottomSheet` | `bottomSheet` or `dialog` |
-| `backgroundColor` | `Color?` | theme default | Modal background |
-| `headerColor` | `Color?` | theme default | Header background |
-| `textColor` | `Color?` | theme default | Primary text |
-| `accentColor` | `Color?` | theme default | Selection and accents |
-| `searchFieldColor` | `Color?` | theme default | Search field background |
-| `searchFieldBorderColor` | `Color?` | theme default | Search field border |
-| `cursorColor` | `Color?` | theme default | Search cursor color |
-| `hintTextColor` | `Color?` | theme default | Hint and secondary text |
-| `hoverColor` | `Color?` | theme default | Row hover color |
-| `borderRadius` | `double?` | `8.0` | Picker and modal radius |
-| `textStyle` | `TextStyle?` | `fontSize:14` | Row base text style |
+  - `+380` and `380` both work.
 
 ## Country Model
 
@@ -165,57 +120,12 @@ class Country {
 
 See [MIGRATION.md](MIGRATION.md).
 
-Important for `2.8.6`:
+## Compatibility
 
-- Callback type is now explicitly `ValueChanged<Country>`.
-- Tooling/lints updated to `flutter_lints ^6.0.0`.
-
-## Performance Notes
-
-- Country lookups by ISO/phone code are O(1) via prebuilt maps.
-- Search uses grouped ranking and caches localized names per query.
-- Fuzzy matching uses an optimized Levenshtein implementation with early exit.
-- Suggested/regular sections for empty query are precomputed per locale update.
-
-## Known Limitations
-
-- Country and localization data are bundled statically in the package.
-- Suggested countries are based on language heuristics, not user geolocation.
-- With suggestions enabled and empty query, a country may appear in both suggested and regular sections by design.
-
-## Troubleshooting
-
-### Country names are not localized
-
-Ensure delegates are configured in `MaterialApp`:
-
-```dart
-localizationsDelegates: const [
-  CountryLocalizations.delegate,
-  GlobalMaterialLocalizations.delegate,
-  GlobalWidgetsLocalizations.delegate,
-  GlobalCupertinoLocalizations.delegate,
-],
-supportedLocales: CountryLocalizations.supportedLocales,
-```
-
-### Search by phone code returns unexpected ordering
-
-This is expected when multiple countries share the same dialing code (for example `+1`).
-Ordering follows relevance, then alphabetical localized name.
-
-### Build error related to color APIs in older Flutter
-
-Upgrade Flutter to a recent stable version and run:
-
-```bash
-flutter clean
-flutter pub get
-```
+- Dart: `>=3.0.0 <4.0.0`
+- Flutter: `>=3.0.0`
 
 ## Development
-
-Local verification commands:
 
 ```bash
 flutter analyze

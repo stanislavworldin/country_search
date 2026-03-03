@@ -1,9 +1,27 @@
+## [2.9.0] - 2026-03-03
+
+### Added
+- New unified visual configuration object: `CountryPickerThemeData`.
+- Builder support for `.themeData(...)` with built-in presets (`dark`, `light`, `purple`, `minimal`).
+
+### Changed
+- Documentation simplified into clear paths: `Basic (Recommended)`, `Advanced (Recommended)`, `Legacy API`.
+- Example updated to use `CountryPickerThemeData` in advanced Builder usage.
+
+### Performance
+- Retained 2.8.6 search and lookup optimizations (grouped ranking, cached localized names, optimized fuzzy matching, O(1) lookups).
+
+### Docs
+- README installation version updated to `^2.9.0`.
+- MIGRATION guide updated for `2.9.0`.
+
 ## [2.8.6] - 2026-03-03
 
 ### Changed
 - Updated `flutter_lints` to `^6.0.0` in package and example to align with latest Flutter/Dart tooling.
 - Refreshed lockfiles with current resolvable dependency graph.
 - Updated callback types from `Function(Country)` to `ValueChanged<Country>` in public API for stricter typing.
+- Added `CountryPickerThemeData` and Builder support for `.themeData(...)` to centralize visual configuration.
 
 ### Performance
 - Optimized search ranking: removed repeated `contains()` checks in comparator by sorting inside match groups.
@@ -14,8 +32,8 @@
 
 ### Docs
 - Updated README installation snippet to `^2.8.6`.
-- Expanded technical documentation in README (compatibility, API reference, search behavior, performance notes, troubleshooting).
-- Added MIGRATION.md with upgrade notes for `2.8.6`.
+- Reworked README into clear usage levels: `Basic` and `Advanced`, with `Legacy` path for backward compatibility.
+- Updated MIGRATION.md with `CountryPickerThemeData` migration examples.
 
 ### QA
 - Ran `flutter analyze`, `flutter test`, and `dart pub publish --dry-run`.

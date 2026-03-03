@@ -9,6 +9,133 @@ import 'localizations/country_localizations.dart';
 /// Presentation style for country picker modal
 enum CountryPickerModalPresentation { bottomSheet, dialog }
 
+/// Theme configuration for [CountryPicker].
+@immutable
+class CountryPickerThemeData {
+  final Color? backgroundColor;
+  final Color? headerColor;
+  final Color? textColor;
+  final Color? accentColor;
+  final Color? searchFieldColor;
+  final Color? searchFieldBorderColor;
+  final Color? cursorColor;
+  final Color? hintTextColor;
+  final Color? hoverColor;
+  final double? borderRadius;
+  final TextStyle? textStyle;
+  final double? itemHeight;
+  final EdgeInsets? itemPadding;
+  final double? flagSize;
+
+  const CountryPickerThemeData({
+    this.backgroundColor,
+    this.headerColor,
+    this.textColor,
+    this.accentColor,
+    this.searchFieldColor,
+    this.searchFieldBorderColor,
+    this.cursorColor,
+    this.hintTextColor,
+    this.hoverColor,
+    this.borderRadius,
+    this.textStyle,
+    this.itemHeight,
+    this.itemPadding,
+    this.flagSize,
+  });
+
+  static const CountryPickerThemeData dark = CountryPickerThemeData(
+    backgroundColor: Color(0xFF302E2C),
+    headerColor: Color(0xFF3C3A38),
+    textColor: Colors.white,
+    accentColor: Color(0xFF699B4B),
+    searchFieldColor: Color(0x0D000000),
+    searchFieldBorderColor: Colors.white24,
+    cursorColor: Colors.white,
+    hintTextColor: Colors.white54,
+    hoverColor: Colors.white10,
+    borderRadius: 8.0,
+    textStyle: TextStyle(fontSize: 14),
+    itemPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    flagSize: 20.0,
+  );
+
+  static const CountryPickerThemeData light = CountryPickerThemeData(
+    backgroundColor: Colors.white,
+    headerColor: Color(0xFFF5F5F5),
+    textColor: Colors.black87,
+    accentColor: Colors.blue,
+    searchFieldColor: Color(0xFFF0F0F0),
+    searchFieldBorderColor: Color(0xFFE0E0E0),
+    cursorColor: Colors.blue,
+    hintTextColor: Color(0xFF757575),
+    hoverColor: Color(0xFFF5F5F5),
+    borderRadius: 8.0,
+    textStyle: TextStyle(fontSize: 14),
+    itemPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    flagSize: 20.0,
+  );
+
+  static const CountryPickerThemeData purple = CountryPickerThemeData(
+    backgroundColor: Color(0xFF2D1B69),
+    headerColor: Color(0xFF3C2B7A),
+    textColor: Colors.white,
+    accentColor: Color(0xFF9C27B0),
+    searchFieldColor: Color(0x1AFFFFFF),
+    searchFieldBorderColor: Color(0xFFCE93D8),
+    cursorColor: Color(0xFFCE93D8),
+    hintTextColor: Color(0xFFE1BEE7),
+    hoverColor: Color(0xFF4A148C),
+    borderRadius: 16.0,
+    textStyle: TextStyle(fontSize: 14),
+    itemPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    flagSize: 20.0,
+  );
+
+  static const CountryPickerThemeData minimal = CountryPickerThemeData(
+    itemHeight: 40.0,
+    itemPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+    flagSize: 16.0,
+    textStyle: TextStyle(fontSize: 12),
+    borderRadius: 4.0,
+  );
+
+  CountryPickerThemeData copyWith({
+    Color? backgroundColor,
+    Color? headerColor,
+    Color? textColor,
+    Color? accentColor,
+    Color? searchFieldColor,
+    Color? searchFieldBorderColor,
+    Color? cursorColor,
+    Color? hintTextColor,
+    Color? hoverColor,
+    double? borderRadius,
+    TextStyle? textStyle,
+    double? itemHeight,
+    EdgeInsets? itemPadding,
+    double? flagSize,
+  }) {
+    return CountryPickerThemeData(
+      backgroundColor: backgroundColor ?? this.backgroundColor,
+      headerColor: headerColor ?? this.headerColor,
+      textColor: textColor ?? this.textColor,
+      accentColor: accentColor ?? this.accentColor,
+      searchFieldColor: searchFieldColor ?? this.searchFieldColor,
+      searchFieldBorderColor:
+          searchFieldBorderColor ?? this.searchFieldBorderColor,
+      cursorColor: cursorColor ?? this.cursorColor,
+      hintTextColor: hintTextColor ?? this.hintTextColor,
+      hoverColor: hoverColor ?? this.hoverColor,
+      borderRadius: borderRadius ?? this.borderRadius,
+      textStyle: textStyle ?? this.textStyle,
+      itemHeight: itemHeight ?? this.itemHeight,
+      itemPadding: itemPadding ?? this.itemPadding,
+      flagSize: flagSize ?? this.flagSize,
+    );
+  }
+}
+
 /// Builder API for creating CountryPicker with a fluent interface
 class CountryPickerBuilder {
   Country? _selectedCountry;
@@ -16,24 +143,9 @@ class CountryPickerBuilder {
   String? _labelText;
   String? _hintText;
   bool _showPhoneCodes = true;
-
-  // UI Customization
-  Color? _backgroundColor;
-  Color? _headerColor;
-  Color? _textColor;
-  Color? _accentColor;
-  Color? _searchFieldColor;
-  Color? _searchFieldBorderColor;
-  Color? _cursorColor;
-  Color? _hintTextColor;
-  Color? _hoverColor;
-  double? _borderRadius;
+  CountryPickerThemeData _themeData = CountryPickerThemeData.dark;
 
   // Advanced Customization
-  TextStyle? _textStyle;
-  double? _itemHeight;
-  EdgeInsets? _itemPadding;
-  double? _flagSize;
   bool _showFlags = true;
   bool _showCountryCodes = true;
   bool _adaptiveHeight = false;
@@ -73,85 +185,91 @@ class CountryPickerBuilder {
 
   /// Set the background color
   CountryPickerBuilder backgroundColor(Color? color) {
-    _backgroundColor = color;
+    _themeData = _themeData.copyWith(backgroundColor: color);
     return this;
   }
 
   /// Set the header color
   CountryPickerBuilder headerColor(Color? color) {
-    _headerColor = color;
+    _themeData = _themeData.copyWith(headerColor: color);
     return this;
   }
 
   /// Set the text color
   CountryPickerBuilder textColor(Color? color) {
-    _textColor = color;
+    _themeData = _themeData.copyWith(textColor: color);
     return this;
   }
 
   /// Set the accent color
   CountryPickerBuilder accentColor(Color? color) {
-    _accentColor = color;
+    _themeData = _themeData.copyWith(accentColor: color);
     return this;
   }
 
   /// Set the search field color
   CountryPickerBuilder searchFieldColor(Color? color) {
-    _searchFieldColor = color;
+    _themeData = _themeData.copyWith(searchFieldColor: color);
     return this;
   }
 
   /// Set the search field border color
   CountryPickerBuilder searchFieldBorderColor(Color? color) {
-    _searchFieldBorderColor = color;
+    _themeData = _themeData.copyWith(searchFieldBorderColor: color);
     return this;
   }
 
   /// Set the cursor color
   CountryPickerBuilder cursorColor(Color? color) {
-    _cursorColor = color;
+    _themeData = _themeData.copyWith(cursorColor: color);
     return this;
   }
 
   /// Set the hint text color
   CountryPickerBuilder hintTextColor(Color? color) {
-    _hintTextColor = color;
+    _themeData = _themeData.copyWith(hintTextColor: color);
     return this;
   }
 
   /// Set the hover color
   CountryPickerBuilder hoverColor(Color? color) {
-    _hoverColor = color;
+    _themeData = _themeData.copyWith(hoverColor: color);
     return this;
   }
 
   /// Set the border radius
   CountryPickerBuilder borderRadius(double? radius) {
-    _borderRadius = radius;
+    _themeData = _themeData.copyWith(borderRadius: radius);
     return this;
   }
 
   /// Set the text style
   CountryPickerBuilder textStyle(TextStyle? style) {
-    _textStyle = style;
+    _themeData = _themeData.copyWith(textStyle: style);
     return this;
   }
 
   /// Set the item height
   CountryPickerBuilder itemHeight(double? height) {
-    _itemHeight = height;
+    _themeData = _themeData.copyWith(itemHeight: height);
     return this;
   }
 
   /// Set the item padding
   CountryPickerBuilder itemPadding(EdgeInsets? padding) {
-    _itemPadding = padding;
+    _themeData = _themeData.copyWith(itemPadding: padding);
     return this;
   }
 
   /// Set the flag size
   CountryPickerBuilder flagSize(double? size) {
-    _flagSize = size;
+    _themeData = _themeData.copyWith(flagSize: size);
+    return this;
+  }
+
+  /// Set all visual styling via a single theme object.
+  CountryPickerBuilder themeData(CountryPickerThemeData themeData) {
+    _themeData = themeData;
     return this;
   }
 
@@ -189,53 +307,31 @@ class CountryPickerBuilder {
 
   /// Set a custom theme (dark theme by default)
   CountryPickerBuilder darkTheme() {
-    _backgroundColor = const Color(0xFF302E2C);
-    _headerColor = const Color(0xFF3C3A38);
-    _textColor = Colors.white;
-    _accentColor = const Color(0xFF699B4B);
-    _searchFieldColor = const Color(0x0D000000);
-    _searchFieldBorderColor = Colors.white24;
-    _cursorColor = Colors.white;
-    _hintTextColor = Colors.white54;
-    _hoverColor = Colors.white10;
+    _themeData = CountryPickerThemeData.dark;
     return this;
   }
 
   /// Set a custom theme (light theme)
   CountryPickerBuilder lightTheme() {
-    _backgroundColor = Colors.white;
-    _headerColor = const Color(0xFFF5F5F5);
-    _textColor = Colors.black87;
-    _accentColor = Colors.blue;
-    _searchFieldColor = const Color(0xFFF0F0F0);
-    _searchFieldBorderColor = Colors.grey.shade300;
-    _cursorColor = Colors.blue;
-    _hintTextColor = Colors.grey.shade600;
-    _hoverColor = Colors.grey.shade100;
+    _themeData = CountryPickerThemeData.light;
     return this;
   }
 
   /// Set a purple theme
   CountryPickerBuilder purpleTheme() {
-    _backgroundColor = const Color(0xFF2D1B69);
-    _headerColor = const Color(0xFF3C2B7A);
-    _textColor = Colors.white;
-    _accentColor = const Color(0xFF9C27B0);
-    _searchFieldColor = const Color(0x1AFFFFFF);
-    _searchFieldBorderColor = Colors.purple.shade300;
-    _cursorColor = Colors.purple.shade300;
-    _hintTextColor = Colors.purple.shade200;
-    _hoverColor = Colors.purple.shade800;
+    _themeData = CountryPickerThemeData.purple;
     return this;
   }
 
   /// Set a minimal theme (compact design)
   CountryPickerBuilder minimalTheme() {
-    _itemHeight = 40.0;
-    _itemPadding = const EdgeInsets.symmetric(horizontal: 8, vertical: 4);
-    _flagSize = 16.0;
-    _textStyle = const TextStyle(fontSize: 12);
-    _borderRadius = 4.0;
+    _themeData = _themeData.copyWith(
+      itemHeight: CountryPickerThemeData.minimal.itemHeight,
+      itemPadding: CountryPickerThemeData.minimal.itemPadding,
+      flagSize: CountryPickerThemeData.minimal.flagSize,
+      textStyle: CountryPickerThemeData.minimal.textStyle,
+      borderRadius: CountryPickerThemeData.minimal.borderRadius,
+    );
     return this;
   }
 
@@ -251,20 +347,7 @@ class CountryPickerBuilder {
       labelText: _labelText,
       hintText: _hintText,
       showPhoneCodes: _showPhoneCodes,
-      backgroundColor: _backgroundColor,
-      headerColor: _headerColor,
-      textColor: _textColor,
-      accentColor: _accentColor,
-      searchFieldColor: _searchFieldColor,
-      searchFieldBorderColor: _searchFieldBorderColor,
-      cursorColor: _cursorColor,
-      hintTextColor: _hintTextColor,
-      hoverColor: _hoverColor,
-      borderRadius: _borderRadius,
-      textStyle: _textStyle,
-      itemHeight: _itemHeight,
-      itemPadding: _itemPadding,
-      flagSize: _flagSize,
+      themeData: _themeData,
       showFlags: _showFlags,
       showCountryCodes: _showCountryCodes,
       adaptiveHeight: _adaptiveHeight,
@@ -280,6 +363,7 @@ class CountryPicker extends StatefulWidget {
   final String? labelText;
   final String? hintText;
   final bool showPhoneCodes;
+  final CountryPickerThemeData? themeData;
 
   // UI Customization
   final Color? backgroundColor;
@@ -311,6 +395,7 @@ class CountryPicker extends StatefulWidget {
     this.labelText,
     this.hintText,
     this.showPhoneCodes = true,
+    this.themeData,
     this.backgroundColor,
     this.headerColor,
     this.textColor,
@@ -403,26 +488,44 @@ class _CountryPickerState extends State<CountryPicker> {
   static const Color _defaultHoverColor = Colors.white10;
   static const double _defaultBorderRadius = 8.0;
 
+  CountryPickerThemeData get _themeData =>
+      widget.themeData ?? CountryPickerThemeData.dark;
+
   // Getter methods for colors with fallback
   Color get backgroundColor =>
-      widget.backgroundColor ?? _defaultBackgroundColor;
-  Color get headerColor => widget.headerColor ?? _defaultHeaderColor;
-  Color get textColor => widget.textColor ?? _defaultTextColor;
-  Color get accentColor => widget.accentColor ?? _defaultAccentColor;
+      widget.backgroundColor ??
+      _themeData.backgroundColor ??
+      _defaultBackgroundColor;
+  Color get headerColor =>
+      widget.headerColor ?? _themeData.headerColor ?? _defaultHeaderColor;
+  Color get textColor =>
+      widget.textColor ?? _themeData.textColor ?? _defaultTextColor;
+  Color get accentColor =>
+      widget.accentColor ?? _themeData.accentColor ?? _defaultAccentColor;
   Color get searchFieldColor =>
-      widget.searchFieldColor ?? _defaultSearchFieldColor;
+      widget.searchFieldColor ??
+      _themeData.searchFieldColor ??
+      _defaultSearchFieldColor;
   Color get searchFieldBorderColor =>
-      widget.searchFieldBorderColor ?? _defaultSearchFieldBorderColor;
-  Color get cursorColor => widget.cursorColor ?? _defaultCursorColor;
-  Color get hintTextColor => widget.hintTextColor ?? _defaultHintTextColor;
-  Color get hoverColor => widget.hoverColor ?? _defaultHoverColor;
-  double get borderRadius => widget.borderRadius ?? _defaultBorderRadius;
+      widget.searchFieldBorderColor ??
+      _themeData.searchFieldBorderColor ??
+      _defaultSearchFieldBorderColor;
+  Color get cursorColor =>
+      widget.cursorColor ?? _themeData.cursorColor ?? _defaultCursorColor;
+  Color get hintTextColor =>
+      widget.hintTextColor ?? _themeData.hintTextColor ?? _defaultHintTextColor;
+  Color get hoverColor =>
+      widget.hoverColor ?? _themeData.hoverColor ?? _defaultHoverColor;
+  double get borderRadius =>
+      widget.borderRadius ?? _themeData.borderRadius ?? _defaultBorderRadius;
 
   // Advanced customization getters
-  TextStyle get textStyle => widget.textStyle ?? const TextStyle(fontSize: 14);
-  double? get itemHeight => widget.itemHeight;
-  EdgeInsets get itemPadding => widget.itemPadding ?? _defaultItemPadding;
-  double get flagSize => widget.flagSize ?? 20.0;
+  TextStyle get textStyle =>
+      widget.textStyle ?? _themeData.textStyle ?? const TextStyle(fontSize: 14);
+  double? get itemHeight => widget.itemHeight ?? _themeData.itemHeight;
+  EdgeInsets get itemPadding =>
+      widget.itemPadding ?? _themeData.itemPadding ?? _defaultItemPadding;
+  double get flagSize => widget.flagSize ?? _themeData.flagSize ?? 20.0;
   bool get showFlags => widget.showFlags;
   bool get showCountryCodes => widget.showCountryCodes;
 
