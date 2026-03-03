@@ -1,3 +1,23 @@
+## [2.8.6] - 2026-03-03
+
+### Changed
+- Updated `flutter_lints` to `^6.0.0` in package and example to align with latest Flutter/Dart tooling.
+- Refreshed lockfiles with current resolvable dependency graph.
+- Updated callback types from `Function(Country)` to `ValueChanged<Country>` in public API for stricter typing.
+
+### Performance
+- Optimized search ranking: removed repeated `contains()` checks in comparator by sorting inside match groups.
+- Reduced fuzzy-search allocations with a 1D Levenshtein implementation and early-exit threshold checks.
+- Cached prebuilt suggested/regular sections for non-search mode to avoid repeated sorting during rebuilds.
+- Replaced linear/exception-based country lookups with static maps for O(1) access by ISO code and phone code.
+- Removed ad-hoc dialog `ScrollController` allocation to avoid unnecessary controller lifecycle overhead.
+
+### Docs
+- Updated README installation snippet to `^2.8.6`.
+
+### QA
+- Ran `flutter analyze`, `flutter test`, and `dart pub publish --dry-run`.
+
 ## [2.8.5] - 2025-08-09
 
 ### Added

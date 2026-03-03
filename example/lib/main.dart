@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:country_search/country_search.dart';
-import 'package:country_search/country_search.dart' as country_search_package;
 
-const String PACKAGE_VERSION = '2.8.5';
+const String packageVersion = '2.8.6';
 
 void main() {
   runApp(const MyApp());
@@ -125,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Country Picker Demo v$PACKAGE_VERSION'),
+        title: Text('Country Picker Demo v$packageVersion'),
         actions: [
           // Theme toggle button
           IconButton(

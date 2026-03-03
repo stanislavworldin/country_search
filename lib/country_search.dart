@@ -22,7 +22,7 @@
 ///   },
 /// )
 /// ```
-library country_search;
+library;
 
 export 'src/flutter_country_picker/country_data.dart';
 export 'src/flutter_country_picker/country_picker.dart';

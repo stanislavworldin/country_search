@@ -308,28 +308,33 @@ class CountryData {
     Country(code: 'XK', flag: '🇽🇰', phoneCode: '+383'),
   ];
 
+  static final Map<String, Country> _countriesByCode = {
+    for (final country in countries) country.code: country,
+  };
+
+  static final Map<String, Country> _countriesByPhoneCode = _buildByPhoneCode();
+
+  static Map<String, Country> _buildByPhoneCode() {
+    final map = <String, Country>{};
+    for (final country in countries) {
+      // Keep first country for shared phone codes to preserve existing behavior.
+      map.putIfAbsent(country.phoneCode, () => country);
+    }
+    return map;
+  }
+
   /// Get a country by its ISO code
   ///
   /// Returns null if the country code is not found
   static Country? getCountryByCode(String code) {
-    try {
-      return countries.firstWhere(
-        (country) => country.code == code.toUpperCase(),
-      );
-    } catch (e) {
-      return null;
-    }
+    return _countriesByCode[code.toUpperCase()];
   }
 
   /// Get a country by its phone code
   ///
   /// Returns null if the phone code is not found
   static Country? getCountryByPhoneCode(String phoneCode) {
-    try {
-      return countries.firstWhere((country) => country.phoneCode == phoneCode);
-    } catch (e) {
-      return null;
-    }
+    return _countriesByPhoneCode[phoneCode];
   }
 
   /// Get a sorted list of countries based on localized names

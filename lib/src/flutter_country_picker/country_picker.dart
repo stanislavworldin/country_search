@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'country_data.dart';
@@ -10,7 +12,7 @@ enum CountryPickerModalPresentation { bottomSheet, dialog }
 /// Builder API for creating CountryPicker with a fluent interface
 class CountryPickerBuilder {
   Country? _selectedCountry;
-  Function(Country)? _onCountrySelected;
+  ValueChanged<Country>? _onCountrySelected;
   String? _labelText;
   String? _hintText;
   bool _showPhoneCodes = true;
@@ -46,7 +48,7 @@ class CountryPickerBuilder {
   }
 
   /// Set the callback for country selection
-  CountryPickerBuilder onCountrySelected(Function(Country) callback) {
+  CountryPickerBuilder onCountrySelected(ValueChanged<Country> callback) {
     _onCountrySelected = callback;
     return this;
   }
@@ -274,7 +276,7 @@ class CountryPickerBuilder {
 
 class CountryPicker extends StatefulWidget {
   final Country? selectedCountry;
-  final Function(Country) onCountrySelected;
+  final ValueChanged<Country> onCountrySelected;
   final String? labelText;
   final String? hintText;
   final bool showPhoneCodes;
@@ -352,6 +354,8 @@ class _CountryPickerState extends State<CountryPicker> {
   List<Country> _allCountries = [];
   List<Country> _filteredCountries = [];
   List<Country> _baseCountries = []; // Base countries without suggestions
+  List<Country> _suggestedCountriesForDisplay = [];
+  List<Country> _regularCountriesForDisplay = [];
   bool _isSearching = false;
   int _updateCounter = 0;
 
@@ -444,41 +448,56 @@ class _CountryPickerState extends State<CountryPicker> {
     _updateCountriesForLanguage();
   }
 
-  void _updateCountriesForLanguage() {
-    try {
-      // Use basic countries list; organize depending on suggestion setting
-      if (widget.showSuggestedCountries) {
-        // Suggestions enabled: organize suggestions first
-        _allCountries = _organizeCountriesWithSuggestions(
-          CountryData.countries,
-        );
-      } else {
-        // Suggestions disabled: sort alphabetically by localized name
-        final countryLocalizations = CountryLocalizations.of(context);
-        _allCountries = _sortCountriesAlphabetically(
-          CountryData.countries,
-          countryLocalizations,
-        );
-      }
-      _filteredCountries = _allCountries;
-
-      // Trigger UI update after sorting
-      setState(() {
-        _updateCounter++;
-      });
-    } catch (e) {
-      _allCountries = widget.showSuggestedCountries
-          ? _organizeCountriesWithSuggestions(CountryData.countries)
-          : _sortCountriesAlphabetically(
-              CountryData.countries,
-              CountryLocalizations.of(context),
-            );
-      _filteredCountries = _allCountries;
-      // Trigger UI update after sorting
-      setState(() {
-        _updateCounter++;
-      });
+  @override
+  void didUpdateWidget(covariant CountryPicker oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.showSuggestedCountries != widget.showSuggestedCountries) {
+      _updateCountriesForLanguage();
     }
+  }
+
+  void _updateCountriesForLanguage() {
+    final countryLocalizations = CountryLocalizations.of(context);
+
+    // Use basic countries list; organize depending on suggestion setting.
+    if (widget.showSuggestedCountries) {
+      _allCountries = _organizeCountriesWithSuggestions(CountryData.countries);
+    } else {
+      _allCountries = _sortCountriesAlphabetically(
+        CountryData.countries,
+        countryLocalizations,
+      );
+    }
+    _filteredCountries = _allCountries;
+    _rebuildDisplayCaches(countryLocalizations);
+
+    // Trigger UI update after sorting.
+    setState(() {
+      _updateCounter++;
+    });
+  }
+
+  void _rebuildDisplayCaches(CountryLocalizations countryLocalizations) {
+    if (!widget.showSuggestedCountries) {
+      _suggestedCountriesForDisplay = const [];
+      _regularCountriesForDisplay = const [];
+      return;
+    }
+
+    final suggestedCodes = _getSuggestedCodes();
+    final countryByCode = <String, Country>{
+      for (final country in CountryData.countries) country.code: country,
+    };
+
+    _suggestedCountriesForDisplay = [
+      for (final code in suggestedCodes)
+        if (countryByCode[code] case final country?) country,
+    ];
+
+    _regularCountriesForDisplay = _sortCountriesAlphabetically(
+      CountryData.countries,
+      countryLocalizations,
+    );
   }
 
   /// Sort countries alphabetically by localized name
@@ -504,34 +523,62 @@ class _CountryPickerState extends State<CountryPicker> {
   // Removed controller listener; onChanged in TextField handles updates inside the modal
 
   // Calculate Levenshtein distance for fuzzy search
-  int _levenshteinDistance(String s1, String s2) {
-    if (s1.isEmpty) return s2.length;
-    if (s2.isEmpty) return s1.length;
-
-    List<List<int>> matrix = List.generate(
-      s1.length + 1,
-      (i) => List.generate(s2.length + 1, (j) => 0),
-    );
-
-    for (int i = 0; i <= s1.length; i++) {
-      matrix[i][0] = i;
+  int _levenshteinDistance(String s1, String s2, {int? maxDistance}) {
+    if (s1 == s2) {
+      return 0;
     }
-    for (int j = 0; j <= s2.length; j++) {
-      matrix[0][j] = j;
+    if (s1.isEmpty) {
+      return s2.length;
+    }
+    if (s2.isEmpty) {
+      return s1.length;
     }
 
-    for (int i = 1; i <= s1.length; i++) {
-      for (int j = 1; j <= s2.length; j++) {
-        int cost = s1[i - 1] == s2[j - 1] ? 0 : 1;
-        matrix[i][j] = [
-          matrix[i - 1][j] + 1, // deletion
-          matrix[i][j - 1] + 1, // insertion
-          matrix[i - 1][j - 1] + cost, // substitution
-        ].reduce((a, b) => a < b ? a : b);
+    var longer = s1;
+    var shorter = s2;
+    if (shorter.length > longer.length) {
+      final temp = longer;
+      longer = shorter;
+      shorter = temp;
+    }
+
+    if (maxDistance != null &&
+        (longer.length - shorter.length).abs() > maxDistance) {
+      return maxDistance + 1;
+    }
+
+    final source = longer.codeUnits;
+    final target = shorter.codeUnits;
+
+    final previousRow = List<int>.generate(target.length + 1, (i) => i);
+    final currentRow = List<int>.filled(target.length + 1, 0);
+
+    for (var i = 1; i <= source.length; i++) {
+      currentRow[0] = i;
+      var rowMin = currentRow[0];
+
+      for (var j = 1; j <= target.length; j++) {
+        final cost = source[i - 1] == target[j - 1] ? 0 : 1;
+        final deletion = previousRow[j] + 1;
+        final insertion = currentRow[j - 1] + 1;
+        final substitution = previousRow[j - 1] + cost;
+        final value = math.min(math.min(deletion, insertion), substitution);
+        currentRow[j] = value;
+        if (value < rowMin) {
+          rowMin = value;
+        }
+      }
+
+      if (maxDistance != null && rowMin > maxDistance) {
+        return maxDistance + 1;
+      }
+
+      for (var j = 0; j <= target.length; j++) {
+        previousRow[j] = currentRow[j];
       }
     }
 
-    return matrix[s1.length][s2.length];
+    return previousRow[target.length];
   }
 
   // Check fuzzy match with distance threshold
@@ -540,10 +587,17 @@ class _CountryPickerState extends State<CountryPicker> {
       return false; // Skip fuzzy search for very short queries
     }
 
-    final distance = _levenshteinDistance(query, text);
     final maxAllowedDistance = (query.length / 3).ceil(); // Adaptive threshold
-    final threshold =
-        maxDistance < maxAllowedDistance ? maxDistance : maxAllowedDistance;
+    final threshold = math.min(maxDistance, maxAllowedDistance);
+    if ((query.length - text.length).abs() > threshold) {
+      return false;
+    }
+
+    final distance = _levenshteinDistance(
+      query,
+      text,
+      maxDistance: threshold,
+    );
 
     return distance <= threshold;
   }
@@ -562,11 +616,17 @@ class _CountryPickerState extends State<CountryPicker> {
 
     // When searching, use base countries list (without suggestions organization)
     final countryLocalizations = CountryLocalizations.of(context);
-    final results = <Country>[];
     final exactMatches = <Country>[];
     final startsWithMatches = <Country>[];
     final containsMatches = <Country>[];
     final fuzzyMatches = <Country>[];
+    final localizedNameByCode = <String, String>{};
+
+    String getLowerLocalizedName(Country country) =>
+        localizedNameByCode.putIfAbsent(
+          country.code,
+          () => countryLocalizations.getCountryName(country.code).toLowerCase(),
+        );
 
     // Normalize query for phone code search
     final normalizedQuery = query.toLowerCase().trim();
@@ -575,8 +635,7 @@ class _CountryPickerState extends State<CountryPicker> {
 
     // Use base countries list for search (without suggestions organization)
     for (final country in _baseCountries) {
-      final countryName =
-          countryLocalizations.getCountryName(country.code).toLowerCase();
+      final countryName = getLowerLocalizedName(country);
       final countryCode = country.code.toLowerCase();
       final countryPhoneCode = country.phoneCode.toLowerCase();
 
@@ -624,38 +683,21 @@ class _CountryPickerState extends State<CountryPicker> {
       }
     }
 
-    results.addAll(exactMatches);
-    results.addAll(startsWithMatches);
-    results.addAll(containsMatches);
-    results.addAll(fuzzyMatches);
+    int compareByLocalizedName(Country a, Country b) =>
+        getLowerLocalizedName(a).compareTo(getLowerLocalizedName(b));
 
-    // Sort search results by priority: exact matches first, then alphabetically within each group
-    results.sort((a, b) {
-      // Get priority for each country
-      int getPriority(Country country) {
-        if (exactMatches.contains(country)) return 0;
-        if (startsWithMatches.contains(country)) return 1;
-        if (containsMatches.contains(country)) return 2;
-        if (fuzzyMatches.contains(country)) return 3;
-        return 4;
-      }
+    exactMatches.sort(compareByLocalizedName);
+    startsWithMatches.sort(compareByLocalizedName);
+    containsMatches.sort(compareByLocalizedName);
+    fuzzyMatches.sort(compareByLocalizedName);
 
-      final priorityA = getPriority(a);
-      final priorityB = getPriority(b);
-
-      // First sort by priority
-      if (priorityA != priorityB) {
-        return priorityA.compareTo(priorityB);
-      }
-
-      // Then sort alphabetically within the same priority group
-      final nameA = countryLocalizations.getCountryName(a.code).toLowerCase();
-      final nameB = countryLocalizations.getCountryName(b.code).toLowerCase();
-      return nameA.compareTo(nameB);
-    });
-
-    // For search results, show all results without suggestions organization
-    _filteredCountries = results;
+    // For search results, preserve group priority and alphabetical order inside each group.
+    _filteredCountries = [
+      ...exactMatches,
+      ...startsWithMatches,
+      ...containsMatches,
+      ...fuzzyMatches,
+    ];
   }
 
   /// Organize countries with suggested countries at the top
@@ -665,6 +707,7 @@ class _CountryPickerState extends State<CountryPicker> {
     }
 
     final suggestedCountries = _getSuggestedCodes();
+    final suggestedSet = suggestedCountries.toSet();
 
     // Create a map for quick lookup
     final countryMap = <String, Country>{};
@@ -685,7 +728,7 @@ class _CountryPickerState extends State<CountryPicker> {
 
     // Add regular countries
     for (final country in countries) {
-      if (!suggestedCountries.contains(country.code)) {
+      if (!suggestedSet.contains(country.code)) {
         regular.add(country);
       }
     }
@@ -697,17 +740,7 @@ class _CountryPickerState extends State<CountryPicker> {
   /// Get organized countries with suggested countries separated
   Map<String, List<Country>> _getOrganizedCountries() {
     if (!widget.showSuggestedCountries) {
-      // When suggestions are disabled:
-      // - If searching: keep search results order (already handled in _filterAndSortCountries)
-      // - If not searching: ensure alphabetical order by localized name
-      if (!_isSearching) {
-        final countryLocalizations = CountryLocalizations.of(context);
-        final sorted = _sortCountriesAlphabetically(
-          _filteredCountries,
-          countryLocalizations,
-        );
-        return {'all': sorted};
-      }
+      // Suggestions are disabled; the list is already sorted in language update flow.
       return {'all': _filteredCountries};
     }
 
@@ -716,32 +749,11 @@ class _CountryPickerState extends State<CountryPicker> {
       return {'all': _filteredCountries};
     }
 
-    // If not searching (empty query), show suggestions + all countries
-    final suggestedCountries = _getSuggestedCodes();
-
-    final suggested = <Country>[];
-    final regular = <Country>[];
-
-    // For empty search, we want to show suggestions + all countries (with possible duplicates)
-    // First, add suggested countries
-    for (final country in _filteredCountries) {
-      if (suggestedCountries.contains(country.code)) {
-        suggested.add(country);
-      }
-    }
-
-    // Then add all countries (including those that might be in suggestions) and sort by name
-    regular.addAll(_filteredCountries);
-
-    // Sort regular countries alphabetically by name
-    final countryLocalizations = CountryLocalizations.of(context);
-    regular.sort((a, b) {
-      final nameA = countryLocalizations.getCountryName(a.code).toLowerCase();
-      final nameB = countryLocalizations.getCountryName(b.code).toLowerCase();
-      return nameA.compareTo(nameB);
-    });
-
-    return {'suggested': suggested, 'regular': regular};
+    // Not searching: use precomputed sections.
+    return {
+      'suggested': _suggestedCountriesForDisplay,
+      'regular': _regularCountriesForDisplay,
+    };
   }
 
   /// Build the modal header with drag handle, title and search field
@@ -870,9 +882,9 @@ class _CountryPickerState extends State<CountryPicker> {
 
   /// Build the country list with suggested countries support
   Widget _buildCountryList(
-    ScrollController scrollController,
-    CountryLocalizations countryLocalizations,
-  ) {
+    CountryLocalizations countryLocalizations, {
+    ScrollController? scrollController,
+  }) {
     final organizedCountries = _getOrganizedCountries();
 
     if (organizedCountries.containsKey('all')) {
@@ -1024,8 +1036,8 @@ class _CountryPickerState extends State<CountryPicker> {
                     _buildModalHeader(setModalState, countryLocalizations),
                     Expanded(
                       child: _buildCountryList(
-                        scrollController,
                         countryLocalizations,
+                        scrollController: scrollController,
                       ),
                     ),
                   ],
@@ -1049,7 +1061,6 @@ class _CountryPickerState extends State<CountryPicker> {
             final maxHeight = mediaQuery.size.height * 0.75;
             final maxWidth = mediaQuery.size.width * 0.9;
             final dialogWidth = maxWidth.clamp(280.0, 560.0);
-            final scrollController = ScrollController();
             return Dialog(
               backgroundColor: Colors.transparent,
               insetPadding: const EdgeInsets.symmetric(
@@ -1074,7 +1085,6 @@ class _CountryPickerState extends State<CountryPicker> {
                         _buildModalHeader(setModalState, countryLocalizations),
                         Expanded(
                           child: _buildCountryList(
-                            scrollController,
                             countryLocalizations,
                           ),
                         ),
