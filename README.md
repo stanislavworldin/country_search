@@ -20,7 +20,7 @@ Simple and fast country picker for Flutter.
 
 ```yaml
 dependencies:
-  country_search: ^3.0.0
+  country_search: ^3.0.1
 ```
 
 ## 1-Minute Setup

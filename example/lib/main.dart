@@ -2,7 +2,7 @@ import 'package:country_search/country_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-const String packageVersion = '3.0.0';
+const String packageVersion = '3.0.1';
 
 void main() {
   runApp(const MyApp());
@@ -129,6 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _customHeaderEnabled = false;
   bool _customEmptyBuilderEnabled = true;
   bool _useSvgFlags = false;
+  bool _limitBottomSheetWidth = false;
 
   double _bottomSheetWidth = 560;
 
@@ -198,7 +199,12 @@ class _MyHomePageState extends State<MyHomePage> {
         .showSuggestedCountries(_showSuggestedCountries)
         .useRootNavigator(_useRootNavigator)
         .moveAlongWithKeyboard(_moveAlongWithKeyboard)
-        .bottomSheetWidth(_bottomSheetWidth)
+        .bottomSheetWidth(
+          _presentation == CountryPickerModalPresentation.bottomSheet &&
+                  _limitBottomSheetWidth
+              ? _bottomSheetWidth
+              : null,
+        )
         .modalPresentation(_presentation)
         .themeData(_resolveThemeData())
         .onOpened(() => _logEvent('Picker opened'))
@@ -493,6 +499,10 @@ CountryPicker.builder()
                             }
                             setState(() {
                               _presentation = value;
+                              if (_presentation ==
+                                  CountryPickerModalPresentation.dialog) {
+                                _limitBottomSheetWidth = false;
+                              }
                             });
                           },
                         ),
@@ -678,30 +688,49 @@ CountryPicker.builder()
                       });
                     },
                   ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      const SizedBox(
-                        width: 140,
-                        child: Text('Bottom-sheet width'),
+                  if (_presentation ==
+                      CountryPickerModalPresentation.bottomSheet)
+                    SwitchListTile(
+                      contentPadding: EdgeInsets.zero,
+                      value: _limitBottomSheetWidth,
+                      title: const Text('Constrain bottom-sheet width'),
+                      subtitle: const Text(
+                        'Off by default to avoid "window inside window" effect.',
                       ),
-                      Expanded(
-                        child: Slider(
-                          value: _bottomSheetWidth,
-                          min: 320,
-                          max: 760,
-                          divisions: 22,
-                          label: _bottomSheetWidth.round().toString(),
-                          onChanged: (value) {
-                            setState(() {
-                              _bottomSheetWidth = value;
-                            });
-                          },
+                      onChanged: (value) {
+                        setState(() {
+                          _limitBottomSheetWidth = value;
+                        });
+                      },
+                    ),
+                  if (_presentation ==
+                          CountryPickerModalPresentation.bottomSheet &&
+                      _limitBottomSheetWidth) ...[
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        const SizedBox(
+                          width: 140,
+                          child: Text('Bottom-sheet width'),
                         ),
-                      ),
-                      Text(_bottomSheetWidth.round().toString()),
-                    ],
-                  ),
+                        Expanded(
+                          child: Slider(
+                            value: _bottomSheetWidth,
+                            min: 320,
+                            max: 760,
+                            divisions: 22,
+                            label: _bottomSheetWidth.round().toString(),
+                            onChanged: (value) {
+                              setState(() {
+                                _bottomSheetWidth = value;
+                              });
+                            },
+                          ),
+                        ),
+                        Text(_bottomSheetWidth.round().toString()),
+                      ],
+                    ),
+                  ],
                 ],
               ),
             ),

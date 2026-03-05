@@ -1,3 +1,11 @@
+## [3.0.1] - 2026-03-05
+
+### Changed
+- Refreshed example app into an interactive playground to demonstrate major `CountryPicker` and `CountryFlag` customization paths.
+- Added `Live version` link at the top of README.
+- Documented supported translation languages in README.
+- Simplified package `topics` for broader search discovery on pub.dev.
+
 ## [3.0.0] - 2026-03-05
 
 ### Breaking
