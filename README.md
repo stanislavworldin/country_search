@@ -6,7 +6,7 @@ A Flutter country picker with fast search, localization, and flexible UI.
 
 ```yaml
 dependencies:
-  country_search: ^2.9.0
+  country_search: ^2.9.1
 ```
 
 ## Quick Setup
@@ -57,6 +57,12 @@ CountryPicker.builder()
     .onCountrySelected((country) {
       setState(() => selectedCountry = country);
     })
+    .favorites(const ['US', 'GB'])
+    .exclude(const ['RU'])
+    .countryFilter((country) => country.code != 'KP')
+    .onOpened(() {})
+    .onClosed(() {})
+    .onSearchChanged((query) {})
     .themeData(pickerTheme)
     .modalPresentation(CountryPickerModalPresentation.dialog)
     .showSuggestedCountries(true)

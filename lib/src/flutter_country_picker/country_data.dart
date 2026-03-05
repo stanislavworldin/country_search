@@ -313,6 +313,8 @@ class CountryData {
   };
 
   static final Map<String, Country> _countriesByPhoneCode = _buildByPhoneCode();
+  static final Map<String, List<Country>> _countriesByPhoneCodeAll =
+      _buildByPhoneCodeAll();
 
   static Map<String, Country> _buildByPhoneCode() {
     final map = <String, Country>{};
@@ -321,6 +323,20 @@ class CountryData {
       map.putIfAbsent(country.phoneCode, () => country);
     }
     return map;
+  }
+
+  static Map<String, List<Country>> _buildByPhoneCodeAll() {
+    final map = <String, List<Country>>{};
+    for (final country in countries) {
+      map.putIfAbsent(country.phoneCode, () => <Country>[]).add(country);
+    }
+    return map;
+  }
+
+  static String _normalizePhoneCode(String phoneCode) {
+    final trimmed = phoneCode.trim();
+    if (trimmed.isEmpty) return trimmed;
+    return trimmed.startsWith('+') ? trimmed : '+$trimmed';
   }
 
   /// Get a country by its ISO code
@@ -335,6 +351,28 @@ class CountryData {
   /// Returns null if the phone code is not found
   static Country? getCountryByPhoneCode(String phoneCode) {
     return _countriesByPhoneCode[phoneCode];
+  }
+
+  /// Find the first country by phone code.
+  ///
+  /// Supports inputs with and without '+' prefix.
+  static Country? findByPhoneCode(String phoneCode) {
+    final normalized = _normalizePhoneCode(phoneCode);
+    if (normalized.isEmpty) return null;
+    final countries = _countriesByPhoneCodeAll[normalized];
+    if (countries == null || countries.isEmpty) return null;
+    return countries.first;
+  }
+
+  /// Find all countries by phone code.
+  ///
+  /// Supports inputs with and without '+' prefix.
+  static List<Country> findAllByPhoneCode(String phoneCode) {
+    final normalized = _normalizePhoneCode(phoneCode);
+    if (normalized.isEmpty) return const [];
+    final countries = _countriesByPhoneCodeAll[normalized];
+    if (countries == null) return const [];
+    return List<Country>.unmodifiable(countries);
   }
 
   /// Get a sorted list of countries based on localized names

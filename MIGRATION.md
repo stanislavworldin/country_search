@@ -1,8 +1,13 @@
 # Migration Guide
 
-## Upgrade to 2.9.0
+## Upgrade to 2.9.1
 
-Version `2.9.0` introduces API simplification and performance-focused improvements.
+Version `2.9.1` adds roadmap phase-1 features:
+
+- `favorites`, `exclude`, and `countryFilter` in `CountryPicker`.
+- lifecycle hooks: `onOpened`, `onClosed`.
+- search hook: `onSearchChanged`.
+- phone helpers in `CountryData`: `findByPhoneCode`, `findAllByPhoneCode`.
 
 ## What changed
 
@@ -64,7 +69,7 @@ CountryPicker.builder()
 
 ```yaml
 dependencies:
-  country_search: ^2.9.0
+  country_search: ^2.9.1
 ```
 
 2. Fetch packages:

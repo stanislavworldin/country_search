@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:country_search/country_search.dart';
 
-const String packageVersion = '2.8.6';
+const String packageVersion = '2.9.1';
 
 void main() {
   runApp(const MyApp());

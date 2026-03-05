@@ -73,6 +73,25 @@ void main() {
       expect(country, isNull);
     });
 
+    test('CountryData findByPhoneCode supports input without plus', () {
+      final country = CountryData.findByPhoneCode('1');
+      expect(country, isNotNull);
+      expect(country!.phoneCode, equals('+1'));
+      expect(['US', 'CA'], contains(country.code));
+    });
+
+    test('CountryData findAllByPhoneCode returns all matches', () {
+      final countries = CountryData.findAllByPhoneCode('+1');
+      expect(countries, isNotEmpty);
+      expect(countries.any((country) => country.code == 'US'), isTrue);
+      expect(countries.any((country) => country.code == 'CA'), isTrue);
+    });
+
+    test('CountryData findAllByPhoneCode returns empty for unknown code', () {
+      final countries = CountryData.findAllByPhoneCode('999999');
+      expect(countries, isEmpty);
+    });
+
     test('CountryData search works', () {
       final results = CountryData.searchCountries('russia', (code) => 'Russia');
       expect(results, isNotEmpty);

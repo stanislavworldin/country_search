@@ -1,3 +1,19 @@
+## [2.9.1] - 2026-03-05
+
+### Added
+- `favorites` support for priority countries in picker ordering.
+- `exclude` support to remove countries from picker/search data source.
+- `countryFilter` predicate for custom business filtering.
+- Lifecycle hooks: `onOpened` and `onClosed`.
+- Search hook: `onSearchChanged`.
+- `CountryData.findByPhoneCode` and `CountryData.findAllByPhoneCode`.
+- New widget tests for favorites/exclude/filter and lifecycle/search callbacks.
+
+### Changed
+- Empty-state section ordering now supports: `favorites -> suggested -> regular`.
+- README advanced example updated with roadmap phase-1 API.
+- MIGRATION guide updated for `2.9.1`.
+
 ## [2.9.0] - 2026-03-03
 
 ### Added

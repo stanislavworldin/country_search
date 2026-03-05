@@ -9,6 +9,8 @@ import 'localizations/country_localizations.dart';
 /// Presentation style for country picker modal
 enum CountryPickerModalPresentation { bottomSheet, dialog }
 
+typedef CountryFilter = bool Function(Country country);
+
 /// Theme configuration for [CountryPicker].
 @immutable
 class CountryPickerThemeData {
@@ -143,6 +145,12 @@ class CountryPickerBuilder {
   String? _labelText;
   String? _hintText;
   bool _showPhoneCodes = true;
+  List<String> _favorites = const [];
+  List<String> _exclude = const [];
+  CountryFilter? _countryFilter;
+  VoidCallback? _onOpened;
+  VoidCallback? _onClosed;
+  ValueChanged<String>? _onSearchChanged;
   CountryPickerThemeData _themeData = CountryPickerThemeData.dark;
 
   // Advanced Customization
@@ -180,6 +188,42 @@ class CountryPickerBuilder {
   /// Set whether to show phone codes
   CountryPickerBuilder showPhoneCodes(bool show) {
     _showPhoneCodes = show;
+    return this;
+  }
+
+  /// Set favorite country codes displayed before suggested and regular sections.
+  CountryPickerBuilder favorites(List<String> favorites) {
+    _favorites = List.unmodifiable(favorites);
+    return this;
+  }
+
+  /// Set country codes to exclude from picker and search.
+  CountryPickerBuilder exclude(List<String> exclude) {
+    _exclude = List.unmodifiable(exclude);
+    return this;
+  }
+
+  /// Set a custom country filter applied to all data.
+  CountryPickerBuilder countryFilter(CountryFilter filter) {
+    _countryFilter = filter;
+    return this;
+  }
+
+  /// Called when the picker modal is opened.
+  CountryPickerBuilder onOpened(VoidCallback callback) {
+    _onOpened = callback;
+    return this;
+  }
+
+  /// Called when the picker modal is closed.
+  CountryPickerBuilder onClosed(VoidCallback callback) {
+    _onClosed = callback;
+    return this;
+  }
+
+  /// Called when search input changes.
+  CountryPickerBuilder onSearchChanged(ValueChanged<String> callback) {
+    _onSearchChanged = callback;
     return this;
   }
 
@@ -347,6 +391,12 @@ class CountryPickerBuilder {
       labelText: _labelText,
       hintText: _hintText,
       showPhoneCodes: _showPhoneCodes,
+      favorites: _favorites,
+      exclude: _exclude,
+      countryFilter: _countryFilter,
+      onOpened: _onOpened,
+      onClosed: _onClosed,
+      onSearchChanged: _onSearchChanged,
       themeData: _themeData,
       showFlags: _showFlags,
       showCountryCodes: _showCountryCodes,
@@ -363,6 +413,12 @@ class CountryPicker extends StatefulWidget {
   final String? labelText;
   final String? hintText;
   final bool showPhoneCodes;
+  final List<String> favorites;
+  final List<String> exclude;
+  final CountryFilter? countryFilter;
+  final VoidCallback? onOpened;
+  final VoidCallback? onClosed;
+  final ValueChanged<String>? onSearchChanged;
   final CountryPickerThemeData? themeData;
 
   // UI Customization
@@ -395,6 +451,12 @@ class CountryPicker extends StatefulWidget {
     this.labelText,
     this.hintText,
     this.showPhoneCodes = true,
+    this.favorites = const [],
+    this.exclude = const [],
+    this.countryFilter,
+    this.onOpened,
+    this.onClosed,
+    this.onSearchChanged,
     this.themeData,
     this.backgroundColor,
     this.headerColor,
@@ -436,9 +498,11 @@ class CountryPicker extends StatefulWidget {
 
 class _CountryPickerState extends State<CountryPicker> {
   final TextEditingController _searchController = TextEditingController();
+  List<Country> _sourceCountries = [];
   List<Country> _allCountries = [];
   List<Country> _filteredCountries = [];
   List<Country> _baseCountries = []; // Base countries without suggestions
+  List<Country> _favoriteCountriesForDisplay = [];
   List<Country> _suggestedCountriesForDisplay = [];
   List<Country> _regularCountriesForDisplay = [];
   bool _isSearching = false;
@@ -539,10 +603,10 @@ class _CountryPickerState extends State<CountryPicker> {
   @override
   void initState() {
     super.initState();
-    // Initialize with basic sorted countries (without suggestions)
-    _baseCountries = CountryData.countries;
-    _allCountries = CountryData.countries;
-    _filteredCountries = _allCountries;
+    _sourceCountries = _buildSourceCountries();
+    _baseCountries = _sourceCountries;
+    _allCountries = _sourceCountries;
+    _filteredCountries = _sourceCountries;
   }
 
   @override
@@ -554,20 +618,27 @@ class _CountryPickerState extends State<CountryPicker> {
   @override
   void didUpdateWidget(covariant CountryPicker oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.showSuggestedCountries != widget.showSuggestedCountries) {
+    final hasDataConfigChanged =
+        oldWidget.showSuggestedCountries != widget.showSuggestedCountries ||
+            !listEquals(oldWidget.favorites, widget.favorites) ||
+            !listEquals(oldWidget.exclude, widget.exclude) ||
+            oldWidget.countryFilter != widget.countryFilter;
+    if (hasDataConfigChanged) {
       _updateCountriesForLanguage();
     }
   }
 
   void _updateCountriesForLanguage() {
     final countryLocalizations = CountryLocalizations.of(context);
+    _sourceCountries = _buildSourceCountries();
+    _baseCountries = _sourceCountries;
 
     // Use basic countries list; organize depending on suggestion setting.
     if (widget.showSuggestedCountries) {
-      _allCountries = _organizeCountriesWithSuggestions(CountryData.countries);
+      _allCountries = _organizeCountriesWithSuggestions(_sourceCountries);
     } else {
       _allCountries = _sortCountriesAlphabetically(
-        CountryData.countries,
+        _sourceCountries,
         countryLocalizations,
       );
     }
@@ -580,25 +651,83 @@ class _CountryPickerState extends State<CountryPicker> {
     });
   }
 
+  List<Country> _buildSourceCountries() {
+    final excludedCodes = widget.exclude
+        .map((code) => code.trim().toUpperCase())
+        .where((code) => code.isNotEmpty)
+        .toSet();
+    final predicate = widget.countryFilter;
+
+    return [
+      for (final country in CountryData.countries)
+        if (!excludedCodes.contains(country.code) &&
+            (predicate == null || predicate(country)))
+          country,
+    ];
+  }
+
+  List<Country> _buildPriorityCountries(List<String> countryCodes) {
+    if (countryCodes.isEmpty) {
+      return const [];
+    }
+
+    final sourceByCode = <String, Country>{
+      for (final country in _sourceCountries) country.code: country,
+    };
+    final seen = <String>{};
+    final prioritized = <Country>[];
+
+    for (final rawCode in countryCodes) {
+      final code = rawCode.trim().toUpperCase();
+      if (code.isEmpty || !seen.add(code)) {
+        continue;
+      }
+      final country = sourceByCode[code];
+      if (country != null) {
+        prioritized.add(country);
+      }
+    }
+
+    return prioritized;
+  }
+
   void _rebuildDisplayCaches(CountryLocalizations countryLocalizations) {
+    _favoriteCountriesForDisplay = _buildPriorityCountries(widget.favorites);
+    final favoriteCodes =
+        _favoriteCountriesForDisplay.map((country) => country.code).toSet();
+
     if (!widget.showSuggestedCountries) {
       _suggestedCountriesForDisplay = const [];
-      _regularCountriesForDisplay = const [];
+      _regularCountriesForDisplay = _sortCountriesAlphabetically(
+        _sourceCountries
+            .where((country) => !favoriteCodes.contains(country.code))
+            .toList(),
+        countryLocalizations,
+      );
       return;
     }
 
     final suggestedCodes = _getSuggestedCodes();
     final countryByCode = <String, Country>{
-      for (final country in CountryData.countries) country.code: country,
+      for (final country in _sourceCountries) country.code: country,
     };
 
     _suggestedCountriesForDisplay = [
       for (final code in suggestedCodes)
-        if (countryByCode[code] case final country?) country,
+        if (countryByCode[code] case final country?)
+          if (!favoriteCodes.contains(country.code)) country,
     ];
+    final suggestedCodeSet =
+        _suggestedCountriesForDisplay.map((country) => country.code).toSet();
 
     _regularCountriesForDisplay = _sortCountriesAlphabetically(
-      CountryData.countries,
+      _sourceCountries
+          .where(
+            (country) =>
+                !favoriteCodes.contains(country.code) &&
+                !suggestedCodeSet.contains(country.code),
+          )
+          .toList(),
       countryLocalizations,
     );
   }
@@ -843,8 +972,15 @@ class _CountryPickerState extends State<CountryPicker> {
   /// Get organized countries with suggested countries separated
   Map<String, List<Country>> _getOrganizedCountries() {
     if (!widget.showSuggestedCountries) {
-      // Suggestions are disabled; the list is already sorted in language update flow.
-      return {'all': _filteredCountries};
+      if (_isSearching) {
+        return {'all': _filteredCountries};
+      }
+
+      return {
+        if (_favoriteCountriesForDisplay.isNotEmpty)
+          'favorites': _favoriteCountriesForDisplay,
+        'regular': _regularCountriesForDisplay,
+      };
     }
 
     // If searching (query is not empty), show only search results without suggestions
@@ -854,6 +990,8 @@ class _CountryPickerState extends State<CountryPicker> {
 
     // Not searching: use precomputed sections.
     return {
+      if (_favoriteCountriesForDisplay.isNotEmpty)
+        'favorites': _favoriteCountriesForDisplay,
       'suggested': _suggestedCountriesForDisplay,
       'regular': _regularCountriesForDisplay,
     };
@@ -907,6 +1045,7 @@ class _CountryPickerState extends State<CountryPicker> {
               cursorColor: cursorColor,
               onChanged: (value) {
                 final query = value.toLowerCase().trim();
+                widget.onSearchChanged?.call(value);
                 _filterAndSortCountries(query);
                 setModalState(() {
                   _isSearching = query.isNotEmpty;
@@ -922,6 +1061,7 @@ class _CountryPickerState extends State<CountryPicker> {
                         icon: Icon(Icons.clear, color: hintTextColor, size: 18),
                         onPressed: () {
                           _searchController.clear();
+                          widget.onSearchChanged?.call('');
                           setModalState(() {
                             _isSearching = false;
                             _updateCounter++;
@@ -1004,20 +1144,27 @@ class _CountryPickerState extends State<CountryPicker> {
     }
 
     // Build list with suggested countries and divider
-    final suggested = organizedCountries['suggested']!;
-    final regular = organizedCountries['regular']!;
+    final favorites = organizedCountries['favorites'] ?? const <Country>[];
+    final suggested = organizedCountries['suggested'] ?? const <Country>[];
+    final regular = organizedCountries['regular'] ?? const <Country>[];
+    final hasFavorites = favorites.isNotEmpty;
     final hasSuggested = suggested.isNotEmpty;
     final hasRegular = regular.isNotEmpty;
 
     final items = <Widget>[];
+
+    // Add favorite countries first.
+    for (final country in favorites) {
+      items.add(_buildCountryItem(country, countryLocalizations));
+    }
 
     // Add suggested countries
     for (final country in suggested) {
       items.add(_buildCountryItem(country, countryLocalizations));
     }
 
-    // Add divider if both sections have items
-    if (hasSuggested && hasRegular) {
+    // Add divider if there are items before regular section.
+    if ((hasFavorites || hasSuggested) && hasRegular) {
       items.add(_buildSuggestedDivider());
     }
 
@@ -1114,6 +1261,7 @@ class _CountryPickerState extends State<CountryPicker> {
 
   void _showCountryPicker() {
     final countryLocalizations = CountryLocalizations.of(context);
+    widget.onOpened?.call();
 
     if (widget.modalPresentation ==
         CountryPickerModalPresentation.bottomSheet) {
@@ -1149,7 +1297,7 @@ class _CountryPickerState extends State<CountryPicker> {
             );
           },
         ),
-      );
+      ).whenComplete(() => widget.onClosed?.call());
       return;
     }
 
@@ -1200,7 +1348,7 @@ class _CountryPickerState extends State<CountryPicker> {
           },
         );
       },
-    );
+    ).whenComplete(() => widget.onClosed?.call());
   }
 
   @override
