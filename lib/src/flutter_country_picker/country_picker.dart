@@ -11,6 +11,24 @@ enum CountryPickerModalPresentation { bottomSheet, dialog }
 
 typedef CountryFilter = bool Function(Country country);
 
+typedef CountryPickerItemBuilder = Widget Function(
+  BuildContext context,
+  Country country,
+  bool isSelected,
+  VoidCallback onSelect,
+  Widget defaultItem,
+);
+
+typedef CountryPickerEmptySearchBuilder = Widget Function(
+  BuildContext context,
+  String query,
+);
+
+typedef CountryPickerModalHeaderBuilder = Widget Function(
+  BuildContext context,
+  Widget defaultHeader,
+);
+
 /// Theme configuration for [CountryPicker].
 @immutable
 class CountryPickerThemeData {
@@ -151,6 +169,12 @@ class CountryPickerBuilder {
   VoidCallback? _onOpened;
   VoidCallback? _onClosed;
   ValueChanged<String>? _onSearchChanged;
+  CountryPickerItemBuilder? _itemBuilder;
+  CountryPickerEmptySearchBuilder? _emptySearchBuilder;
+  CountryPickerModalHeaderBuilder? _modalHeaderBuilder;
+  bool _useRootNavigator = false;
+  double? _bottomSheetWidth;
+  bool _moveAlongWithKeyboard = false;
   CountryPickerThemeData _themeData = CountryPickerThemeData.dark;
 
   // Advanced Customization
@@ -224,6 +248,49 @@ class CountryPickerBuilder {
   /// Called when search input changes.
   CountryPickerBuilder onSearchChanged(ValueChanged<String> callback) {
     _onSearchChanged = callback;
+    return this;
+  }
+
+  /// Customize the rendering of country rows.
+  CountryPickerBuilder itemBuilder(CountryPickerItemBuilder builder) {
+    _itemBuilder = builder;
+    return this;
+  }
+
+  /// Customize empty state shown when search has no matches.
+  CountryPickerBuilder emptySearchBuilder(
+    CountryPickerEmptySearchBuilder builder,
+  ) {
+    _emptySearchBuilder = builder;
+    return this;
+  }
+
+  /// Customize modal header by wrapping or replacing the default header.
+  CountryPickerBuilder modalHeaderBuilder(
+    CountryPickerModalHeaderBuilder builder,
+  ) {
+    _modalHeaderBuilder = builder;
+    return this;
+  }
+
+  /// Use root navigator for modal presentation.
+  CountryPickerBuilder useRootNavigator(bool useRootNavigator) {
+    _useRootNavigator = useRootNavigator;
+    return this;
+  }
+
+  /// Set max width for bottom sheet content.
+  CountryPickerBuilder bottomSheetWidth(double? width) {
+    if (width != null && width <= 0) {
+      throw ArgumentError.value(width, 'width', 'must be positive');
+    }
+    _bottomSheetWidth = width;
+    return this;
+  }
+
+  /// Move modal content along with keyboard insets.
+  CountryPickerBuilder moveAlongWithKeyboard(bool moveAlongWithKeyboard) {
+    _moveAlongWithKeyboard = moveAlongWithKeyboard;
     return this;
   }
 
@@ -397,6 +464,12 @@ class CountryPickerBuilder {
       onOpened: _onOpened,
       onClosed: _onClosed,
       onSearchChanged: _onSearchChanged,
+      itemBuilder: _itemBuilder,
+      emptySearchBuilder: _emptySearchBuilder,
+      modalHeaderBuilder: _modalHeaderBuilder,
+      useRootNavigator: _useRootNavigator,
+      bottomSheetWidth: _bottomSheetWidth,
+      moveAlongWithKeyboard: _moveAlongWithKeyboard,
       themeData: _themeData,
       showFlags: _showFlags,
       showCountryCodes: _showCountryCodes,
@@ -419,6 +492,12 @@ class CountryPicker extends StatefulWidget {
   final VoidCallback? onOpened;
   final VoidCallback? onClosed;
   final ValueChanged<String>? onSearchChanged;
+  final CountryPickerItemBuilder? itemBuilder;
+  final CountryPickerEmptySearchBuilder? emptySearchBuilder;
+  final CountryPickerModalHeaderBuilder? modalHeaderBuilder;
+  final bool useRootNavigator;
+  final double? bottomSheetWidth;
+  final bool moveAlongWithKeyboard;
   final CountryPickerThemeData? themeData;
 
   // UI Customization
@@ -457,6 +536,12 @@ class CountryPicker extends StatefulWidget {
     this.onOpened,
     this.onClosed,
     this.onSearchChanged,
+    this.itemBuilder,
+    this.emptySearchBuilder,
+    this.modalHeaderBuilder,
+    this.useRootNavigator = false,
+    this.bottomSheetWidth,
+    this.moveAlongWithKeyboard = false,
     this.themeData,
     this.backgroundColor,
     this.headerColor,
@@ -485,6 +570,10 @@ class CountryPicker extends StatefulWidget {
         assert(
           borderRadius == null || borderRadius >= 0,
           'borderRadius must be non-negative',
+        ),
+        assert(
+          bottomSheetWidth == null || bottomSheetWidth > 0,
+          'bottomSheetWidth must be positive',
         );
 
   /// Create a builder for fluent API
@@ -531,6 +620,62 @@ class _CountryPickerState extends State<CountryPicker> {
   static const SizedBox _spacer12 = SizedBox(width: 12);
   static const SizedBox _spacer10 = SizedBox(width: 10);
   static const SizedBox _spacer2 = SizedBox(height: 2);
+  static const Map<String, String> _accentFoldMap = {
+    'à': 'a',
+    'á': 'a',
+    'â': 'a',
+    'ã': 'a',
+    'ä': 'a',
+    'å': 'a',
+    'ā': 'a',
+    'ă': 'a',
+    'ą': 'a',
+    'ç': 'c',
+    'ć': 'c',
+    'č': 'c',
+    'ď': 'd',
+    'è': 'e',
+    'é': 'e',
+    'ê': 'e',
+    'ë': 'e',
+    'ē': 'e',
+    'ė': 'e',
+    'ę': 'e',
+    'ě': 'e',
+    'ğ': 'g',
+    'ì': 'i',
+    'í': 'i',
+    'î': 'i',
+    'ï': 'i',
+    'ī': 'i',
+    'į': 'i',
+    'ł': 'l',
+    'ñ': 'n',
+    'ń': 'n',
+    'ò': 'o',
+    'ó': 'o',
+    'ô': 'o',
+    'õ': 'o',
+    'ö': 'o',
+    'ø': 'o',
+    'ō': 'o',
+    'ř': 'r',
+    'ś': 's',
+    'ş': 's',
+    'š': 's',
+    'ț': 't',
+    'ť': 't',
+    'ù': 'u',
+    'ú': 'u',
+    'û': 'u',
+    'ü': 'u',
+    'ū': 'u',
+    'ý': 'y',
+    'ÿ': 'y',
+    'ž': 'z',
+    'ź': 'z',
+    'ż': 'z',
+  };
 
   // Default colors for dark theme
   static const Color _defaultBackgroundColor = Color(
@@ -834,8 +979,38 @@ class _CountryPickerState extends State<CountryPicker> {
     return distance <= threshold;
   }
 
+  String _normalizeSearchText(String value) {
+    final lower = value.toLowerCase().trim();
+    if (lower.isEmpty) {
+      return '';
+    }
+
+    final buffer = StringBuffer();
+    for (final rune in lower.runes) {
+      final char = String.fromCharCode(rune);
+      buffer.write(_accentFoldMap[char] ?? char);
+    }
+
+    return buffer.toString().replaceAll(RegExp(r'\s+'), ' ').trim();
+  }
+
+  String _normalizePhoneQuery(String value) {
+    final compact = value.trim().replaceAll(RegExp(r'[^0-9+]'), '');
+    if (compact.isEmpty) {
+      return '';
+    }
+
+    final digits = compact.replaceAll('+', '');
+    if (digits.isEmpty) {
+      return '';
+    }
+
+    return '+$digits';
+  }
+
   void _filterAndSortCountries(String query) {
-    if (query.isEmpty) {
+    final normalizedQuery = _normalizeSearchText(query);
+    if (normalizedQuery.isEmpty) {
       // When search is empty, show organized countries with suggestions
       _filteredCountries = _allCountries;
       if (kDebugMode) {
@@ -852,36 +1027,38 @@ class _CountryPickerState extends State<CountryPicker> {
     final startsWithMatches = <Country>[];
     final containsMatches = <Country>[];
     final fuzzyMatches = <Country>[];
-    final localizedNameByCode = <String, String>{};
+    final normalizedLocalizedNameByCode = <String, String>{};
 
-    String getLowerLocalizedName(Country country) =>
-        localizedNameByCode.putIfAbsent(
+    String getNormalizedLocalizedName(Country country) =>
+        normalizedLocalizedNameByCode.putIfAbsent(
           country.code,
-          () => countryLocalizations.getCountryName(country.code).toLowerCase(),
+          () => _normalizeSearchText(
+            countryLocalizations.getCountryName(country.code),
+          ),
         );
 
-    // Normalize query for phone code search
-    final normalizedQuery = query.toLowerCase().trim();
-    final queryForPhoneCode =
-        normalizedQuery.startsWith('+') ? normalizedQuery : '+$normalizedQuery';
+    final normalizedPhoneQuery = _normalizePhoneQuery(query);
+    final normalizedPhoneQueryNoPlus = normalizedPhoneQuery.startsWith('+')
+        ? normalizedPhoneQuery.substring(1)
+        : normalizedPhoneQuery;
 
     // Use base countries list for search (without suggestions organization)
     for (final country in _baseCountries) {
-      final countryName = getLowerLocalizedName(country);
+      final countryName = getNormalizedLocalizedName(country);
       final countryCode = country.code.toLowerCase();
       final countryPhoneCode = country.phoneCode.toLowerCase();
+      final countryPhoneCodeNoPlus = countryPhoneCode.startsWith('+')
+          ? countryPhoneCode.substring(1)
+          : countryPhoneCode;
 
       bool found = false;
 
       // 1. Exact matches (including phone code with and without +)
       if (countryName == normalizedQuery ||
           countryCode == normalizedQuery ||
-          countryPhoneCode == normalizedQuery ||
-          countryPhoneCode == queryForPhoneCode ||
-          (normalizedQuery.startsWith('+') &&
-              countryPhoneCode == normalizedQuery) ||
-          (!normalizedQuery.startsWith('+') &&
-              countryPhoneCode == '+$normalizedQuery')) {
+          (normalizedPhoneQuery.isNotEmpty &&
+              (countryPhoneCode == normalizedPhoneQuery ||
+                  countryPhoneCodeNoPlus == normalizedPhoneQueryNoPlus))) {
         exactMatches.add(country);
         found = true;
       }
@@ -890,8 +1067,11 @@ class _CountryPickerState extends State<CountryPicker> {
       if (!found &&
           (countryName.startsWith(normalizedQuery) ||
               countryCode.startsWith(normalizedQuery) ||
-              countryPhoneCode.startsWith(normalizedQuery) ||
-              countryPhoneCode.startsWith(queryForPhoneCode))) {
+              (normalizedPhoneQuery.isNotEmpty &&
+                  (countryPhoneCode.startsWith(normalizedPhoneQuery) ||
+                      countryPhoneCodeNoPlus.startsWith(
+                        normalizedPhoneQueryNoPlus,
+                      ))))) {
         startsWithMatches.add(country);
         found = true;
       }
@@ -900,8 +1080,11 @@ class _CountryPickerState extends State<CountryPicker> {
       if (!found &&
           (countryName.contains(normalizedQuery) ||
               countryCode.contains(normalizedQuery) ||
-              countryPhoneCode.contains(normalizedQuery) ||
-              countryPhoneCode.contains(queryForPhoneCode))) {
+              (normalizedPhoneQuery.isNotEmpty &&
+                  (countryPhoneCode.contains(normalizedPhoneQuery) ||
+                      countryPhoneCodeNoPlus.contains(
+                        normalizedPhoneQueryNoPlus,
+                      ))))) {
         containsMatches.add(country);
         found = true;
       }
@@ -909,14 +1092,13 @@ class _CountryPickerState extends State<CountryPicker> {
       // 4. Fuzzy search for typos and misspellings
       if (!found &&
           (_isFuzzyMatch(normalizedQuery, countryName) ||
-              _isFuzzyMatch(normalizedQuery, countryCode) ||
-              _isFuzzyMatch(normalizedQuery, countryPhoneCode))) {
+              _isFuzzyMatch(normalizedQuery, countryCode))) {
         fuzzyMatches.add(country);
       }
     }
 
     int compareByLocalizedName(Country a, Country b) =>
-        getLowerLocalizedName(a).compareTo(getLowerLocalizedName(b));
+        getNormalizedLocalizedName(a).compareTo(getNormalizedLocalizedName(b));
 
     exactMatches.sort(compareByLocalizedName);
     startsWithMatches.sort(compareByLocalizedName);
@@ -1002,6 +1184,21 @@ class _CountryPickerState extends State<CountryPicker> {
     StateSetter setModalState,
     CountryLocalizations countryLocalizations,
   ) {
+    final defaultHeader = _buildDefaultModalHeader(
+      setModalState,
+      countryLocalizations,
+    );
+    final customHeaderBuilder = widget.modalHeaderBuilder;
+    if (customHeaderBuilder == null) {
+      return defaultHeader;
+    }
+    return customHeaderBuilder(context, defaultHeader);
+  }
+
+  Widget _buildDefaultModalHeader(
+    StateSetter setModalState,
+    CountryLocalizations countryLocalizations,
+  ) {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
       decoration: BoxDecoration(
@@ -1044,7 +1241,7 @@ class _CountryPickerState extends State<CountryPicker> {
               textInputAction: TextInputAction.search,
               cursorColor: cursorColor,
               onChanged: (value) {
-                final query = value.toLowerCase().trim();
+                final query = value.trim();
                 widget.onSearchChanged?.call(value);
                 _filterAndSortCountries(query);
                 setModalState(() {
@@ -1081,6 +1278,25 @@ class _CountryPickerState extends State<CountryPicker> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildEmptySearchState() {
+    final query = _searchController.text.trim();
+    final customEmptyBuilder = widget.emptySearchBuilder;
+    if (customEmptyBuilder != null) {
+      return customEmptyBuilder(context, query);
+    }
+
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Text(
+          'No countries found',
+          style: textStyle.copyWith(color: hintTextColor),
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }
@@ -1129,6 +1345,10 @@ class _CountryPickerState extends State<CountryPicker> {
     ScrollController? scrollController,
   }) {
     final organizedCountries = _getOrganizedCountries();
+
+    if (_isSearching && _filteredCountries.isEmpty) {
+      return _buildEmptySearchState();
+    }
 
     if (organizedCountries.containsKey('all')) {
       // No suggested countries or searching - use simple list
@@ -1188,8 +1408,12 @@ class _CountryPickerState extends State<CountryPicker> {
   ) {
     final isSelected = widget.selectedCountry?.code == country.code;
     final countryName = countryLocalizations.getCountryName(country.code);
+    void onSelect() {
+      widget.onCountrySelected(country);
+      Navigator.of(context).pop();
+    }
 
-    return RepaintBoundary(
+    final defaultItem = RepaintBoundary(
       child: Container(
         margin: _itemMargin,
         height: widget.adaptiveHeight ? null : (itemHeight ?? 56.0),
@@ -1204,10 +1428,7 @@ class _CountryPickerState extends State<CountryPicker> {
           child: InkWell(
             borderRadius: BorderRadius.circular(borderRadius),
             hoverColor: hoverColor,
-            onTap: () {
-              widget.onCountrySelected(country);
-              Navigator.of(context).pop();
-            },
+            onTap: onSelect,
             child: Padding(
               padding: itemPadding,
               child: Row(
@@ -1257,6 +1478,18 @@ class _CountryPickerState extends State<CountryPicker> {
         ),
       ),
     );
+
+    final customItemBuilder = widget.itemBuilder;
+    if (customItemBuilder == null) {
+      return defaultItem;
+    }
+    return customItemBuilder(
+      context,
+      country,
+      isSelected,
+      onSelect,
+      defaultItem,
+    );
   }
 
   void _showCountryPicker() {
@@ -1268,6 +1501,7 @@ class _CountryPickerState extends State<CountryPicker> {
       showModalBottomSheet(
         context: context,
         isScrollControlled: true,
+        useRootNavigator: widget.useRootNavigator,
         backgroundColor: backgroundColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
@@ -1276,7 +1510,7 @@ class _CountryPickerState extends State<CountryPicker> {
         ),
         builder: (context) => StatefulBuilder(
           builder: (context, setModalState) {
-            return DraggableScrollableSheet(
+            Widget content = DraggableScrollableSheet(
               initialChildSize: 0.7,
               minChildSize: 0.5,
               maxChildSize: 0.9,
@@ -1295,6 +1529,30 @@ class _CountryPickerState extends State<CountryPicker> {
                 ),
               ),
             );
+
+            if (widget.bottomSheetWidth != null) {
+              content = Align(
+                alignment: Alignment.topCenter,
+                child: ConstrainedBox(
+                  constraints:
+                      BoxConstraints(maxWidth: widget.bottomSheetWidth!),
+                  child: content,
+                ),
+              );
+            }
+
+            if (widget.moveAlongWithKeyboard) {
+              content = AnimatedPadding(
+                duration: const Duration(milliseconds: 160),
+                curve: Curves.easeOut,
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                child: content,
+              );
+            }
+
+            return content;
           },
         ),
       ).whenComplete(() => widget.onClosed?.call());
@@ -1304,6 +1562,7 @@ class _CountryPickerState extends State<CountryPicker> {
     // Centered dialog presentation
     showDialog<void>(
       context: context,
+      useRootNavigator: widget.useRootNavigator,
       barrierDismissible: true,
       builder: (context) {
         return StatefulBuilder(
@@ -1312,7 +1571,7 @@ class _CountryPickerState extends State<CountryPicker> {
             final maxHeight = mediaQuery.size.height * 0.75;
             final maxWidth = mediaQuery.size.width * 0.9;
             final dialogWidth = maxWidth.clamp(280.0, 560.0);
-            return Dialog(
+            Widget dialog = Dialog(
               backgroundColor: Colors.transparent,
               insetPadding: const EdgeInsets.symmetric(
                 horizontal: 24,
@@ -1345,6 +1604,19 @@ class _CountryPickerState extends State<CountryPicker> {
                 ),
               ),
             );
+
+            if (widget.moveAlongWithKeyboard) {
+              dialog = AnimatedPadding(
+                duration: const Duration(milliseconds: 160),
+                curve: Curves.easeOut,
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                child: dialog,
+              );
+            }
+
+            return dialog;
           },
         );
       },

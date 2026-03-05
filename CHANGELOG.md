@@ -1,3 +1,25 @@
+## [2.10.0] - 2026-03-05
+
+### Added
+- Rendering slots in `CountryPicker`:
+  - `itemBuilder`
+  - `emptySearchBuilder`
+  - `modalHeaderBuilder`
+- Modal behavior controls:
+  - `useRootNavigator`
+  - `bottomSheetWidth`
+  - `moveAlongWithKeyboard`
+- Extensibility and normalization tests:
+  - item/header/empty builders
+  - accent-insensitive localized search
+  - phone query symbol normalization
+- `.pubignore` to exclude generated artifacts from package publication.
+
+### Changed
+- Search now normalizes accents for localized names (`etats` matches `États-Unis`).
+- Search now normalizes phone input with symbols/spaces (`(+1)` matches `+1`).
+- README and migration guide updated for `2.10.0`.
+
 ## [2.9.1] - 2026-03-05
 
 ### Added

@@ -1,13 +1,24 @@
 # Migration Guide
 
-## Upgrade to 2.9.1
+## Upgrade to 2.10.0
 
-Version `2.9.1` adds roadmap phase-1 features:
+Version `2.10.0` adds roadmap phase-2 features:
 
 - `favorites`, `exclude`, and `countryFilter` in `CountryPicker`.
 - lifecycle hooks: `onOpened`, `onClosed`.
 - search hook: `onSearchChanged`.
 - phone helpers in `CountryData`: `findByPhoneCode`, `findAllByPhoneCode`.
+- rendering slots:
+  - `itemBuilder`
+  - `emptySearchBuilder`
+  - `modalHeaderBuilder`
+- modal controls:
+  - `useRootNavigator`
+  - `bottomSheetWidth`
+  - `moveAlongWithKeyboard`
+- stronger search normalization:
+  - accent-insensitive matching for localized names
+  - phone query normalization for symbols/spaces
 
 ## What changed
 
@@ -69,7 +80,7 @@ CountryPicker.builder()
 
 ```yaml
 dependencies:
-  country_search: ^2.9.1
+  country_search: ^2.10.0
 ```
 
 2. Fetch packages:
@@ -88,7 +99,9 @@ flutter test
 4. Verify behavior manually:
 
 - Empty search mode (suggested + regular sections).
-- Phone code search with and without `+`.
+- Phone code search with and without `+` and with symbols.
+- Accent-insensitive search (for example `etats` -> `États-Unis`).
+- Custom builders (`itemBuilder`, `emptySearchBuilder`, `modalHeaderBuilder`).
 - Dialog and bottom-sheet presentations.
 - Localization in your target locales.
 

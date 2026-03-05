@@ -6,7 +6,7 @@ A Flutter country picker with fast search, localization, and flexible UI.
 
 ```yaml
 dependencies:
-  country_search: ^2.9.1
+  country_search: ^2.10.0
 ```
 
 ## Quick Setup
@@ -63,6 +63,14 @@ CountryPicker.builder()
     .onOpened(() {})
     .onClosed(() {})
     .onSearchChanged((query) {})
+    .itemBuilder((context, country, isSelected, onSelect, defaultItem) {
+      return defaultItem;
+    })
+    .emptySearchBuilder((context, query) => const Text('No matches'))
+    .modalHeaderBuilder((context, defaultHeader) => defaultHeader)
+    .useRootNavigator(true)
+    .bottomSheetWidth(560)
+    .moveAlongWithKeyboard(true)
     .themeData(pickerTheme)
     .modalPresentation(CountryPickerModalPresentation.dialog)
     .showSuggestedCountries(true)
@@ -107,8 +115,10 @@ CountryPicker(
 - Non-empty query:
   - Search by localized name, ISO code, phone code.
   - Ranking: exact, startsWith, contains, fuzzy.
+- Accent-insensitive matching:
+  - `etats` finds `États-Unis`.
 - Phone code normalization:
-  - `+380` and `380` both work.
+  - `+380`, `380`, `(+380)` all work.
 
 ## Country Model
 

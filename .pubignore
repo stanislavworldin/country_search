@@ -1,0 +1,3 @@
+# Exclude generated artifacts from package publication
+.gh-pages/
+build/

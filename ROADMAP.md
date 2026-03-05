@@ -42,31 +42,32 @@ Acceptance criteria:
 - Widget tests for lifecycle hooks and search callback firing.
 - No regressions in existing search ranking behavior.
 
-## 2.10.0 (Mid-Term)
+## 2.10.0 (Mid-Term) - In Progress
 
 Goal: improve extensibility and UX control.
 
 Scope:
 
-- Add rendering slots:
+- [x] Add rendering slots:
   - `itemBuilder`
   - `emptySearchBuilder`
   - `modalHeaderBuilder`.
-- Add modal behavior controls:
+- [x] Add modal behavior controls:
   - `useRootNavigator`
   - `bottomSheetWidth`
   - `moveAlongWithKeyboard`.
-- Add search normalization layer:
+- [x] Add search normalization layer:
   - accent-insensitive matching
   - stronger normalization for phone queries.
-- Expand localization coverage from current set to top-demand languages.
+- [ ] Expand localization coverage from current set to top-demand languages.
 
 Proposed API:
 
 ```dart
 CountryPicker.builder()
-    .itemBuilder((context, country, isSelected) => ...)
+    .itemBuilder((context, country, isSelected, onSelect, defaultItem) => ...)
     .emptySearchBuilder((context, query) => ...)
+    .modalHeaderBuilder((context, defaultHeader) => defaultHeader)
     .useRootNavigator(true)
     .bottomSheetWidth(560)
     .moveAlongWithKeyboard(true)
@@ -75,9 +76,9 @@ CountryPicker.builder()
 
 Acceptance criteria:
 
-- Golden tests for default and custom item rendering.
-- Integration tests for keyboard + modal behavior.
-- Search tests for accents and phone normalization.
+- [x] Widget tests for custom item/header/empty builders.
+- [x] Search tests for accents and phone normalization.
+- [ ] Integration tests for keyboard + modal behavior.
 
 ## 2.11.0 (Module Expansion)
 
