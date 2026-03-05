@@ -498,25 +498,7 @@ class CountryPicker extends StatefulWidget {
   final bool useRootNavigator;
   final double? bottomSheetWidth;
   final bool moveAlongWithKeyboard;
-  final CountryPickerThemeData? themeData;
-
-  // UI Customization
-  final Color? backgroundColor;
-  final Color? headerColor;
-  final Color? textColor;
-  final Color? accentColor;
-  final Color? searchFieldColor;
-  final Color? searchFieldBorderColor;
-  final Color? cursorColor;
-  final Color? hintTextColor;
-  final Color? hoverColor;
-  final double? borderRadius;
-
-  // Advanced Customization
-  final TextStyle? textStyle;
-  final double? itemHeight;
-  final EdgeInsets? itemPadding;
-  final double? flagSize;
+  final CountryPickerThemeData themeData;
   final bool showFlags;
   final bool showCountryCodes;
   final bool adaptiveHeight;
@@ -542,36 +524,13 @@ class CountryPicker extends StatefulWidget {
     this.useRootNavigator = false,
     this.bottomSheetWidth,
     this.moveAlongWithKeyboard = false,
-    this.themeData,
-    this.backgroundColor,
-    this.headerColor,
-    this.textColor,
-    this.accentColor,
-    this.searchFieldColor,
-    this.searchFieldBorderColor,
-    this.cursorColor,
-    this.hintTextColor,
-    this.hoverColor,
-    this.borderRadius,
-    this.textStyle,
-    this.itemHeight,
-    this.itemPadding,
-    this.flagSize,
+    this.themeData = CountryPickerThemeData.dark,
     this.showFlags = true,
     this.showCountryCodes = true,
     this.adaptiveHeight = false,
     this.showSuggestedCountries = true,
     this.modalPresentation = CountryPickerModalPresentation.bottomSheet,
-  })  : assert(
-          itemHeight == null || itemHeight > 0,
-          'itemHeight must be positive',
-        ),
-        assert(flagSize == null || flagSize > 0, 'flagSize must be positive'),
-        assert(
-          borderRadius == null || borderRadius >= 0,
-          'borderRadius must be non-negative',
-        ),
-        assert(
+  }) : assert(
           bottomSheetWidth == null || bottomSheetWidth > 0,
           'bottomSheetWidth must be positive',
         );
@@ -697,44 +656,29 @@ class _CountryPickerState extends State<CountryPicker> {
   static const Color _defaultHoverColor = Colors.white10;
   static const double _defaultBorderRadius = 8.0;
 
-  CountryPickerThemeData get _themeData =>
-      widget.themeData ?? CountryPickerThemeData.dark;
+  CountryPickerThemeData get _themeData => widget.themeData;
 
   // Getter methods for colors with fallback
   Color get backgroundColor =>
-      widget.backgroundColor ??
-      _themeData.backgroundColor ??
-      _defaultBackgroundColor;
-  Color get headerColor =>
-      widget.headerColor ?? _themeData.headerColor ?? _defaultHeaderColor;
-  Color get textColor =>
-      widget.textColor ?? _themeData.textColor ?? _defaultTextColor;
-  Color get accentColor =>
-      widget.accentColor ?? _themeData.accentColor ?? _defaultAccentColor;
+      _themeData.backgroundColor ?? _defaultBackgroundColor;
+  Color get headerColor => _themeData.headerColor ?? _defaultHeaderColor;
+  Color get textColor => _themeData.textColor ?? _defaultTextColor;
+  Color get accentColor => _themeData.accentColor ?? _defaultAccentColor;
   Color get searchFieldColor =>
-      widget.searchFieldColor ??
-      _themeData.searchFieldColor ??
-      _defaultSearchFieldColor;
+      _themeData.searchFieldColor ?? _defaultSearchFieldColor;
   Color get searchFieldBorderColor =>
-      widget.searchFieldBorderColor ??
-      _themeData.searchFieldBorderColor ??
-      _defaultSearchFieldBorderColor;
-  Color get cursorColor =>
-      widget.cursorColor ?? _themeData.cursorColor ?? _defaultCursorColor;
-  Color get hintTextColor =>
-      widget.hintTextColor ?? _themeData.hintTextColor ?? _defaultHintTextColor;
-  Color get hoverColor =>
-      widget.hoverColor ?? _themeData.hoverColor ?? _defaultHoverColor;
-  double get borderRadius =>
-      widget.borderRadius ?? _themeData.borderRadius ?? _defaultBorderRadius;
+      _themeData.searchFieldBorderColor ?? _defaultSearchFieldBorderColor;
+  Color get cursorColor => _themeData.cursorColor ?? _defaultCursorColor;
+  Color get hintTextColor => _themeData.hintTextColor ?? _defaultHintTextColor;
+  Color get hoverColor => _themeData.hoverColor ?? _defaultHoverColor;
+  double get borderRadius => _themeData.borderRadius ?? _defaultBorderRadius;
 
   // Advanced customization getters
   TextStyle get textStyle =>
-      widget.textStyle ?? _themeData.textStyle ?? const TextStyle(fontSize: 14);
-  double? get itemHeight => widget.itemHeight ?? _themeData.itemHeight;
-  EdgeInsets get itemPadding =>
-      widget.itemPadding ?? _themeData.itemPadding ?? _defaultItemPadding;
-  double get flagSize => widget.flagSize ?? _themeData.flagSize ?? 20.0;
+      _themeData.textStyle ?? const TextStyle(fontSize: 14);
+  double? get itemHeight => _themeData.itemHeight;
+  EdgeInsets get itemPadding => _themeData.itemPadding ?? _defaultItemPadding;
+  double get flagSize => _themeData.flagSize ?? 20.0;
   bool get showFlags => widget.showFlags;
   bool get showCountryCodes => widget.showCountryCodes;
 

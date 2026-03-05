@@ -1,16 +1,16 @@
 name: country_search
-description: The Fastest, Most Customizable Country Picker for Flutter.
-version: 2.11.0
+description: Localized Flutter country picker with fast search, flexible Builder API, and standalone CountryFlag emoji/svg widgets.
+version: 3.0.0
 homepage: https://github.com/stanislavworldin/country_search
 repository: https://github.com/stanislavworldin/country_search
-# issue_tracker: https://github.com/stanislavworldin/country_search/issues
+issue_tracker: https://github.com/stanislavworldin/country_search/issues
 documentation: https://github.com/stanislavworldin/country_search#readme
 topics:
-  - flags
-  - country
-  - picker
+  - country-picker
+  - country-flags
+  - localization
   - search
-  - phonecodes
+  - phone-code
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -34,3 +34,5 @@ flutter:
 screenshots:
   - description: "Country Picker with search functionality"
     path: screenshots/1.png
+  - description: "Standalone CountryFlag widget usage"
+    path: screenshots/2.png

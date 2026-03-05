@@ -1,15 +1,25 @@
 # country_search
 
-A Flutter country picker with fast search, localization, and flexible UI.
+Simple and fast country picker for Flutter.
 
-## Installation
+[pub.dev](https://pub.dev/packages/country_search) · [Repository](https://github.com/stanislavworldin/country_search) · [Issues](https://github.com/stanislavworldin/country_search/issues) · [Changelog](CHANGELOG.md) · [Migration](MIGRATION.md)
+
+## What You Get
+
+- 252+ countries (ISO code, emoji flag, phone code)
+- Fast search by name, ISO code, and phone code
+- 21 localizations
+- Builder API for customization
+- Standalone `CountryFlag` widget (emoji/svg)
+
+## Install
 
 ```yaml
 dependencies:
-  country_search: ^2.11.0
+  country_search: ^3.0.0
 ```
 
-## Quick Setup
+## 1-Minute Setup
 
 ```dart
 import 'package:country_search/country_search.dart';
@@ -24,12 +34,8 @@ MaterialApp(
   ],
   supportedLocales: CountryLocalizations.supportedLocales,
   home: const DemoPage(),
-)
+);
 ```
-
-## Basic (Recommended)
-
-Use the Builder API for all new code.
 
 ```dart
 CountryPicker.builder()
@@ -40,101 +46,45 @@ CountryPicker.builder()
     .build();
 ```
 
-## Advanced (Recommended)
-
-Use a single `CountryPickerThemeData` object instead of many separate style params.
+## Most Used Options
 
 ```dart
-final pickerTheme = CountryPickerThemeData.light.copyWith(
-  accentColor: const Color(0xFF1565C0),
-  borderRadius: 12,
-  itemHeight: 56,
-  flagSize: 20,
-);
-
 CountryPicker.builder()
-    .selectedCountry(selectedCountry)
-    .onCountrySelected((country) {
-      setState(() => selectedCountry = country);
-    })
     .favorites(const ['US', 'GB'])
     .exclude(const ['RU'])
     .countryFilter((country) => country.code != 'KP')
     .onOpened(() {})
     .onClosed(() {})
     .onSearchChanged((query) {})
-    .itemBuilder((context, country, isSelected, onSelect, defaultItem) {
-      return defaultItem;
-    })
-    .emptySearchBuilder((context, query) => const Text('No matches'))
-    .modalHeaderBuilder((context, defaultHeader) => defaultHeader)
-    .useRootNavigator(true)
-    .bottomSheetWidth(560)
-    .moveAlongWithKeyboard(true)
-    .themeData(pickerTheme)
-    .modalPresentation(CountryPickerModalPresentation.dialog)
     .showSuggestedCountries(true)
+    .modalPresentation(CountryPickerModalPresentation.dialog)
     .build();
 ```
 
-### Built-in Theme Presets
+## Styling (3.x)
+
+In `3.x`, styling goes through `CountryPickerThemeData` only.
+
+```dart
+final theme = CountryPickerThemeData.light.copyWith(
+  accentColor: Colors.blue,
+  borderRadius: 12,
+  itemHeight: 56,
+);
+
+CountryPicker.builder()
+    .themeData(theme)
+    .build();
+```
+
+Built-in presets:
 
 - `CountryPickerThemeData.dark`
 - `CountryPickerThemeData.light`
 - `CountryPickerThemeData.purple`
 - `CountryPickerThemeData.minimal`
 
-Builder helpers are also available:
-
-- `.darkTheme()`
-- `.lightTheme()`
-- `.purpleTheme()`
-- `.minimalTheme()`
-
-## Legacy API (Backward Compatible)
-
-The constructor with individual style fields is still supported for compatibility,
-but new code should prefer Builder + `themeData`.
-
-```dart
-CountryPicker(
-  selectedCountry: selectedCountry,
-  onCountrySelected: (country) {
-    setState(() => selectedCountry = country);
-  },
-  backgroundColor: Colors.white,
-  accentColor: Colors.blue,
-)
-```
-
-## Search Behavior
-
-- Empty query:
-  - `showSuggestedCountries = true`: suggested section + full list.
-  - `showSuggestedCountries = false`: full list.
-- Non-empty query:
-  - Search by localized name, ISO code, phone code.
-  - Ranking: exact, startsWith, contains, fuzzy.
-- Accent-insensitive matching:
-  - `etats` finds `États-Unis`.
-- Phone code normalization:
-  - `+380`, `380`, `(+380)` all work.
-
-## Country Model
-
-```dart
-class Country {
-  final String code;      // Example: "US"
-  final String flag;      // Example: "🇺🇸"
-  final String phoneCode; // Example: "+1"
-
-  String getDisplayName(BuildContext context);
-}
-```
-
-## CountryFlag Module
-
-Use `CountryFlag` when you need a standalone flag widget outside picker UI.
+## CountryFlag Widget
 
 ```dart
 CountryFlag.fromCountryCode('US');
@@ -146,13 +96,25 @@ CountryFlag.fromCountryCode(
 );
 ```
 
-Lookup helpers:
+Lookup constructors:
 
 - `CountryFlag.fromLanguageCode('pt-BR')`
 - `CountryFlag.fromCurrencyCode('USD')`
 - `CountryFlag.fromPhoneCode('+44')`
 
-## Migration
+## Search Rules
+
+- Empty query:
+  - `showSuggestedCountries = true`: suggested + regular sections
+  - `showSuggestedCountries = false`: regular list only
+- Non-empty query ranking: exact -> startsWith -> contains -> fuzzy
+- Accent-insensitive (`etats` finds `États-Unis`)
+- Phone normalization (`+380`, `380`, `(+380)` work)
+
+## Migration From 2.x
+
+`3.0.0` removed legacy constructor style fields.
+Use `themeData` for styling.
 
 See [MIGRATION.md](MIGRATION.md).
 
@@ -161,7 +123,7 @@ See [MIGRATION.md](MIGRATION.md).
 - Dart: `>=3.0.0 <4.0.0`
 - Flutter: `>=3.0.0`
 
-## Development
+## Dev
 
 ```bash
 flutter analyze

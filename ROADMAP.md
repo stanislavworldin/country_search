@@ -112,22 +112,22 @@ Acceptance criteria:
 - [x] Fallback behavior tests when svg rendering fails.
 - [x] No additional runtime cost for apps not using `CountryFlag`.
 
-## 3.0.0 (Cleanup)
+## 3.0.0 (Cleanup) - Completed
 
 Goal: complete API simplification and remove long-lived duplication.
 
 Scope:
 
-- Remove deprecated constructor styling fields.
-- Keep a single styling path via `CountryPickerThemeData`.
-- Keep Builder as canonical integration path.
-- Publish full migration guide with codemod suggestions.
+- [x] Remove deprecated constructor styling fields.
+- [x] Keep a single styling path via `CountryPickerThemeData`.
+- [x] Keep Builder as canonical integration path.
+- [x] Publish full migration guide with codemod suggestions.
 
 Acceptance criteria:
 
-- Deprecation warnings shipped in `2.x` before removal.
-- Migration doc examples for all removed fields.
-- Stable tests and benchmark parity with `2.11.x`.
+- [x] Deprecation warnings shipped in `2.x` before removal.
+- [x] Migration doc examples for all removed fields.
+- [x] Stable tests and benchmark parity with `2.11.x`.
 
 ## Deprecation Timeline
 

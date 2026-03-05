@@ -1,116 +1,78 @@
 # Migration Guide
 
-## Upgrade to 2.11.0
+## Upgrade to 3.0.0
 
-Version `2.11.0` adds roadmap phase-3 features:
+`3.0.0` is a cleanup release.
+Main change: style customization is now **theme-only**.
 
-- `favorites`, `exclude`, and `countryFilter` in `CountryPicker`.
-- lifecycle hooks: `onOpened`, `onClosed`.
-- search hook: `onSearchChanged`.
-- phone helpers in `CountryData`: `findByPhoneCode`, `findAllByPhoneCode`.
-- rendering slots:
-  - `itemBuilder`
-  - `emptySearchBuilder`
-  - `modalHeaderBuilder`
-- modal controls:
-  - `useRootNavigator`
-  - `bottomSheetWidth`
-  - `moveAlongWithKeyboard`
-- stronger search normalization:
-  - accent-insensitive matching for localized names
-  - phone query normalization for symbols/spaces
-- localization coverage expanded with `bn` (Bengali) and `ur` (Urdu)
-- new `CountryFlag` module:
-  - `CountryFlagMode.emoji` and `CountryFlagMode.svg`
-  - `CountryFlagStyle` for shape/size styling
-  - lookup constructors from language, currency, and phone code
+## Breaking Change
 
-## What changed
+Removed from `CountryPicker(...)` constructor:
 
-- Stronger callback typing in public API:
-  - `onCountrySelected` now uses `ValueChanged<Country>`.
-- New unified styling object:
-  - `CountryPickerThemeData` for visual customization in one place.
-- Builder now supports `.themeData(...)` for theme-driven configuration.
-- Internal search and lookup optimizations.
-- Dev tooling update to `flutter_lints ^6.0.0`.
+- `backgroundColor`
+- `headerColor`
+- `textColor`
+- `accentColor`
+- `searchFieldColor`
+- `searchFieldBorderColor`
+- `cursorColor`
+- `hintTextColor`
+- `hoverColor`
+- `borderRadius`
+- `textStyle`
+- `itemHeight`
+- `itemPadding`
+- `flagSize`
 
-## Breaking changes
+## What To Do
 
-No functional runtime breaking changes are expected for normal usage.
+Move these style values to `themeData: CountryPickerThemeData...copyWith(...)`.
 
-If your code explicitly typed callback signatures as `Function(Country)`, update to `ValueChanged<Country>`.
-
-Before:
+Before (`2.x`):
 
 ```dart
-final Function(Country) onCountrySelected;
-```
-
-After:
-
-```dart
-final ValueChanged<Country> onCountrySelected;
-```
-
-If you previously passed many separate style fields, move them into one theme object.
-
-Before:
-
-```dart
-CountryPicker.builder()
-    .backgroundColor(Colors.white)
-    .headerColor(const Color(0xFFF5F5F5))
-    .accentColor(Colors.blue)
-    .borderRadius(12)
-    .build();
-```
-
-After:
-
-```dart
-final theme = CountryPickerThemeData.light.copyWith(
+CountryPicker(
+  selectedCountry: selectedCountry,
+  onCountrySelected: onCountrySelected,
+  backgroundColor: Colors.white,
   accentColor: Colors.blue,
   borderRadius: 12,
+  itemHeight: 56,
 );
+```
 
+After (`3.x`):
+
+```dart
+CountryPicker(
+  selectedCountry: selectedCountry,
+  onCountrySelected: onCountrySelected,
+  themeData: CountryPickerThemeData.light.copyWith(
+    backgroundColor: Colors.white,
+    accentColor: Colors.blue,
+    borderRadius: 12,
+    itemHeight: 56,
+  ),
+);
+```
+
+## Builder Example
+
+```dart
 CountryPicker.builder()
-    .themeData(theme)
+    .selectedCountry(selectedCountry)
+    .onCountrySelected(onCountrySelected)
+    .themeData(
+      CountryPickerThemeData.light.copyWith(
+        accentColor: Colors.blue,
+        borderRadius: 12,
+      ),
+    )
     .build();
 ```
 
-## Recommended upgrade steps
-
-1. Update dependency:
-
-```yaml
-dependencies:
-  country_search: ^2.11.0
-```
-
-2. Fetch packages:
+## Quick Check Command
 
 ```bash
-flutter pub get
+rg -n "backgroundColor:|headerColor:|textColor:|accentColor:|searchFieldColor:|searchFieldBorderColor:|cursorColor:|hintTextColor:|hoverColor:|borderRadius:|textStyle:|itemHeight:|itemPadding:|flagSize:" lib test example
 ```
-
-3. Run checks:
-
-```bash
-flutter analyze
-flutter test
-```
-
-4. Verify behavior manually:
-
-- Empty search mode (suggested + regular sections).
-- Phone code search with and without `+` and with symbols.
-- Accent-insensitive search (for example `etats` -> `États-Unis`).
-- Custom builders (`itemBuilder`, `emptySearchBuilder`, `modalHeaderBuilder`).
-- Dialog and bottom-sheet presentations.
-- Localization in your target locales.
-- CountryFlag usage in both emoji and svg modes.
-
-## Notes for contributors
-
-If you contribute to this package, ensure your environment uses a recent stable Flutter/Dart toolchain and `flutter_lints ^6.0.0`.

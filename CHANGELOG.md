@@ -1,3 +1,18 @@
+## [3.0.0] - 2026-03-05
+
+### Breaking
+- Removed legacy constructor style fields from `CountryPicker`:
+  - `backgroundColor`, `headerColor`, `textColor`, `accentColor`
+  - `searchFieldColor`, `searchFieldBorderColor`, `cursorColor`
+  - `hintTextColor`, `hoverColor`, `borderRadius`
+  - `textStyle`, `itemHeight`, `itemPadding`, `flagSize`
+- Styling for constructor usage now goes through `themeData` only.
+
+### Changed
+- Updated example app to use `CountryPickerThemeData` for all style customization.
+- Updated `README` and `MIGRATION` docs for `3.0.0` migration path.
+- Refined pub.dev metadata (`description`, `issue_tracker`, `topics`, screenshots).
+
 ## [2.11.0] - 2026-03-05
 
 ### Added

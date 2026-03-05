@@ -1,16 +1,19 @@
-# flutter_country_picker_example
+# country_search example
 
-A new Flutter project.
+Demo app for `country_search`.
 
-## Getting Started
+## Run
 
-This project is a starting point for a Flutter application.
+```bash
+cd example
+flutter pub get
+flutter run
+```
 
-A few resources to get you started if this is your first Flutter project:
+## What To Check
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Country picker in bottom-sheet and dialog mode
+- Theme presets and custom `themeData`
+- Search behavior (name/code/phone)
+- Localization switching
+- `CountryFlag` usage
