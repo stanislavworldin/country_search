@@ -957,11 +957,6 @@ class _CountryPickerState extends State<CountryPicker> {
     if (normalizedQuery.isEmpty) {
       // When search is empty, show organized countries with suggestions
       _filteredCountries = _allCountries;
-      if (kDebugMode) {
-        debugPrint(
-          'DEBUG: Empty search - showing all countries with suggestions',
-        );
-      }
       return;
     }
 

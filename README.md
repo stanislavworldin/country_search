@@ -2,7 +2,7 @@
 
 Simple and fast country picker for Flutter.
 
-[pub.dev](https://pub.dev/packages/country_search) · [Repository](https://github.com/stanislavworldin/country_search) · [Issues](https://github.com/stanislavworldin/country_search/issues) · [Changelog](CHANGELOG.md) · [Migration](MIGRATION.md)
+[Live version](https://stanislavworldin.github.io/country_search/) · [pub.dev](https://pub.dev/packages/country_search) · [Repository](https://github.com/stanislavworldin/country_search) · [Issues](https://github.com/stanislavworldin/country_search/issues) · [Changelog](CHANGELOG.md) · [Migration](MIGRATION.md)
 
 ## What You Get
 
@@ -11,6 +11,10 @@ Simple and fast country picker for Flutter.
 - 21 localizations
 - Builder API for customization
 - Standalone `CountryFlag` widget (emoji/svg)
+
+## Supported Translation Languages
+
+`ar` Arabic, `bn` Bengali, `de` German, `en` English, `es` Spanish, `fr` French, `hi` Hindi, `id` Indonesian, `it` Italian, `ja` Japanese, `ko` Korean, `nl` Dutch, `pl` Polish, `pt` Portuguese, `ru` Russian, `th` Thai, `tr` Turkish, `uk` Ukrainian, `ur` Urdu, `vi` Vietnamese, `zh` Chinese.
 
 ## Install
 

@@ -48,9 +48,7 @@ abstract class CountryLocalizations {
       if (localizations != null) {
         return localizations;
       }
-    } catch (e) {
-      if (kDebugMode) {}
-    }
+    } catch (e) {}
 
     // Fallback to English if delegates are not configured
     return CountryLocalizationsEn();
@@ -62,7 +60,6 @@ abstract class CountryLocalizations {
     try {
       return of(context).getCountryName(countryCode);
     } catch (e) {
-      if (kDebugMode) {}
       return countryCode; // Fallback to country code
     }
   }
@@ -217,6 +214,5 @@ CountryLocalizations lookupCountryLocalizations(Locale locale) {
   }
 
   // Fallback to English for unsupported locales
-  if (kDebugMode) {}
   return CountryLocalizationsEn();
 }

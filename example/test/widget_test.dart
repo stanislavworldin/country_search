@@ -7,7 +7,8 @@ void main() {
     await tester.pumpWidget(const MyApp());
 
     expect(find.textContaining('Country Picker Demo v'), findsOneWidget);
-    expect(find.text('Select your country:'), findsOneWidget);
+    expect(find.text('Interactive Playground'), findsOneWidget);
     expect(find.text('Builder API Examples:'), findsOneWidget);
+    expect(find.text('CountryFlag Showcase'), findsOneWidget);
   });
 }

@@ -6,11 +6,11 @@ repository: https://github.com/stanislavworldin/country_search
 issue_tracker: https://github.com/stanislavworldin/country_search/issues
 documentation: https://github.com/stanislavworldin/country_search#readme
 topics:
-  - country-picker
-  - country-flags
-  - localization
+  - country
+  - picker
+  - flags
+  - phone
   - search
-  - phone-code
 
 environment:
   sdk: '>=3.0.0 <4.0.0'

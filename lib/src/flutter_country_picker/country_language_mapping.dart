@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 /// Utility class for mapping languages to countries
@@ -362,7 +361,6 @@ class CountryLanguageMapping {
   /// Get the current app locale language code
   static String getCurrentLanguageCode(BuildContext context) {
     final locale = Localizations.localeOf(context);
-    if (kDebugMode) {}
     return locale.languageCode;
   }
 
