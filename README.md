@@ -6,7 +6,7 @@ A Flutter country picker with fast search, localization, and flexible UI.
 
 ```yaml
 dependencies:
-  country_search: ^2.10.0
+  country_search: ^2.11.0
 ```
 
 ## Quick Setup
@@ -131,6 +131,26 @@ class Country {
   String getDisplayName(BuildContext context);
 }
 ```
+
+## CountryFlag Module
+
+Use `CountryFlag` when you need a standalone flag widget outside picker UI.
+
+```dart
+CountryFlag.fromCountryCode('US');
+
+CountryFlag.fromCountryCode(
+  'JP',
+  mode: CountryFlagMode.svg,
+  style: const CountryFlagStyle(size: 24, isCircle: true),
+);
+```
+
+Lookup helpers:
+
+- `CountryFlag.fromLanguageCode('pt-BR')`
+- `CountryFlag.fromCurrencyCode('USD')`
+- `CountryFlag.fromPhoneCode('+44')`
 
 ## Migration
 

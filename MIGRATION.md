@@ -1,8 +1,8 @@
 # Migration Guide
 
-## Upgrade to 2.10.0
+## Upgrade to 2.11.0
 
-Version `2.10.0` adds roadmap phase-2 features:
+Version `2.11.0` adds roadmap phase-3 features:
 
 - `favorites`, `exclude`, and `countryFilter` in `CountryPicker`.
 - lifecycle hooks: `onOpened`, `onClosed`.
@@ -20,6 +20,10 @@ Version `2.10.0` adds roadmap phase-2 features:
   - accent-insensitive matching for localized names
   - phone query normalization for symbols/spaces
 - localization coverage expanded with `bn` (Bengali) and `ur` (Urdu)
+- new `CountryFlag` module:
+  - `CountryFlagMode.emoji` and `CountryFlagMode.svg`
+  - `CountryFlagStyle` for shape/size styling
+  - lookup constructors from language, currency, and phone code
 
 ## What changed
 
@@ -81,7 +85,7 @@ CountryPicker.builder()
 
 ```yaml
 dependencies:
-  country_search: ^2.10.0
+  country_search: ^2.11.0
 ```
 
 2. Fetch packages:
@@ -105,6 +109,7 @@ flutter test
 - Custom builders (`itemBuilder`, `emptySearchBuilder`, `modalHeaderBuilder`).
 - Dialog and bottom-sheet presentations.
 - Localization in your target locales.
+- CountryFlag usage in both emoji and svg modes.
 
 ## Notes for contributors
 

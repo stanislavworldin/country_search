@@ -80,21 +80,21 @@ Acceptance criteria:
 - [x] Search tests for accents and phone normalization.
 - [x] Integration tests for keyboard + modal behavior.
 
-## 2.11.0 (Module Expansion)
+## 2.11.0 (Module Expansion) - Completed
 
 Goal: add a first-class flag subsystem inspired by strengths of `country_flags`.
 
 Scope:
 
-- Introduce `CountryFlag` widget and helpers:
+- [x] Introduce `CountryFlag` widget and helpers:
   - emoji mode
   - svg mode
-  - configurable shape/theme via a small style object.
-- Add utility lookups:
+  - configurable shape/theme via `CountryFlagStyle`.
+- [x] Add utility lookups:
   - `fromLanguageCode`
   - `fromCurrencyCode`
   - `fromPhoneCode`.
-- Keep it optional for consumers that only need picker core.
+- [x] Keep it optional for consumers that only need picker core.
 
 Proposed API:
 
@@ -108,9 +108,9 @@ CountryFlag.fromCountryCode(
 
 Acceptance criteria:
 
-- Snapshot tests for emoji/svg modes.
-- Fallback behavior tests when svg asset is unavailable.
-- No additional runtime cost for apps not using `CountryFlag`.
+- [x] Widget tests for emoji/svg modes.
+- [x] Fallback behavior tests when svg rendering fails.
+- [x] No additional runtime cost for apps not using `CountryFlag`.
 
 ## 3.0.0 (Cleanup)
 

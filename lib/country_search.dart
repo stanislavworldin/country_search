@@ -8,6 +8,7 @@
 /// - 🔍 Instant search by name, code, or phone code
 /// - 🌐 Multi-language support (21 languages)
 /// - 🎨 Customizable UI with dark theme support
+/// - 🏳️ Standalone `CountryFlag` widget (emoji + svg)
 /// - 📱 Responsive design for all screen sizes
 /// - ⚡ Optimized performance (~110μs per search)
 ///
@@ -25,6 +26,7 @@
 library;
 
 export 'src/flutter_country_picker/country_data.dart';
+export 'src/flutter_country_picker/country_flag.dart';
 export 'src/flutter_country_picker/country_picker.dart';
 export 'src/flutter_country_picker/localizations/country_localizations.dart';
 export 'src/flutter_country_picker/localizations/country_localizations_ar.dart';

@@ -1,3 +1,21 @@
+## [2.11.0] - 2026-03-05
+
+### Added
+- New `CountryFlag` module with:
+  - `CountryFlagMode.emoji`
+  - `CountryFlagMode.svg`
+  - `CountryFlagStyle` (size, shape, border, fit)
+- Lookup constructors for flags:
+  - `CountryFlag.fromLanguageCode(...)`
+  - `CountryFlag.fromCurrencyCode(...)`
+  - `CountryFlag.fromPhoneCode(...)`
+- New `CountryFlag` tests for lookups, svg/emoji behavior, and fallback rendering.
+
+### Changed
+- Bengali (`bn`) and Urdu (`ur`) localizations now include full country-name maps.
+- README and migration guide updated for `2.11.0`.
+- Package version bumped to `2.11.0`.
+
 ## [2.10.0] - 2026-03-05
 
 ### Added

@@ -227,8 +227,10 @@ void main() {
     test('Bengali localizations work correctly', () {
       final localizations = CountryLocalizationsBn();
 
-      expect(localizations.getCountryName('US'), equals('United States'));
-      expect(localizations.getCountryName('RU'), equals('Russia'));
+      expect(
+          localizations.getCountryName('US'), equals('মার্কিন যুক্তরাষ্ট্র'));
+      expect(localizations.getCountryName('RU'), equals('রাশিয়া'));
+      expect(localizations.getCountryName('BD'), equals('বাংলাদেশ'));
       expect(localizations.selectCountry, equals('দেশ নির্বাচন করুন'));
       expect(localizations.searchCountry, equals('দেশ খুঁজুন...'));
       expect(
@@ -240,8 +242,10 @@ void main() {
     test('Urdu localizations work correctly', () {
       final localizations = CountryLocalizationsUr();
 
-      expect(localizations.getCountryName('US'), equals('United States'));
-      expect(localizations.getCountryName('RU'), equals('Russia'));
+      expect(localizations.getCountryName('US'),
+          equals('ریاست ہائے متحدہ امریکہ'));
+      expect(localizations.getCountryName('RU'), equals('روس'));
+      expect(localizations.getCountryName('PK'), equals('پاکستان'));
       expect(localizations.selectCountry, equals('ملک منتخب کریں'));
       expect(localizations.searchCountry, equals('ملک تلاش کریں...'));
       expect(localizations.selectYourCountry, equals('اپنا ملک منتخب کریں'));
