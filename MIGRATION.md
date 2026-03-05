@@ -19,6 +19,7 @@ Version `2.10.0` adds roadmap phase-2 features:
 - stronger search normalization:
   - accent-insensitive matching for localized names
   - phone query normalization for symbols/spaces
+- localization coverage expanded with `bn` (Bengali) and `ur` (Urdu)
 
 ## What changed
 

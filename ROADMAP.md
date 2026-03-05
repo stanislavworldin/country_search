@@ -42,7 +42,7 @@ Acceptance criteria:
 - Widget tests for lifecycle hooks and search callback firing.
 - No regressions in existing search ranking behavior.
 
-## 2.10.0 (Mid-Term) - In Progress
+## 2.10.0 (Mid-Term) - Completed
 
 Goal: improve extensibility and UX control.
 
@@ -59,7 +59,7 @@ Scope:
 - [x] Add search normalization layer:
   - accent-insensitive matching
   - stronger normalization for phone queries.
-- [ ] Expand localization coverage from current set to top-demand languages.
+- [x] Expand localization coverage from current set to top-demand languages (`bn`, `ur`).
 
 Proposed API:
 
@@ -78,7 +78,7 @@ Acceptance criteria:
 
 - [x] Widget tests for custom item/header/empty builders.
 - [x] Search tests for accents and phone normalization.
-- [ ] Integration tests for keyboard + modal behavior.
+- [x] Integration tests for keyboard + modal behavior.
 
 ## 2.11.0 (Module Expansion)
 

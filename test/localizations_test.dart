@@ -224,6 +224,29 @@ void main() {
       expect(localizations.selectYourCountry, equals('เลือกประเทศของคุณ'));
     });
 
+    test('Bengali localizations work correctly', () {
+      final localizations = CountryLocalizationsBn();
+
+      expect(localizations.getCountryName('US'), equals('United States'));
+      expect(localizations.getCountryName('RU'), equals('Russia'));
+      expect(localizations.selectCountry, equals('দেশ নির্বাচন করুন'));
+      expect(localizations.searchCountry, equals('দেশ খুঁজুন...'));
+      expect(
+        localizations.selectYourCountry,
+        equals('আপনার দেশ নির্বাচন করুন'),
+      );
+    });
+
+    test('Urdu localizations work correctly', () {
+      final localizations = CountryLocalizationsUr();
+
+      expect(localizations.getCountryName('US'), equals('United States'));
+      expect(localizations.getCountryName('RU'), equals('Russia'));
+      expect(localizations.selectCountry, equals('ملک منتخب کریں'));
+      expect(localizations.searchCountry, equals('ملک تلاش کریں...'));
+      expect(localizations.selectYourCountry, equals('اپنا ملک منتخب کریں'));
+    });
+
     test('All localizations have same country codes', () {
       final en = CountryLocalizationsEn();
       final es = CountryLocalizationsEs();
@@ -241,9 +264,11 @@ void main() {
       final pl = CountryLocalizationsPl();
       final tr = CountryLocalizationsTr();
       final uk = CountryLocalizationsUk();
+      final ur = CountryLocalizationsUr();
       final vi = CountryLocalizationsVi();
       final th = CountryLocalizationsTh();
       final zh = CountryLocalizationsZh();
+      final bn = CountryLocalizationsBn();
 
       expect(en.allCountryNames.keys, equals(es.allCountryNames.keys));
       expect(en.allCountryNames.keys, equals(fr.allCountryNames.keys));
@@ -260,15 +285,17 @@ void main() {
       expect(en.allCountryNames.keys, equals(pl.allCountryNames.keys));
       expect(en.allCountryNames.keys, equals(tr.allCountryNames.keys));
       expect(en.allCountryNames.keys, equals(uk.allCountryNames.keys));
+      expect(en.allCountryNames.keys, equals(ur.allCountryNames.keys));
       expect(en.allCountryNames.keys, equals(vi.allCountryNames.keys));
       expect(en.allCountryNames.keys, equals(th.allCountryNames.keys));
       expect(en.allCountryNames.keys, equals(zh.allCountryNames.keys));
+      expect(en.allCountryNames.keys, equals(bn.allCountryNames.keys));
     });
 
     test('Localizations delegate works', () {
       expect(CountryLocalizations.delegate, isNotNull);
       expect(CountryLocalizations.supportedLocales, isNotEmpty);
-      expect(CountryLocalizations.supportedLocales.length, equals(19));
+      expect(CountryLocalizations.supportedLocales.length, equals(21));
     });
 
     test('Fallback to English for unsupported locale', () {

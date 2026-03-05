@@ -13,6 +13,10 @@
   - item/header/empty builders
   - accent-insensitive localized search
   - phone query symbol normalization
+- New localization delegates:
+  - Bengali (`bn`)
+  - Urdu (`ur`)
+- Modal behavior tests for keyboard insets and bottom-sheet width constraints.
 - `.pubignore` to exclude generated artifacts from package publication.
 
 ### Changed

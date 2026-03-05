@@ -13,12 +13,14 @@ import 'country_localizations_id.dart';
 import 'country_localizations_it.dart';
 import 'country_localizations_ja.dart';
 import 'country_localizations_ko.dart';
+import 'country_localizations_bn.dart';
 import 'country_localizations_nl.dart';
 import 'country_localizations_pl.dart';
 import 'country_localizations_pt.dart';
 import 'country_localizations_ru.dart';
 import 'country_localizations_tr.dart';
 import 'country_localizations_uk.dart';
+import 'country_localizations_ur.dart';
 import 'country_localizations_vi.dart';
 import 'country_localizations_th.dart';
 import 'country_localizations_zh.dart';
@@ -86,12 +88,14 @@ abstract class CountryLocalizations {
     Locale('it'),
     Locale('ja'),
     Locale('ko'),
+    Locale('bn'),
     Locale('nl'),
     Locale('pl'),
     Locale('pt'),
     Locale('ru'),
     Locale('tr'),
     Locale('uk'),
+    Locale('ur'),
     Locale('vi'),
     Locale('th'),
     Locale('zh'),
@@ -144,12 +148,14 @@ class _CountryLocalizationsDelegate
         'it',
         'ja',
         'ko',
+        'bn',
         'nl',
         'pl',
         'pt',
         'ru',
         'tr',
         'uk',
+        'ur',
         'vi',
         'th',
         'zh',
@@ -186,6 +192,8 @@ CountryLocalizations lookupCountryLocalizations(Locale locale) {
       return CountryLocalizationsJa();
     case 'ko':
       return CountryLocalizationsKo();
+    case 'bn':
+      return CountryLocalizationsBn();
     case 'nl':
       return CountryLocalizationsNl();
     case 'pl':
@@ -198,6 +206,8 @@ CountryLocalizations lookupCountryLocalizations(Locale locale) {
       return CountryLocalizationsTr();
     case 'uk':
       return CountryLocalizationsUk();
+    case 'ur':
+      return CountryLocalizationsUr();
     case 'vi':
       return CountryLocalizationsVi();
     case 'th':
